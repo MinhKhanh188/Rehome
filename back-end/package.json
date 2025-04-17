@@ -1,0 +1,29 @@
+{
+    "name": "ReHome back-end",
+    "version": "1.0.0",
+    "main": "src/server.js",
+    "scripts": {
+        "setup": "npm install && npm install express && npm install --save-dev nodemon && npm install morgan && npm install handlebars express-handlebars && npm install sass --save-dev && npm install mongoose && npm install dotenv --save-dev && npm install method-override",
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "watch": "sass --watch src/styles/scss:src/styles/css"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^5.1.0",
+        "express-handlebars": "^8.0.2",
+        "handlebars": "^4.7.8",
+        "method-override": "^3.0.0",
+        "mongoose": "^8.13.2",
+        "morgan": "^1.10.0",
+        "ReHome": "file:"
+    },
+    "devDependencies": {
+        "dotenv": "^16.5.0",
+        "nodemon": "^3.1.9",
+        "sass": "^1.86.3"
+    }
+}
