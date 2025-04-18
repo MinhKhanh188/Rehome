@@ -1,0 +1,123 @@
+Tech Stack
+Server: Node.js (Express.js)
+
+
+Database: MongoDB (good for flexibility with item listings)
+
+
+Authentication: JWT (secure and stateless)
+
+
+Storage: Cloudinary / AWS S3 (for user-uploaded item images)
+
+2. Main Collections (MongoDB)
+users
+{
+    _id,
+    name,
+    email,
+    passwordHash,
+    profilePic, // Optional image URL
+    phoneNumber, // For contacting seller
+    facebookUrl,
+    location, // City or address (optional)
+    isVerified, // Boolean - email or phone verified
+    isAdmin, // Boolean - for admin privileges
+} 
+
+categories
+{
+  _id,
+  name,           // e.g. "Electronics", "Furniture"
+  iconUrl,        // optional: for frontend display
+}
+
+
+
+posts
+{
+  _id,
+  name,
+  categoryId: ObjectId // reference to Category
+  description,
+  productStatus,       // "new", "like-new", "old"
+  price, 
+  originalPrice,
+  images: [String],
+  sellerId,            // ObjectId of User
+  address,             // Full or partial address
+  mapUrl,    // maybe rename to mapUrl for clarity
+  status,              // "available", "sold", "pending"
+  createdAt: Date
+  updatedAt: Date
+
+}
+
+
+
+savedItems
+{
+  _id,
+  userId,        // who saved it
+  productId,     // the item they saved
+  savedAt        // timestamp
+}
+
+Reported Posts
+{
+  _id,
+  postId,
+  reporterId,
+  reason,
+  reportedAt
+}
+
+
+
+🌸 Seller Flow
+Register / Login
+
+Creates account with name, email, password, phone.
+
+Gets authenticated via JWT.
+
+Create a Post
+
+Uploads images (goes to Cloudinary/S3).
+
+Fills in item details: name, category, condition, price, address, mapUrl.
+
+Hits submit → stored in Posts.
+
+Manage Posts
+
+Can view their listings.
+
+Can edit or delete them.
+
+Can mark as sold (updates status field).
+
+Receive Contact
+
+Buyer views the post and gets seller's phone/Facebook link.
+
+Communication happens outside the app.
+
+🩵 Buyer Flow
+Browse Posts
+
+Can view all posts (filter by category, search name, etc.)
+
+Click on a Post
+
+Sees full details: description, images, condition, price, map.
+
+Gets seller contact info: phone number, Facebook link.
+
+Save for Later
+
+Clicks “❤️ Save” → adds to SavedItems.
+
+Report If Needed
+
+If something feels off, user can report → adds to ReportedPosts.
