@@ -1,9 +1,8 @@
-// routes/indexRoute.js
-function index(app) {
+// back-end/src/routes/indexRoute.js
+const express = require('express');
+const router = express.Router();
+const userRoutes = require('./userRoutes');
 
-    app.get('/', (req, res) => {
-        res.json({ message: 'Welcome to ReHome API' });
-    })
-}
+router.use('/users', userRoutes);
 
-module.exports = index
+module.exports = router;

@@ -1,4 +1,4 @@
-// models/User.js
+// back-end/src/models/User.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -13,4 +13,4 @@ const userSchema = new mongoose.Schema({
   isAdmin: { type: Boolean, default: false }
 }, { timestamps: true });
 
-module.exports = mongoose.model('User', userSchema, 'users');
+module.exports = mongoose.model('users', userSchema,);

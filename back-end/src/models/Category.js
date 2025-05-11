@@ -4,5 +4,5 @@ const categorySchema = new mongoose.Schema({
     iconUrl: { type: String }
   }, { timestamps: true });
   
-  module.exports = mongoose.model('Category', categorySchema, 'categories');
+  module.exports = mongoose.model('categories', categorySchema);
   

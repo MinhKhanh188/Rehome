@@ -5,5 +5,5 @@ const savedItemSchema = new mongoose.Schema({
     savedAt: { type: Date, default: Date.now }
   });
   
-  module.exports = mongoose.model('SavedItem', savedItemSchema);
+  module.exports = mongoose.model('savedItems', savedItemSchema);
   

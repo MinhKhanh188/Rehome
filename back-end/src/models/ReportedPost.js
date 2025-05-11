@@ -6,5 +6,5 @@ const reportedPostSchema = new mongoose.Schema({
     reportedAt: { type: Date, default: Date.now }
   });
   
-  module.exports = mongoose.model('ReportedPost', reportedPostSchema, 'reportedPosts');
+  module.exports = mongoose.model('reportedPosts', reportedPostSchema);
   
