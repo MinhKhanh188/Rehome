@@ -75,12 +75,7 @@ class userController {
             );
 
             res.status(200).json({
-                user: {
-                    id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    isAdmin: user.isAdmin
-                },
+                status: 200,
                 token
             });
 
@@ -88,6 +83,20 @@ class userController {
             next(err);
         }
     }
+
+    // GET /me
+    async getUserProfile(req, res, next) {
+        try {
+            const user = await UserModel.findById(req.user.id).select('-passwordHash');
+            res.status(200).json({
+                status: 200,
+                user
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }
 
 module.exports = new userController();

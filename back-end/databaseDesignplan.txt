@@ -81,7 +81,7 @@ Creates account with name, email, password, phone.
 
 Gets authenticated via JWT.
 
-Create a Post
+Create a Post  
 
 Uploads images (goes to Cloudinary/S3).
 

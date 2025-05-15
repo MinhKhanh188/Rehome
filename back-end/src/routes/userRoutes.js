@@ -4,7 +4,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 
-//router.get('/me', authMiddleware, userController.getMe);
+router.get('/profile', authMiddleware, userController.getUserProfile);
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 
