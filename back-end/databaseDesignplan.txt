@@ -29,7 +29,6 @@ categories
 {
   _id,
   name,           // e.g. "Electronics", "Furniture"
-  iconUrl,        // optional: for frontend display
 }
 
 
