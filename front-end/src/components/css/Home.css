@@ -1,0 +1,299 @@
+/* App.css */
+.app-container {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .banner-section,
+  .categories-section,
+  .products-section,
+  .cta-section {
+    margin: 40px auto;
+    max-width: 1200px;
+    padding: 0 20px;
+  }
+  
+  .section-header {
+    margin-bottom: 30px;
+  }
+  
+  .section-header h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .section-header p {
+    color: #666;
+    font-size: 16px;
+  }
+  
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    gap: 20px !important;
+  }
+  
+  .product-card-wrapper {
+    transition: transform 0.2s !important;
+  }
+  
+  .product-card-wrapper:hover {
+    transform: scale(1.02) !important;
+  }
+  
+  .title-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .vip-badge {
+    margin-left: 10px;
+    background-color: #f97316;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 999px;
+  }
+  
+  .cta-section {
+    padding: 60px 20px;
+  }
+  
+  .cta-content {
+    background: linear-gradient(to right, #f97316, #ea580c);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    color: white;
+  }
+  
+  .cta-content h2 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .cta-content p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .primary-btn {
+    background-color: white;
+    color: #f97316;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .primary-btn:hover {
+    background-color: #f1f5f9;
+  }
+  
+  .secondary-btn {
+    background-color: transparent;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-size: 18px;
+    font-weight: 500;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .secondary-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Environmental Benefits Section */
+.environmental-benefits {
+  padding: 5rem 0;
+}
+
+.benefits-title {
+  color: #5c4033;
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.benefits-text {
+  color: #8c6d5b;
+  max-width: 32rem;
+}
+
+.benefit-card {
+  background-color: #f8f1e9;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 2rem;
+}
+
+.icon-circle {
+  width: 4rem;
+  height: 4rem;
+  background-color: rgba(137, 185, 110, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefit-icon {
+  color: #f97316;
+}
+
+.benefit-card-title {
+  color: #5c4033;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.benefit-card-text {
+  color: #8c6d5b;
+}
+
+/* Quality Assurance Section */
+.quality-assurance {
+  padding: 5rem 0;
+  background-color: #f8f1e9;
+  border-radius: 1.5rem;
+  margin: 2rem 1rem;
+}
+
+.quality-title {
+  color: #5c4033;
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.quality-text {
+  color: #8c6d5b;
+}
+
+.quality-list {
+  list-style: none;
+  padding: 0;
+}
+
+.quality-icon {
+  color: #f97316;
+  flex-shrink: 0;
+}
+
+.quality-list strong {
+  color: #5c4033;
+}
+
+.quality-image-card {
+  border: none;
+  border-radius: 1rem;
+}
+
+.image-placeholder {
+  background-color: rgba(137, 185, 110, 0.3);
+  aspect-ratio: 16 / 9;
+}
+
+.icon-circle-large {
+  width: 5rem;
+  height: 5rem;
+  background-color: rgba(137, 185, 110, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-text {
+  text-align: center;
+  color: #5c4033;
+  font-weight: 500;
+}
+
+/* How It Works Section */
+.how-it-works {
+  padding: 5rem 0;
+}
+
+.how-it-works-title {
+  color: #5c4033;
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.how-it-works-text {
+  color: #8c6d5b;
+  max-width: 32rem;
+}
+
+.step-item {
+  position: relative;
+}
+
+.step-number {
+  width: 4rem;
+  height: 4rem;
+  background-color: #f97316;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  z-index: 10;
+}
+
+.step-title {
+  color: #5c4033;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.step-text {
+  color: #8c6d5b;
+}
+
+@media (min-width: 768px) {
+  .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    left: 4rem;
+    width: calc(100% + 2rem);
+    height: 2px;
+    background-color: #d6e6cc;
+    z-index: 1;
+  }
+}

@@ -1,0 +1,159 @@
+.login-page {
+    min-height: 100vh;
+    background-color: #f8f1e9;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-card {
+    border: none;
+    border-radius: 15px;
+  }
+  
+  .login-title {
+    color: #5c4033;
+    font-weight: 700;
+    font-size: 1.75rem;
+  }
+  
+  .login-subtitle {
+    color: #8c6d5b;
+    font-size: 0.875rem;
+  }
+  
+  .password-wrapper {
+    position: relative;
+  }
+  
+  .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+    color: #666;
+    text-decoration: none !important;
+  }
+  
+  .form-control {
+    border-color: #d9c2b2;
+    border-radius: 8px;
+  }
+  
+  .form-control:focus {
+    border-color: #89b96e;
+    box-shadow: 0 0 0 0.2rem rgba(137, 185, 110, 0.25);
+  }
+  
+  .btn-primary {
+    background-color: #89b96e;
+    border-color: #89b96e;
+    border-radius: 8px;
+  }
+  
+  .btn-primary:hover {
+    background-color: #78a55d;
+    border-color: #78a55d;
+  }
+  
+  .btn-primary:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+  
+  .forgot-password {
+    color: orange;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .forgot-password:hover {
+    color: #f0730d;
+    text-decoration: underline;
+  }
+
+  .login-butt {
+    background-color: #f97316 !important;
+    border-color: #f97316 !important;
+  }
+
+  .login-butt:hover {
+    background-color: #ea580c !important;
+    border-color: #ea580c !important;
+  }
+  
+  .divider {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+  
+  .divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #d9c2b2;
+    z-index: 1;
+  }
+  
+  .divider span {
+    background: #fff;
+    padding: 0 10px;
+    position: relative;
+    z-index: 2;
+    color: #8c6d5b;
+    font-size: 0.875rem;
+  }
+  
+  .google-btn {
+    border-color: #d9c2b2;
+    color: #5c4033;
+  }
+  
+  .google-btn:hover {
+    background-color: #f8f1e9;
+    border-color: #d9c2b2;
+  }
+  
+  .google-icon {
+    margin-right: 8px;
+  }
+  
+  .facebook-btn {
+    background-color: #1877f2;
+    border-color: #1877f2;
+  }
+  
+  .facebook-btn:hover {
+    background-color: #166fe5;
+    border-color: #166fe5;
+  }
+  
+  .signup-link {
+    color: orange;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .signup-link:hover {
+    color: #f0730d;
+    text-decoration: underline;
+  }
+
+  .social-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Khoảng cách giữa các nút */
+  }
+  
+  .social-buttons .btn {
+    flex: 1; /* Đảm bảo các nút có cùng độ rộng */
+    height: 40px; /* Đặt chiều cao cố định cho các nút */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem; /* Đặt kích thước chữ đồng đều */
+    padding: 0; /* Loại bỏ padding mặc định */
+  }

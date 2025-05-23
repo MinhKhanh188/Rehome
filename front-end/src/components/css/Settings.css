@@ -1,0 +1,133 @@
+.settings-container {
+    padding: 2rem 1rem;
+    max-width: 720px;
+  }
+  
+  .settings-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #343a40;
+  }
+  
+  .settings-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .settings-card {
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+  }
+  
+  .settings-icon {
+    color: #6c757d;
+  }
+  
+  .settings-section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #343a40;
+    margin: 0;
+  }
+  
+  .settings-input {
+    border-color: #d9c2b2;
+    border-radius: 0.25rem;
+  }
+  
+  .settings-input:focus {
+    border-color: #ff9500;
+    box-shadow: 0 0 0 0.2rem rgba(255, 149, 0, 0.25);
+  }
+  
+  .payment-method {
+    border-color: #d9c2b2;
+    border-radius: 0.5rem;
+  }
+  
+  .payment-icon-container {
+    background-color: #e7f1ff;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  .payment-icon {
+    color: #007bff;
+  }
+  
+  .payment-card-number {
+    font-weight: 500;
+    color: #343a40;
+  }
+  
+  .payment-expiry {
+    font-size: 0.75rem;
+    color: #6c757d;
+  }
+  
+  .remove-payment {
+    color: #dc3545;
+    text-decoration: none;
+  }
+  
+  .remove-payment:hover {
+    color: #c82333;
+  }
+  
+  .add-payment {
+    color: #ff9500 !important;
+    text-decoration: none !important;
+  }
+  
+  .add-payment:hover {
+    color: #e68a00 !important;
+  }
+  
+  .notification-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .notification-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .notification-checkbox .form-check-label {
+    color: #343a40;
+  }
+  
+  .notification-checkbox .form-check-input:checked {
+    background-color: #ff9500;
+    border-color: #ff9500;
+  }
+  
+  .notification-checkbox .form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 149, 0, 0.25);
+  }
+  
+  .save-button {
+    background-color: #ff9500 !important;
+    border-color: #ff9500 !important;
+    border-radius: 0.5rem !important;
+  }
+  
+  .save-button:hover {
+    background-color: #e68a00 !important;
+    border-color: #e68a00 !important;
+  }
+  
+  .cancel-button {
+    border-color: #d9c2b2;
+    color: #343a40;
+    border-radius: 0.5rem;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+  }

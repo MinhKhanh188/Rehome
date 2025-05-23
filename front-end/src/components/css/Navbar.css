@@ -1,0 +1,145 @@
+/* Navbar.css */
+.custom-navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f97316 !important;
+    cursor: pointer;
+
+  }
+  
+  .logo-text img {
+    height: 40px; /* Chiều cao logo */
+    width: auto; /* Tự động điều chỉnh chiều rộng theo tỷ lệ */
+    max-width: 100%; /* Đảm bảo logo không vượt quá kích thước container */
+    object-fit: contain; /* Đảm bảo logo không bị cắt */
+  }
+
+  .custom-navbar .logo-text {
+    display: flex;
+    align-items: center; /* Căn giữa logo theo chiều dọc */
+    padding: 0; /* Loại bỏ padding nếu có */
+  }
+  
+  .nav-link {
+    color: #4b5563 !important;
+    margin: 0 15px;
+    transition: color 0.2s;
+  }
+  
+  .nav-link:hover {
+    color: #f97316 !important;
+  }
+  
+  .auth-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0; /* Ngăn auth-section bị thu nhỏ */
+  }
+  
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #f97316;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  .profile-btn {
+    display: flex;
+    align-items: center; /* Căn giữa avatar và username theo chiều dọc */
+    gap: 8px; /* Khoảng cách giữa avatar và username */
+    text-decoration: none !important;
+    color: #4b5563 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important; /* Loại bỏ nền */
+    white-space: nowrap; /* Ngăn username bị xuống dòng */
+  }
+  
+  .profile-btn:hover {
+    color: #f97316 !important;
+    background: none !important;
+  }
+  
+  .avatar {
+    width: 34px;
+    height: 34px;
+    background-color: #fed7aa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f97316;
+    font-weight: 500;
+  }
+  
+  .username {
+    color: #4b5563;
+  }
+  
+  .login-btn {
+    color: #4b5563 !important;
+    text-decoration: none !important;
+    transition: color 0.2s;
+    padding: 0 !important;
+  }
+  
+  .login-btn:hover {
+    color: #f97316 !important;
+  }
+  
+  .auth-section .signup-btn-deco {
+    background-color: #f97316 !important;
+    border-color: #f97316 !important;
+    border-radius: 999px !important;
+    padding: 8px 20px !important;
+    transition: background-color 0.2s;
+  }
+  
+  .signup-btn-deco:hover {
+    background-color: #ea580c !important;
+  }
+  
+  .dropdown-menu {
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .dropdown-item {
+    color: #4b5563 !important;
+    padding: 8px 16px !important;
+    transition: background-color 0.2s;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f1f5f9 !important;
+    color: #f97316 !important;
+  }
+  
+  @media (max-width: 767px) {
+    .auth-section {
+      flex-direction: column; /* Đặt avatar và username theo cột */
+      align-items: flex-start;
+      gap: 10px;
+    }
+  
+    .nav-link {
+      margin: 10px 0;
+    }
+
+    .profile-btn {
+      justify-content: flex-start; /* Căn trái avatar và username */
+    }
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }

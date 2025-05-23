@@ -1,0 +1,52 @@
+.my-listings {
+    padding: 2rem 1rem;
+  }
+  
+  .listings-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #343a40;
+  }
+  
+  .my-listings .add-list-btn1 {
+    background-color: #ff9500;
+    border-color: #ff9500;
+    border-radius: 0.5rem;
+  }
+  
+  .my-listings .add-list-btn1:hover {
+    background-color: #e68a00;
+    border-color: #e68a00;
+  }
+  
+  .filter-group {
+    max-width: 200px;
+  }
+  
+  .filter-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    z-index: 1;
+  }
+  
+  .filter-select {
+    padding-left: 2.5rem;
+    border-color: #d9c2b2;
+    border-radius: 0.5rem;
+    background-color: #fff;
+  }
+  
+  .filter-select:focus {
+    border-color: #ff9500;
+    box-shadow: 0 0 0 0.2rem rgba(255, 149, 0, 0.25);
+  }
+  
+  .no-listings {
+    background-color: #fff;
+    border: 1px solid #d9c2b2;
+    border-radius: 0.5rem;
+    color: #6c757d;
+  }

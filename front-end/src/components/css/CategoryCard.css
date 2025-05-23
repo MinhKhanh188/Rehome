@@ -1,0 +1,32 @@
+/* CategoryCard.css */
+.category-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    cursor: pointer;
+    text-align: center;
+    transition: box-shadow 0.2s;
+  }
+  
+  .category-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .category-icon {
+    color: #f97316;
+    margin-bottom: 16px;
+    font-size: 40px;
+  }
+  
+  .category-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 8px;
+  }
+  
+  .category-card p {
+    color: #4b5563;
+    font-size: 14px;
+  }

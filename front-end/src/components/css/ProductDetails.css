@@ -1,0 +1,23 @@
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+.position-fixed {
+  position: fixed !important;
+}
+.rounded-circle {
+  border-radius: 50% !important;
+}
+.text-warning {
+  color: #f97316 !important;
+}
+.btn-warning, .bg-warning {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+}
+.btn-warning:hover, .bg-warning:hover {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+.btn-warning.text-white {
+  color: #fff !important;
+}

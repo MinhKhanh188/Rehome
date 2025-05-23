@@ -1,30 +1,30 @@
-// front-end/src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './components/pages/Home';
+import Login from './components/pages/Login';
+import Register from './components/pages/Register';
+import ForgotPassword from './components/pages/ForgotPassword';
+import Products from './components/pages/Products';
+import Dashboard from './components/pages/Dashboard';
+import ProductDetails from './components/pages/ProductDetails';
+import Payment from './components/pages/Payment';
 
 
 function App() {
-    const location = useLocation();
-    const showHeader = location.pathname !== '/login' && location.pathname !== '/signup';
-    const showFooter = location.pathname === '/';
-
-    return (
-        <>
-            {showHeader}
-            <Routes>
-
-            </Routes>
-            {showFooter}
-        </>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/products/product-details" element={<ProductDetails />} />
+        <Route path="/payment" element={<Payment />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-function AppWrapper() {
-    return (
-        <Router>
-            <App />
-        </Router>
-    );
-}
-
-export default AppWrapper;
+export default App;

@@ -1,0 +1,45 @@
+.trust-badges {
+  padding: 1rem 0;
+}
+
+.badge-card {
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.badge-icon {
+  width: 2rem ;
+  height: 2rem ;
+  flex-shrink: 0;
+}
+
+.shield-icon {
+  color: #ff9500;
+}
+
+.check-icon {
+  color: #22c55e;
+}
+
+.rotate-icon {
+  color: #f97316;
+}
+
+.thumbs-icon {
+  color: #3b82f6;
+}
+
+.badge-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #343a40;
+  margin-bottom: 0;
+}
+
+.badge-text {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-bottom: 0;
+}

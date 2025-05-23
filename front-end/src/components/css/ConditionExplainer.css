@@ -1,0 +1,126 @@
+.condition-explainer {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.condition-like-new {
+  background-color: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.condition-excellent {
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.condition-very-good {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.condition-good {
+  background-color: #fefce8;
+  color: #b45309;
+  border: 1px solid #fef08a;
+}
+
+.condition-fair {
+  background-color: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.condition-default {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #e9ecef;
+}
+
+.condition-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.info-icon {
+  color: #6c757d;
+}
+
+.condition-rating {
+  display: flex;
+  align-items: center;
+}
+
+.rating-bar {
+  width: 3rem;
+  height: 0.5rem;
+  border-radius: 0;
+}
+
+.bg-green {
+  background-color: #22c55e;
+}
+
+.bg-emerald {
+  background-color: #10b981;
+}
+
+.bg-blue {
+  background-color: #3b82f6;
+}
+
+.bg-amber {
+  background-color: #f59e0b;
+}
+
+.bg-orange {
+  background-color: #f97316;
+}
+
+.bg-gray {
+  background-color: #e5e7eb;
+}
+
+.rounded-start {
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.rounded-end {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.rating-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+.condition-description {
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.condition-points {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.condition-point {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.25rem;
+}
+
+.bullet {
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
+}

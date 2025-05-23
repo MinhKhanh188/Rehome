@@ -1,0 +1,91 @@
+.products-container {
+    padding: 2rem 1rem;
+  }
+  
+  .products-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #5c4033;
+  }
+  
+  .filters-card {
+    border: 1px solid #d9c2b2;
+    border-radius: 0.5rem;
+  }
+  
+  .filter-heading {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #5c4033;
+  }
+  
+  .products-container .form-control {
+    border-color: #d9c2b2;
+    border-radius: 0.5rem;
+  }
+  
+  .products-container .form-control:focus {
+    border-color: #89b96e;
+    box-shadow: 0 0 0 0.2rem rgba(137, 185, 110, 0.25);
+  }
+  
+  .products-container .btn-primary {
+    background-color: #f97316;
+    border-color: #f97316;
+  }
+  
+  .products-container .btn-primary:hover {
+    background-color: #ea580c;
+    border-color: #ea580c;
+  }
+
+  .products-container .btn-primary:focus,
+  .products-container .btn-primary:active {
+    background-color: #f97316 !important; /* Giữ nguyên màu khi click */
+    border-color: #f97316 !important; /* Giữ nguyên màu viền khi click */
+    box-shadow: none !important; /* Loại bỏ hiệu ứng shadow */
+  }
+  
+  .products-container .btn-outline-primary {
+    border-color: #f97316;
+    color: #f97316;
+  }
+  
+  .products-container .btn-outline-primary:hover {
+    background-color: rgba(137, 185, 110, 0.1);
+    border-color: #ea580c;
+    color: #ea580c;
+  }
+  
+  .products-count {
+    color: #8c6d5b;
+  }
+  
+  .products-container .filter-badge {
+    background-color: #d9c2b2 !important;
+    color: #5c4033;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .products-container .badge-close {
+    color: #5c4033;
+    text-decoration: none;
+    padding: 0;
+    font-size: 0.75rem;
+  }
+  
+  .no-products-card {
+    border-radius: 0.5rem;
+    border: 1px solid #d9c2b2;
+  }
+  
+  .product-card-wrapper {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .product-card-wrapper:hover {
+    transform: scale(1.02);
+  }

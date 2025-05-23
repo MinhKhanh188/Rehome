@@ -1,0 +1,45 @@
+/* Banner.css */
+.banner-container {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .banner-content {
+    padding: 60px 40px;
+    position: relative;
+  }
+  
+  .banner-text {
+    max-width: 500px;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .banner-text h1 {
+    font-size: 40px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 20px;
+  }
+  
+  .banner-text p {
+    font-size: 18px;
+    color: #4b5563;
+    margin-bottom: 30px;
+  }
+  
+  .banner-btn {
+    background-color: #f97316 !important;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .banner-btn:hover {
+    background-color: #ea580c;
+  }

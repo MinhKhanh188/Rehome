@@ -1,0 +1,255 @@
+.payment-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.loading-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.not-found-container {
+  flex-grow: 1;
+  padding: 3rem 1rem;
+}
+
+.not-found-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 1rem;
+}
+
+.not-found-text {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem 0;
+}
+
+.back-button {
+  display: flex !important;
+  align-items: center !important;
+  color: #6c757d !important;
+  font-size: 0.875rem !important;
+  text-decoration: none !important;
+  margin-bottom: 1.5rem !important;
+  padding: 0 0.5rem !important;
+}
+
+.back-button:hover {
+  color: #ea580c !important;
+}
+
+.page-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 1.5rem;
+}
+
+.checkout-section {
+  margin-bottom: 2rem;
+}
+
+.shipping-card,
+.payment-card,
+.order-summary-card {
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.25rem;
+}
+
+.payment-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #6c757d;
+}
+
+.credit-card-details {
+  padding-left: 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.paypal-info {
+  padding-left: 1.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.payment-error {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc2626;
+}
+
+.pay-button {
+  font-size: 1rem;
+  padding: 0.75rem;
+  background-color: #f97316;
+  border-color: #f97316;
+}
+
+.pay-button:hover {
+  background-color: #ea580c;
+  border-color: #ea580c;
+}
+
+.pay-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.product-preview {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.product-image-container {
+  width: 4rem;
+  height: 4rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  flex-shrink: 0;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-details {
+  /* margin-left: 1rem;
+  flex-grow: 1; */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-start;
+}
+
+.product-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #343a40;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-condition {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.product-price {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #343a40;
+}
+
+.price-breakdown {
+  margin-bottom: 1rem;
+}
+
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.price-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #343a40;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.delivery-info {
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.truck-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #f97316;
+  margin-right: 0.5rem;
+  margin-top: 0.125rem;
+}
+
+.delivery-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #343a40;
+}
+
+.delivery-text {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+.trust-badges {
+  margin-bottom: 1.5rem;
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #343a40;
+  margin-bottom: 0.75rem;
+}
+
+.badge-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #22c55e;
+  margin-right: 0.5rem;
+}
+
+.sticky-top {
+  top: 5rem;
+}
