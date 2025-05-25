@@ -16,7 +16,7 @@
   object-fit: contain;
 }
 
-.nav-button {
+.main-image-container .nav-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -28,7 +28,7 @@
   transition: background-color 0.2s;
 }
 
-.nav-button:hover {
+.main-image-container .nav-button:hover {
   background-color: #ffffff;
 }
 
@@ -167,25 +167,25 @@
   max-height: none;
 }
 
-.lightbox-nav-button {
+.lightbox-content .lightbox-nav-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  color: #ffffff !important;
   padding: 0.75rem;
   border-radius: 50%;
 }
 
-.lightbox-nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+.lightbox-content .lightbox-nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.lightbox-nav-button.prev {
+.lightbox-content .lightbox-nav-button.prev {
   left: 1rem;
 }
 
-.lightbox-nav-button.next {
+.lightbox-content .lightbox-nav-button.next {
   right: 1rem;
 }
 

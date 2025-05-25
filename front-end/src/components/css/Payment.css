@@ -153,6 +153,7 @@
 .product-details {
   /* margin-left: 1rem;
   flex-grow: 1; */
+  margin-left: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;

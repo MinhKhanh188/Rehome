@@ -121,6 +121,26 @@
     background-color: #f1f5f9 !important;
     color: #f97316 !important;
   }
+
+  .province-search-input {
+    border-radius: 18px !important;
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+    transition: border-color 0.2s;
+    font-size: 15px;
+    background: #fff;
+  }
+  
+  .province-search-input:focus {
+    border-color: #f97316;
+    box-shadow: 0 0 0 2px #f9731622;
+  }
+  
+  .province-search-wrapper .dropdown-menu {
+    border-radius: 14px !important;
+    margin-top: 4px !important;
+    padding: 4px 0 !important;
+  }
   
   @media (max-width: 767px) {
     .auth-section {

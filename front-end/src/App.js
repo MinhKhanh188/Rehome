@@ -4,6 +4,7 @@ import Home from './components/pages/general/Home';
 import Login from './components/pages/Auth/Login';
 import Register from './components/pages/Auth/Register';
 import ForgotPassword from './components/pages/Auth/ForgotPassword';
+import Products from './components/pages/Products';
 
 
 
@@ -16,6 +17,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/products" element={<Products />} />
+
       </Routes>
     </BrowserRouter>
   );

@@ -14,9 +14,14 @@ export default function Home() {
   const navigate = useNavigate();
 
   const categories = [
-    { id: 1, title: "Electronics", icon: "📱", path: "/category/electronics", description: "Phones, laptops & more" },
-    { id: 2, title: "Appliances", icon: "🧺", path: "/category/appliances", description: "Home essentials" },
-    { id: 3, title: "Furniture", icon: "🛋️", path: "/category/furniture", description: "Home decor" },
+    { id: 'electronics', title: "Electronics", icon: "📱", path: "/category/electronics", description: "Phones, laptops & more" },
+    { id: 'appliances', title: "Appliances", icon: "🧺", path: "/category/appliances", description: "Home essentials" },
+    { id: 'furniture', title: "Furniture", icon: "🛋️", path: "/category/furniture", description: "Home decor" },
+    { id: 'kitchen', title: "Kitchen", icon: "🍳", path: "/category/kitchen", description: "Cookware & appliances" },
+    { id: 'decor', title: "Home Decor", icon: "🏠", path: "/category/decor", description: "Decorative items" },
+    { id: 'garden', title: "Garden", icon: "🌻", path: "/category/garden", description: "Outdoor & gardening" },
+    { id: 'lighting', title: "Lighting", icon: "💡", path: "/category/lighting", description: "Lamps & lighting" },
+    { id: 'office', title: "Office", icon: "🖊️", path: "/category/office", description: "Office furniture & supplies" },
   ];
 
   const featuredProducts = [
