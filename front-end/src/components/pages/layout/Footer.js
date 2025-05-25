@@ -1,7 +1,7 @@
 // Footer.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/Footer.css';
+import '../../css/Footer.css';
 
 export const Footer = () => {
   const navigate = useNavigate();

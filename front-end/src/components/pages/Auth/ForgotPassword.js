@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
-import '../css/ForgotPassword.css';
-import { NavbarComponent } from './Navbar';
-import { Footer } from './Footer';
+import '../../css/ForgotPassword.css';
+import { NavbarComponent } from '../layout/Navbar';
+import { Footer } from '../layout/Footer';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');

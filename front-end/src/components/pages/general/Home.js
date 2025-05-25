@@ -3,12 +3,12 @@ import React from "react";
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { Leaf, Recycle, ShieldCheck, CheckCircle } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-import { NavbarComponent } from "./Navbar";
-import { Banner } from "./Banner";
-import { CategoryCard } from "./CategoryCard";
-import { ProductCard } from "./ProductCard";
-import { Footer } from "./Footer";
-import '../css/Home.css';
+import { NavbarComponent } from "../layout/Navbar";
+import { Banner } from "../layout/Banner";
+import { CategoryCard } from "../layout/CategoryCard";
+import { ProductCard } from "../layout/ProductCard";
+import { Footer } from "../layout/Footer";
+import '../../css/Home.css';
 
 export default function Home() {
   const navigate = useNavigate();

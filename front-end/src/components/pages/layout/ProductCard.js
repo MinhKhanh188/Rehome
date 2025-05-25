@@ -1,7 +1,7 @@
 // ProductCard.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/ProductCard.css';
+import '../../css/ProductCard.css';
 
 export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = false }) => {
   const navigate = useNavigate();

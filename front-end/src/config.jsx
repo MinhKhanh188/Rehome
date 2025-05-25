@@ -1,3 +1,4 @@
+// front-end/src/config.jsx
 // API Configuration
 const baseUrl = 'http://localhost:9999';
 
@@ -15,3 +16,10 @@ export const API_ENDPOINTS = {
   CREATE_POST: `${baseUrl}/api/posts/createPost`,
   GET_ALL_CATEGORY: `${baseUrl}/api/posts/getListCategories`
 };
+
+export const NAME_CONFIG = {
+    TOKEN: 'Rehometoken',
+    USER: 'Rehomeusers',
+    IS_ADMIN: 'IsAdmin',
+    IS_VERIFIED: 'IsVerified'
+}

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import { Eye, EyeOff, Check, X, Facebook } from 'lucide-react';
-import '../css/Register.css';
-import { NavbarComponent } from './Navbar';
-import { Footer } from './Footer';
+import '../../css/Register.css';
+import { NavbarComponent } from '../layout/Navbar';
+import { Footer } from '../layout/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons'; // Import the Facebook icon
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
+import axios from 'axios';
 
 export default function Register() {
   const [fullName, setFullName] = useState('');
@@ -29,28 +31,47 @@ export default function Register() {
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   const passwordsMatch = password === confirmPassword && password !== '';
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLocalError(null);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLocalError(null);
 
-    // Validate form
-    if (!hasMinLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-      setLocalError('Please ensure your password meets all requirements.');
-      return;
-    }
+  if (!hasMinLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+    setLocalError('Please ensure your password meets all requirements.');
+    return;
+  }
 
-    if (!passwordsMatch) {
-      setLocalError('Passwords do not match.');
-      return;
-    }
+  if (!passwordsMatch) {
+    setLocalError('Passwords do not match.');
+    return;
+  }
 
+  try {
     setLoading(true);
-    // Add your registration logic here
-    setTimeout(() => {
-      setLoading(false);
+    const payload = {
+      name: fullName,
+      email,
+      password,
+    };
+
+    const response = await axios.post(API_ENDPOINTS.REGISTER, payload);
+
+    const { user, token } = response.data;
+
+    localStorage.setItem(NAME_CONFIG.USER, JSON.stringify(user)); 
+    localStorage.setItem(NAME_CONFIG.TOKEN, token);
+
+    if (user && token) {
       navigate('/');
-    }, 1000);
-  };
+    } else {
+      setLocalError('Registration failed. Please try again.');
+    }
+  } catch (err) {
+    const msg = err.response?.data?.message || 'Registration error. Please check your input.';
+    setLocalError(msg);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleGoogleSignIn = () => {
     setLocalError(null);
@@ -83,8 +104,8 @@ export default function Register() {
             <Card className="register-card shadow">
               <Card.Body className="p-5">
                 <div className="text-center mb-4">
-                  <h2 className="register-title">Join Re-Home</h2>
-                  <p className="register-subtitle">Create your account and start your sustainable fashion journey</p>
+                  <h2 className="register-title">Tham Gia Re-Home</h2>
+                  <p className="register-subtitle">Tạo Tài Khoản Của Bạn Để Tham Gia Re-Home</p>
                 </div>
 
                 {localError && (
@@ -95,7 +116,7 @@ export default function Register() {
 
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-4" controlId="fullName">
-                    <Form.Label>Full Name</Form.Label>
+                    <Form.Label>Nhập Tên Của Bạn</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="John Doe"
@@ -106,10 +127,10 @@ export default function Register() {
                   </Form.Group>
 
                   <Form.Group className="mb-4" controlId="email">
-                    <Form.Label>Email address</Form.Label>
+                    <Form.Label>Địa chỉ gmail của bạn</Form.Label>
                     <Form.Control
                       type="email"
-                      placeholder="you@example.com"
+                      placeholder="Ví dụ như: khanhdz123@gmail.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -117,7 +138,7 @@ export default function Register() {
                   </Form.Group>
 
                   <Form.Group className="mb-4" controlId="password">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Mật Khẩu Của Bạn</Form.Label>
                     <div className="password-wrapper">
                       <Form.Control
                         type={showPassword ? 'text' : 'password'}
@@ -166,7 +187,7 @@ export default function Register() {
                   </Form.Group>
 
                   <Form.Group className="mb-4" controlId="confirmPassword">
-                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Label>Nhập Lại Mật Khẩu Của Bạn</Form.Label>
                     <div className="password-wrapper">
                       <Form.Control
                         type={showConfirmPassword ? 'text' : 'password'}
@@ -204,9 +225,9 @@ export default function Register() {
                       required
                       label={
                         <>
-                          I agree to the{' '}
+                          Tôi đồng ý với{' '}
                           <a href="#" className="terms-link">Terms of Service</a>
-                          {' '}and{' '}
+                          {' '}và{' '}
                           <a href="#" className="terms-link">Privacy Policy</a>
                         </>
                       }
@@ -219,12 +240,12 @@ export default function Register() {
                     className="w-100 mb-4 signup-btt"
                     disabled={loading}
                   >
-                    {loading ? 'Creating Account...' : 'Create Account'}
+                    {loading ? 'Tạo Tài Khoản...' : 'Tạo Tài Khoản'}
                   </Button>
                 </Form>
 
                 <div className="divider">
-                  <span>Or register with</span>
+                  <span>Hoặc đăng nhập với</span>
                 </div>
 
                 <div className="social-buttons mt-4">
@@ -258,12 +279,12 @@ export default function Register() {
 
                 <div className="text-center mt-4">
                   <p>
-                    Already have an account?{' '}
+                    Đã có tài khoản?{' '}
                     <span
                       className="signin-link"
                       onClick={() => navigate('/Login')}
                     >
-                      Sign in
+                      Đăng Nhập
                     </span>
                   </p>
                 </div>

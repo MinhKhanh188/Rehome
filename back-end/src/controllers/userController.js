@@ -13,10 +13,6 @@ class userController {
                 name,
                 email,
                 password,
-                phoneNumber,
-                profilePic,
-                facebookUrl,
-                location
             } = req.body;
 
             const existingUser = await UserModel.findOne({ email });
@@ -30,10 +26,6 @@ class userController {
                 name,
                 email,
                 passwordHash,
-                phoneNumber,
-                profilePic,
-                facebookUrl,
-                location
             });
 
             const token = jwt.sign(
@@ -44,6 +36,11 @@ class userController {
 
             res.status(201).json({
                 status: 201,
+                user: {
+                    name: user.name,
+                    isVerified: user.isVerified,
+                    isAdmin: user.isAdmin,
+                },
                 token
             });
 
@@ -75,9 +72,14 @@ class userController {
             );
 
             res.status(200).json({
-                status: 200,
-                token
+                user: {
+                    name: user.name,
+                    isVerified: user.isVerified,
+                    isAdmin: user.isAdmin,
+                },
+                token,
             });
+
 
         } catch (err) {
             next(err);

@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Button, Dropdown, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
-import '../css/Navbar.css';
+import '../../css/Navbar.css';
+import {NAME, NAME_CONFIG} from '../../../config';
 
 export const NavbarComponent = () => {
   const navigate = useNavigate();
@@ -12,17 +13,26 @@ export const NavbarComponent = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    // Check if user is logged in
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    if (storedUser) {
+useEffect(() => {
+  const userData = localStorage.getItem(NAME_CONFIG.USER);
+
+  if (userData) {
+    try {
+      const parsedUser = JSON.parse(userData);
       setIsLoggedIn(true);
-      setUser(storedUser);
+      setUser(parsedUser);
+    } catch (error) {
+      console.error('Error parsing user from localStorage:', error);
+      localStorage.removeItem(NAME_CONFIG.USER); 
+      setIsLoggedIn(false);
+      setUser(null);
     }
-  }, []);
+  }
+}, []);
+
 
   const handleSignOut = () => {
-    localStorage.removeItem('user'); // Clear user data
+    localStorage.removeItem(NAME_CONFIG.USER); 
     setIsLoggedIn(false);
     setUser(null);
     navigate('/');

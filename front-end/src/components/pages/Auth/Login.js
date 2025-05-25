@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
-import '../css/Login.css'; // We'll create this CSS file
-import { NavbarComponent } from './Navbar';
-import { Footer } from './Footer';
-import {Eye, EyeOff} from 'lucide-react';
+import '../../css/Login.css'; // We'll create this CSS file
+import { NavbarComponent } from '../layout/Navbar';
+import { Footer } from '../layout/Footer';
+import { Eye, EyeOff } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons'; // Import the Facebook icon
 import axios from 'axios';
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 
 export default function Login() {
-  const [users, setUsers] = useState([]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -18,48 +18,42 @@ export default function Login() {
   const [localError, setLocalError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const resUser = await axios.get('http://localhost:9999/users');
-      setUsers(resUser.data);
-    }
-    fetchData();
-  }, []);
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate input
     if (password.includes(" ")) {
       setLocalError("Password must not include space");
       return;
     }
 
-    if (!Array.isArray(users)) {
-      setLocalError("Error fetching user data");
-      return;
-    }
-
-    // Find the user
-    let user = users.find(user => user.email === email && user.password === password);
-    if (!user) {
-      setLocalError("Invalid email or password");
-    } else {
-      // Save user info to localStorage
-      localStorage.setItem('user', JSON.stringify(user));
-      setLocalError(null);
+    try {
       setLoading(true);
+      const response = await axios.post(API_ENDPOINTS.LOGIN, {
+        email,
+        password,
+      });
 
-      // Simulate login process
-      setTimeout(() => {
-        setLoading(false);
+      const { user, token } = response.data;
+
+      localStorage.setItem(NAME_CONFIG.USER, JSON.stringify(user)); 
+      localStorage.setItem(NAME_CONFIG.TOKEN, token);
+      setLocalError(null);
+      if (user && token) {
         navigate('/');
-      }, 1000);
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || "Login failed";
+      setLocalError(message);
+    } finally {
+      setLoading(false);
     }
   };
+
 
   const handleGoogleSignIn = () => {
     setLoading(true);
@@ -82,8 +76,8 @@ export default function Login() {
   return (
     <div className="login-page">
       {/* You can add your Navbar component here */}
-      <NavbarComponent/>
-      
+      <NavbarComponent />
+
       <Container className="py-5">
         <Row className="justify-content-center">
           <Col md={6} lg={5}>
@@ -127,7 +121,7 @@ export default function Login() {
                         className="password-toggle"
                         onClick={toggleShowPassword}
                       >
-                        {showPassword ?  <EyeOff size={18} /> : <Eye size={18} />}
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                       </Button>
                     </div>
                   </Form.Group>
@@ -203,7 +197,7 @@ export default function Login() {
       </Container>
 
       {/* You can add your Footer component here */}
-      <Footer/>
+      <Footer />
     </div>
   );
 }

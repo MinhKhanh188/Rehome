@@ -1,7 +1,7 @@
 // Banner.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/Banner.css';
+import '../../css/Banner.css';
 
 export const Banner = ({
   title = 'Give Your Items a Second Life',
