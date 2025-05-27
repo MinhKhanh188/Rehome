@@ -5,7 +5,7 @@ import { Navbar, Nav, Button, Dropdown, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import '../../css/Navbar.css';
-import {NAME, NAME_CONFIG} from '../../../config';
+import { NAME, NAME_CONFIG } from '../../../config';
 
 // Thêm danh sách tỉnh thành Việt Nam
 const VIETNAM_PROVINCES = [
@@ -27,8 +27,9 @@ export const NavbarComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // State cho search tỉnh thành
-  const [province, setProvince] = useState('');
-  const [provinceInput, setProvinceInput] = useState('');
+  const [province, setProvince] = useState('Hà Nội');
+  const [provinceInput, setProvinceInput] = useState('Hà Nội');
+  const [searchedProvince, setSearchedProvince] = useState('Hà Nội');
   const [showDropdown, setShowDropdown] = useState(false);
 
 useEffect(() => {
@@ -46,11 +47,15 @@ useEffect(() => {
       setUser(null);
     }
   }
+
+  // Auto-navigate to Hà Nội's products
+  navigate(`/products?province=${encodeURIComponent('Hà Nội')}`);
 }, []);
 
 
+
   const handleSignOut = () => {
-    localStorage.removeItem(NAME_CONFIG.USER); 
+    localStorage.removeItem(NAME_CONFIG.USER);
     setIsLoggedIn(false);
     setUser(null);
     navigate('/');
@@ -67,6 +72,7 @@ useEffect(() => {
   const handleProvinceSelect = (prov) => {
     setProvince(prov);
     setProvinceInput(prov);
+    setSearchedProvince(prov);
     setShowDropdown(false);
     // Có thể điều hướng hoặc filter sản phẩm theo tỉnh thành ở đây nếu muốn
     navigate(`/products?province=${encodeURIComponent(prov)}`);

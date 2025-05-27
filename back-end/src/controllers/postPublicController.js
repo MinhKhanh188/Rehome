@@ -7,32 +7,43 @@ const ProvinceModel = require('../models/Province');
 class postPublicController {
     // GET posts with optional province filter
     async getPostsByProvince(req, res) {
-        try {
-            const { province } = req.query;
+    try {
+        let { province } = req.query;
 
-            let filter = {};
+        if (province) {
+            // Normalize to NFC (composed) form to handle accents properly
+            province = province.normalize('NFC');
 
-            if (province) {
-                // Find province document by name
-                const provinceDoc = await ProvinceModel.findOne({ name: province });
-                if (!provinceDoc) {
-                    return res.status(404).json({ error: 'Province not found 💔' });
-                }
-                // Use province's ObjectId in filter
-                filter.province = provinceDoc._id;
+            // Find province document by normalized name (case-insensitive)
+            const provinceDoc = await ProvinceModel.findOne({
+                name: { $regex: new RegExp(`^${province}$`, 'i') }
+            });
+
+            if (!provinceDoc) {
+                return res.status(404).json({ error: 'Province not found 💔' });
             }
 
-            const posts = await PostModel.find(filter)
+            const posts = await PostModel.find({ province: provinceDoc._id })
                 .populate('categoryId', 'name')
                 .populate('sellerId', 'name profilePic')
                 .sort({ createdAt: -1 });
 
-            res.status(200).json(posts);
-        } catch (error) {
-            console.error('Fetch posts error:', error);
-            res.status(500).json({ error: 'Failed to fetch posts 💔' });
+            return res.status(200).json(posts);
+        } else {
+            // If no province query, return all posts
+            const posts = await PostModel.find()
+                .populate('categoryId', 'name')
+                .populate('sellerId', 'name profilePic')
+                .sort({ createdAt: -1 });
+
+            return res.status(200).json(posts);
         }
+    } catch (error) {
+        console.error('Fetch posts error:', error);
+        res.status(500).json({ error: 'Failed to fetch posts 💔' });
     }
+}
+
 
 
     // GET list categories

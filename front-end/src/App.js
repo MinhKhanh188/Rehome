@@ -4,7 +4,7 @@ import Home from './components/pages/general/Home';
 import Login from './components/pages/Auth/Login';
 import Register from './components/pages/Auth/Register';
 import ForgotPassword from './components/pages/Auth/ForgotPassword';
-import Products from './components/pages/Products';
+import Products from './components/pages/market/Products';
 
 
 

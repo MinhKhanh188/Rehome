@@ -1,4 +1,4 @@
-// front-end/src/config.jsx
+// front-end/src/config.js
 // API Configuration
 const baseUrl = 'http://localhost:9999';
 
@@ -6,20 +6,26 @@ export const API_ENDPOINTS = {
   // Auth endpoints
   LOGIN: `${baseUrl}/api/users/login`,
   REGISTER: `${baseUrl}/api/users/register`,
- // FORGOT_PASSWORD: `${baseUrl}/api/users/forgot-password`,
- // RESET_PASSWORD: `${baseUrl}/api/users/reset-password`,
+  // FORGOT_PASSWORD: `${baseUrl}/api/users/forgot-password`,
+  // RESET_PASSWORD: `${baseUrl}/api/users/reset-password`,
 
-// User endpoints
+
+  // User endpoints
   GET_USER_PROFILE: `${baseUrl}/api/users/profile`,
 
- // Post endpoints
+  // Post endpoints
   CREATE_POST: `${baseUrl}/api/posts/createPost`,
+  GET_POST_BY_PROVINCE: `${baseUrl}/api/posts/province`,
+
+
+
   GET_ALL_CATEGORY: `${baseUrl}/api/posts/getListCategories`
+
 };
 
 export const NAME_CONFIG = {
-    TOKEN: 'Rehometoken',
-    USER: 'Rehomeusers',
-    IS_ADMIN: 'IsAdmin',
-    IS_VERIFIED: 'IsVerified'
+  TOKEN: 'Rehometoken',
+  USER: 'Rehomeusers',
+  IS_ADMIN: 'IsAdmin',
+  IS_VERIFIED: 'IsVerified'
 }

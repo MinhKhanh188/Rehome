@@ -1,80 +1,12 @@
+// front-end/src/components/pages/market/Products.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, InputGroup, Pagination, Badge } from 'react-bootstrap';
-import '../css/Products.css';
-import { ProductCard } from './layout/ProductCard';
-import { NavbarComponent } from './layout/Navbar';
+import '../../css/Products.css';
+import { ProductCard } from '../layout/ProductCard';
+import { NavbarComponent } from '../layout/Navbar';
+import { API_ENDPOINTS } from '../../../config';
 
-// Thêm mock data ở đầu file (trước hoặc sau import)
-const mockProducts = [
-  {
-    id: 1,
-    name: 'iPhone 13 Pro 256GB - Graphite',
-    price: 799.99,
-    condition: 'Like New',
-    category: 'electronics',
-    images: [
-      'https://images.unsplash.com/photo-1630691711598-5c9f4f37f4e6',
-      'https://images.unsplash.com/photo-1642053551054-8d60215e1518'
-    ],
-    isVip: true,
-    createdAt: '2024-05-01T10:00:00Z',
-    province: 'Hà Nội'
-  },
-  {
-    id: 2,
-    name: 'Samsung Galaxy S22 Ultra',
-    price: 699.99,
-    condition: 'Excellent',
-    category: 'electronics',
-    images: [
-      'https://images.unsplash.com/photo-1642053551054-8d60215e1518'
-    ],
-    isVip: false,
-    createdAt: '2024-05-10T12:00:00Z',
-    province: 'Hồ Chí Minh'
-  },
-  {
-    id: 3,
-    name: 'Modern Sofa',
-    price: 350,
-    condition: 'Good',
-    category: 'furniture',
-    images: [
-      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4'
-    ],
-    isVip: false,
-    createdAt: '2024-05-15T09:00:00Z',
-    province: 'Đà Nẵng'
-  },
-  {
-    id: 4,
-    name: 'Office Desk',
-    price: 120,
-    condition: 'Fair',
-    category: 'office',
-    images: [
-      'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2'
-    ],
-    isVip: false,
-    createdAt: '2024-05-12T14:00:00Z',
-    province: 'Hà Nội'
-  },
-  {
-    id: 5,
-    name: 'Kitchen Blender',
-    price: 45,
-    condition: 'Like New',
-    category: 'kitchen',
-    images: [
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836'
-    ],
-    isVip: false,
-    createdAt: '2024-05-18T11:00:00Z',
-    province: 'Cần Thơ'
-  }
-  // Thêm sản phẩm nếu muốn
-];
 
 // Thêm danh sách tỉnh thành Việt Nam
 const VIETNAM_PROVINCES = [
@@ -94,7 +26,7 @@ const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Thay đổi khởi tạo state products:
-  const [products, setProducts] = useState(mockProducts);
+  const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   // Filter states
@@ -103,6 +35,12 @@ const Products = () => {
   const [selectedConditions, setSelectedConditions] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [sortBy, setSortBy] = useState('newest');
+  // Thêm state cho search tỉnh thành
+  const [province, setProvince] = useState('');
+  const [provinceInput, setProvinceInput] = useState('');
+  const [showProvinceDropdown, setShowProvinceDropdown] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [searchedProvince, setSearchedProvince] = useState('');
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -122,29 +60,64 @@ const Products = () => {
   ];
   const conditions = ['New', 'Like New', 'Good', 'Fair', 'Poor'];
 
-  // Initialize filters from URL params
   useEffect(() => {
-    const query = searchParams.get('q');
-    const categoryParam = searchParams.get('category');
-    const conditionParam = searchParams.get('condition');
-    const sort = searchParams.get('sort');
-    const minPrice = searchParams.get('minPrice');
-    const maxPrice = searchParams.get('maxPrice');
+    const fetchProductsByProvince = async () => {
+      const provinceParam = searchParams.get('province');
+      if (!provinceParam) return; // avoid calling API with empty province
 
-    if (query) setSearchValue(query);
-    if (categoryParam) setSelectedCategories(categoryParam.split(','));
-    if (conditionParam) setSelectedConditions(conditionParam.split(','));
-    if (sort) setSortBy(sort);
-    if (minPrice && maxPrice) setPriceRange([Number(minPrice), Number(maxPrice)]);
+      try {
+        const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
+        const data = await response.json();
+        setProducts(data);
+        applyFilters(
+          selectedCategories,
+          selectedConditions,
+          priceRange,
+          searchValue,
+          sortBy,
+          provinceParam,
+          data
+        );
+        setLoading(false);
+        console.log('Fetched products:', data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
 
-    // Apply filters (replace with actual filtering logic)
-    applyFilters();
-  }, [searchParams]);
+    fetchProductsByProvince();
+  }, [searchParams]); // 💡 depend on searchParams
 
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [filteredProducts]);
+
+
+useEffect(() => {
+  const query = searchParams.get('q');
+  const categoryParam = searchParams.get('category');
+  const conditionParam = searchParams.get('condition');
+  const sort = searchParams.get('sort');
+  const minPrice = searchParams.get('minPrice');
+  const maxPrice = searchParams.get('maxPrice');
+  const provinceParam = searchParams.get('province');
+
+  if (query) setSearchValue(query);
+  if (categoryParam) setSelectedCategories(categoryParam.split(','));
+  if (conditionParam) setSelectedConditions(conditionParam.split(','));
+  if (sort) setSortBy(sort);
+  if (minPrice && maxPrice) setPriceRange([Number(minPrice), Number(maxPrice)]);
+  if (provinceParam) setProvince(provinceParam);
+
+  // ✅ Always use the most recent `products` data
+  applyFilters(
+    categoryParam ? categoryParam.split(',') : [],
+    conditionParam ? conditionParam.split(',') : [],
+    [Number(minPrice || 0), Number(maxPrice || 5000)],
+    query || '',
+    sort || 'newest',
+    provinceParam || '',
+    products // ✅ ensure correct data is used
+  );
+}, [searchParams, products]); // 🔁 add products as a dependency
+
 
   // Update URL when filters change
   const updateURL = () => {
@@ -167,7 +140,7 @@ const Products = () => {
     price = priceRange,
     search = searchValue,
     sort = sortBy,
-    provinceFilter = province
+    productList = products
   ) => {
     let filtered = [...products];
 
@@ -181,11 +154,6 @@ const Products = () => {
       filtered = filtered.filter(p => conditions.includes(p.condition));
     }
     filtered = filtered.filter(p => p.price >= price[0] && p.price <= price[1]);
-    // Lọc theo tỉnh thành nếu có (giả sử sản phẩm có trường province)
-    if (provinceFilter) {
-      filtered = filtered.filter(p => (p.province || '').toLowerCase() === provinceFilter.toLowerCase());
-    }
-
     if (sort === 'priceAsc') {
       filtered.sort((a, b) => a.price - b.price);
     } else if (sort === 'priceDesc') {
@@ -305,19 +273,9 @@ const Products = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
-  // Thêm state cho search tỉnh thành
-  const [province, setProvince] = useState('');
-  const [provinceInput, setProvinceInput] = useState('');
-  const [showProvinceDropdown, setShowProvinceDropdown] = useState(false);
-
-  // Lọc danh sách tỉnh thành theo input
-  const filteredProvinces = VIETNAM_PROVINCES.filter(p =>
-    p.toLowerCase().includes(provinceInput.toLowerCase())
-  );
-
   return (
     <div>
-      <NavbarComponent/>
+      <NavbarComponent />
       <Container className="products-container py-5 px-4">
         <h1 className="products-title mb-4">Find Quality Secondhand Products</h1>
         <Row className="g-4">
@@ -395,70 +353,6 @@ const Products = () => {
                 </div>
               </div>
 
-              <hr className="my-4" />
-
-              {/* Thanh search tỉnh thành */}
-              <div className="mb-4">
-                <h2 className="filter-heading mb-3">Province</h2>
-                <div style={{ position: "relative" }}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Tìm kiếm tỉnh/thành..."
-                    value={provinceInput}
-                    onChange={e => {
-                      setProvinceInput(e.target.value);
-                      setShowProvinceDropdown(true);
-                    }}
-                    onFocus={() => setShowProvinceDropdown(true)}
-                    onBlur={() => setTimeout(() => setShowProvinceDropdown(false), 150)}
-                    style={{ width: "100%" }}
-                  />
-                  {showProvinceDropdown && filteredProvinces.length > 0 && (
-                    <ul
-                      className="dropdown-menu show w-100"
-                      style={{
-                        maxHeight: 250,
-                        overflowY: 'auto',
-                        position: 'absolute',
-                        zIndex: 1000,
-                        marginTop: 2
-                      }}
-                    >
-                      {filteredProvinces.map((prov) => (
-                        <li key={prov}>
-                          <button
-                            className="dropdown-item"
-                            type="button"
-                            onClick={() => {
-                              setProvince(prov);
-                              setProvinceInput(prov);
-                              setShowProvinceDropdown(false);
-                              // Cập nhật URL và filter theo tỉnh thành
-                              const params = {
-                                ...Object.fromEntries(searchParams.entries()),
-                                province: prov
-                              };
-                              setSearchParams(params);
-                              applyFilters(
-                                selectedCategories,
-                                selectedConditions,
-                                priceRange,
-                                searchValue,
-                                sortBy,
-                                prov
-                              );
-                            }}
-                          >
-                            {prov}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-
-              <hr className="my-4" />
 
               <Button className="btn-primary w-100" onClick={handleClearFilters}>
                 Clear All Filters
@@ -529,37 +423,11 @@ const Products = () => {
                     ${priceRange[0]} - ${priceRange[1]}
                   </Badge>
                 )}
-                {province && (
-                  <Badge bg="secondary" className="filter-badge">
-                    {province}
-                    <Button
-                      variant="link"
-                      className="badge-close"
-                      onClick={() => {
-                        setProvince('');
-                        setProvinceInput('');
-                        updateURL();
-                        applyFilters();
-                      }}
-                    >
-                      ✕
-                    </Button>
-                  </Badge>
-                )}
               </div>
             )}
 
             {/* Products Grid */}
-            {filteredProducts.length === 0 ? (
-              <Card className="no-products-card p-5 text-center">
-                <Card.Title>No products found</Card.Title>
-                <Card.Text>Try adjusting your search or filter criteria</Card.Text>
-                <Button onClick={handleClearFilters} >
-                  Clear all filters
-                </Button>
-              </Card>
-              
-            ) : (
+            {paginatedProducts.length === 0 ? null : (
               <Row className="g-4">
                 {paginatedProducts.map((product) => (
                   <Col md={6} lg={4} key={product.id}>
@@ -580,6 +448,7 @@ const Products = () => {
                 ))}
               </Row>
             )}
+
 
             {/* Pagination */}
             {pageCount > 1 && (
