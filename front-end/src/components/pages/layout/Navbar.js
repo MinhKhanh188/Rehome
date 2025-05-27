@@ -1,15 +1,16 @@
-// Navbar.jsx
-import React, { useState, useEffect } from 'react';
+// front-end/src/components/pages/layout/Navbar.js
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Navbar, Nav, Button, Dropdown, Container } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import '../../css/Navbar.css';
-import { NAME, NAME_CONFIG } from '../../../config';
+import { NAME_CONFIG } from '../../../config';
+import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { AppContext } from '../../context/AppContext';
 
 // Thêm danh sách tỉnh thành Việt Nam
 const VIETNAM_PROVINCES = [
-  "Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Hải Phòng", "Cần Thơ", "An Giang", "Bà Rịa - Vũng Tàu",
+  "Hà Nội", "TP.Hồ Chí Minh", "Đà Nẵng", "Hải Phòng", "Cần Thơ", "An Giang", "Bà Rịa - Vũng Tàu",
   "Bắc Giang", "Bắc Kạn", "Bạc Liêu", "Bắc Ninh", "Bến Tre", "Bình Định", "Bình Dương",
   "Bình Phước", "Bình Thuận", "Cà Mau", "Cao Bằng", "Đắk Lắk", "Đắk Nông", "Điện Biên",
   "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Giang", "Hà Nam", "Hà Tĩnh", "Hải Dương", "Hậu Giang",
@@ -21,6 +22,8 @@ const VIETNAM_PROVINCES = [
 ];
 
 export const NavbarComponent = () => {
+  const { clientProvince, updateProvince } = useContext(AppContext);
+  const location = useLocation();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -32,25 +35,40 @@ export const NavbarComponent = () => {
   const [searchedProvince, setSearchedProvince] = useState('Hà Nội');
   const [showDropdown, setShowDropdown] = useState(false);
 
-useEffect(() => {
-  const userData = localStorage.getItem(NAME_CONFIG.USER);
 
-  if (userData) {
-    try {
-      const parsedUser = JSON.parse(userData);
-      setIsLoggedIn(true);
-      setUser(parsedUser);
-    } catch (error) {
-      console.error('Error parsing user from localStorage:', error);
-      localStorage.removeItem(NAME_CONFIG.USER); 
-      setIsLoggedIn(false);
-      setUser(null);
+  useEffect(() => {
+    setProvince(clientProvince);
+    setProvinceInput(clientProvince);
+    setSearchedProvince(clientProvince);
+  }, [clientProvince]);
+
+
+  useEffect(() => {
+    const userData = localStorage.getItem(NAME_CONFIG.USER);
+
+    if (userData) {
+      try {
+        const parsedUser = JSON.parse(userData);
+        setIsLoggedIn(true);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error('Error parsing user from localStorage:', error);
+        localStorage.removeItem(NAME_CONFIG.USER);
+        setIsLoggedIn(false);
+        setUser(null);
+      }
     }
-  }
 
-  // Auto-navigate to Hà Nội's products
-  navigate(`/products?province=${encodeURIComponent('Hà Nội')}`);
-}, []);
+
+    // Only auto-navigate if not already on a products page with province
+    const urlParams = new URLSearchParams(location.search);
+    const currentProvince = urlParams.get('province');
+    const isOnProductPage = location.pathname === '/products';
+
+    if (isOnProductPage && !currentProvince) {
+      navigate(`/products?province=${encodeURIComponent('Hà Nội')}`);
+    }
+  }, []);
 
 
 
@@ -68,16 +86,13 @@ useEffect(() => {
     { name: 'Contact', path: '/contact' }
   ];
 
-  // Xử lý chọn tỉnh thành
   const handleProvinceSelect = (prov) => {
-    setProvince(prov);
+    updateProvince(prov); // update global + local
     setProvinceInput(prov);
     setSearchedProvince(prov);
     setShowDropdown(false);
-    // Có thể điều hướng hoặc filter sản phẩm theo tỉnh thành ở đây nếu muốn
     navigate(`/products?province=${encodeURIComponent(prov)}`);
   };
-
   // Lọc danh sách tỉnh thành theo input
   const filteredProvinces = VIETNAM_PROVINCES.filter(p =>
     p.toLowerCase().includes(provinceInput.toLowerCase())

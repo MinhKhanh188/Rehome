@@ -7,42 +7,55 @@ const ProvinceModel = require('../models/Province');
 class postPublicController {
     // GET posts with optional province filter
     async getPostsByProvince(req, res) {
-    try {
-        let { province } = req.query;
+        try {
+            let { province } = req.query;
 
-        if (province) {
-            // Normalize to NFC (composed) form to handle accents properly
-            province = province.normalize('NFC');
+            if (province) {
+                // Normalize to NFC (composed) form to handle accents properly
+                province = province.normalize('NFC');
 
-            // Find province document by normalized name (case-insensitive)
-            const provinceDoc = await ProvinceModel.findOne({
-                name: { $regex: new RegExp(`^${province}$`, 'i') }
-            });
+                // Find province document by normalized name (case-insensitive)
+                const provinceDoc = await ProvinceModel.findOne({
+                    name: { $regex: new RegExp(`^${province}$`, 'i') }
+                });
 
-            if (!provinceDoc) {
-                return res.status(404).json({ error: 'Province not found 💔' });
+                if (!provinceDoc) {
+                    return res.status(404).json({ error: 'Province not found 💔' });
+                }
+
+                const posts = await PostModel.find({ province: provinceDoc._id })
+                    .populate('categoryId', 'name')
+                    .populate('sellerId', 'name profilePic')
+                    .sort({ createdAt: -1 });// newest first
+
+                // Filter fields before sending response
+                const filteredPosts = posts.map(post => ({
+                    _id: post._id,
+                    name: post.name,
+                    category: post.categoryId?.name || null,
+                    productStatus: post.productStatus,
+                    price: post.price,
+                    images: post.images,
+                    sellerName: post.sellerId?.name || null, 
+                    address: post.address,
+                    status: post.status
+                }));
+
+                return res.status(200).json(filteredPosts);
+            } else {
+                // If no province query, return all posts
+                const posts = await PostModel.find()
+                    .populate('categoryId', 'name')
+                    .populate('sellerId', 'name profilePic')
+                    .sort({ createdAt: -1 });
+
+                return res.status(200).json(posts);
             }
-
-            const posts = await PostModel.find({ province: provinceDoc._id })
-                .populate('categoryId', 'name')
-                .populate('sellerId', 'name profilePic')
-                .sort({ createdAt: -1 });
-
-            return res.status(200).json(posts);
-        } else {
-            // If no province query, return all posts
-            const posts = await PostModel.find()
-                .populate('categoryId', 'name')
-                .populate('sellerId', 'name profilePic')
-                .sort({ createdAt: -1 });
-
-            return res.status(200).json(posts);
+        } catch (error) {
+            console.error('Fetch posts error:', error);
+            res.status(500).json({ error: 'Failed to fetch posts 💔' });
         }
-    } catch (error) {
-        console.error('Fetch posts error:', error);
-        res.status(500).json({ error: 'Failed to fetch posts 💔' });
     }
-}
 
 
 

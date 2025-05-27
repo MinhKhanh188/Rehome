@@ -1,4 +1,5 @@
 // front-end/src/config.js
+
 // API Configuration
 const baseUrl = 'http://localhost:9999';
 
@@ -17,15 +18,11 @@ export const API_ENDPOINTS = {
   CREATE_POST: `${baseUrl}/api/posts/createPost`,
   GET_POST_BY_PROVINCE: `${baseUrl}/api/posts/province`,
 
-
-
   GET_ALL_CATEGORY: `${baseUrl}/api/posts/getListCategories`
-
 };
 
 export const NAME_CONFIG = {
   TOKEN: 'Rehometoken',
   USER: 'Rehomeusers',
-  IS_ADMIN: 'IsAdmin',
-  IS_VERIFIED: 'IsVerified'
+  USER_PROVINCE: 'Rehome_clientprovince'
 }

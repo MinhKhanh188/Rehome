@@ -1,5 +1,5 @@
 // front-end/src/components/pages/market/Products.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, InputGroup, Pagination, Badge } from 'react-bootstrap';
 import '../../css/Products.css';
@@ -7,19 +7,6 @@ import { ProductCard } from '../layout/ProductCard';
 import { NavbarComponent } from '../layout/Navbar';
 import { API_ENDPOINTS } from '../../../config';
 
-
-// Thêm danh sách tỉnh thành Việt Nam
-const VIETNAM_PROVINCES = [
-  "Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Hải Phòng", "Cần Thơ", "An Giang", "Bà Rịa - Vũng Tàu",
-  "Bắc Giang", "Bắc Kạn", "Bạc Liêu", "Bắc Ninh", "Bến Tre", "Bình Định", "Bình Dương",
-  "Bình Phước", "Bình Thuận", "Cà Mau", "Cao Bằng", "Đắk Lắk", "Đắk Nông", "Điện Biên",
-  "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Giang", "Hà Nam", "Hà Tĩnh", "Hải Dương", "Hậu Giang",
-  "Hòa Bình", "Hưng Yên", "Khánh Hòa", "Kiên Giang", "Kon Tum", "Lai Châu", "Lâm Đồng", "Lạng Sơn",
-  "Lào Cai", "Long An", "Nam Định", "Nghệ An", "Ninh Bình", "Ninh Thuận", "Phú Thọ", "Phú Yên",
-  "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Ninh", "Quảng Trị", "Sóc Trăng", "Sơn La",
-  "Tây Ninh", "Thái Bình", "Thái Nguyên", "Thanh Hóa", "Thừa Thiên Huế", "Tiền Giang", "Trà Vinh",
-  "Tuyên Quang", "Vĩnh Long", "Vĩnh Phúc", "Yên Bái"
-];
 
 const Products = () => {
   const navigate = useNavigate();
@@ -38,9 +25,8 @@ const Products = () => {
   // Thêm state cho search tỉnh thành
   const [province, setProvince] = useState('');
   const [provinceInput, setProvinceInput] = useState('');
-  const [showProvinceDropdown, setShowProvinceDropdown] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [searchedProvince, setSearchedProvince] = useState('');
+
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,16 +34,21 @@ const Products = () => {
 
   // Placeholder for categories and conditions (replace with actual data)
   const categories = [
-    { id: 'electronics', name: 'Electronics', icon: '💻' },
-    { id: 'appliances', name: 'Appliances', icon: '🧺' },
-    { id: 'furniture', name: 'Furniture', icon: '🛋️' },
-    { id: 'kitchen', name: 'Kitchen', icon: '🍳' },
-    { id: 'decor', name: 'Home Decor', icon: '🏠' },
-    { id: 'garden', name: 'Garden', icon: '🌻' },
-    { id: 'lighting', name: 'Lighting', icon: '💡' },
-    { id: 'office', name: 'Office', icon: '🖊️' }
-    // Add more as needed
+    { id: 'electronics', name: 'Thiết Bị Điện Tử', icon: '💻' },
+    { id: 'men-fashion', name: 'Thời Trang Nam', icon: '👔' },
+    { id: 'women-fashion', name: 'Thời Trang Nữ', icon: '👗' },
+    { id: 'men-accessories', name: 'Phụ Kiện Nam', icon: '🕶️' },
+    { id: 'women-accessories', name: 'Phụ Kiện Nữ', icon: '👝' },
+    { id: 'phones', name: 'Điện Thoại & Phụ Kiện', icon: '📱' },
+    { id: 'home-appliances', name: 'Thiết Bị Điện Gia Dụng', icon: '🔌' },
+    { id: 'household', name: 'Đồ Gia Dụng', icon: '🧺' },
+    { id: 'personal-items', name: 'Đồ Dùng Cá Nhân', icon: '🧴' },
+    { id: 'cosmetics', name: 'Mỹ Phẩm', icon: '💄' },
+    { id: 'furniture', name: 'Nội Thất', icon: '🛋️' },
+    { id: 'sports', name: 'Dụng Cụ Thể Thao', icon: '🏀' },
+    { id: 'education', name: 'Giáo Dục', icon: '📚' }
   ];
+
   const conditions = ['New', 'Like New', 'Good', 'Fair', 'Poor'];
 
   useEffect(() => {
@@ -90,33 +81,33 @@ const Products = () => {
 
 
 
-useEffect(() => {
-  const query = searchParams.get('q');
-  const categoryParam = searchParams.get('category');
-  const conditionParam = searchParams.get('condition');
-  const sort = searchParams.get('sort');
-  const minPrice = searchParams.get('minPrice');
-  const maxPrice = searchParams.get('maxPrice');
-  const provinceParam = searchParams.get('province');
+  useEffect(() => {
+    const query = searchParams.get('q');
+    const categoryParam = searchParams.get('category');
+    const conditionParam = searchParams.get('condition');
+    const sort = searchParams.get('sort');
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
+    const provinceParam = searchParams.get('province');
 
-  if (query) setSearchValue(query);
-  if (categoryParam) setSelectedCategories(categoryParam.split(','));
-  if (conditionParam) setSelectedConditions(conditionParam.split(','));
-  if (sort) setSortBy(sort);
-  if (minPrice && maxPrice) setPriceRange([Number(minPrice), Number(maxPrice)]);
-  if (provinceParam) setProvince(provinceParam);
+    if (query) setSearchValue(query);
+    if (categoryParam) setSelectedCategories(categoryParam.split(','));
+    if (conditionParam) setSelectedConditions(conditionParam.split(','));
+    if (sort) setSortBy(sort);
+    if (minPrice && maxPrice) setPriceRange([Number(minPrice), Number(maxPrice)]);
+    if (provinceParam) setProvince(provinceParam);
 
-  // ✅ Always use the most recent `products` data
-  applyFilters(
-    categoryParam ? categoryParam.split(',') : [],
-    conditionParam ? conditionParam.split(',') : [],
-    [Number(minPrice || 0), Number(maxPrice || 5000)],
-    query || '',
-    sort || 'newest',
-    provinceParam || '',
-    products // ✅ ensure correct data is used
-  );
-}, [searchParams, products]); // 🔁 add products as a dependency
+    // ✅ Always use the most recent `products` data
+    applyFilters(
+      categoryParam ? categoryParam.split(',') : [],
+      conditionParam ? conditionParam.split(',') : [],
+      [Number(minPrice || 0), Number(maxPrice || 5000)],
+      query || '',
+      sort || 'newest',
+      provinceParam || '',
+      products // ✅ ensure correct data is used
+    );
+  }, [searchParams, products]); // 🔁 add products as a dependency
 
 
   // Update URL when filters change
@@ -277,7 +268,7 @@ useEffect(() => {
     <div>
       <NavbarComponent />
       <Container className="products-container py-5 px-4">
-        <h1 className="products-title mb-4">Find Quality Secondhand Products</h1>
+        <h1 className="products-title mb-4">Các Đồ Second Hand Trong Khu Vực {province}</h1>
         <Row className="g-4">
           {/* Filters Sidebar */}
           <Col lg={3}>
@@ -298,7 +289,7 @@ useEffect(() => {
               <hr className="my-4" />
 
               <div className="mb-4">
-                <h2 className="filter-heading mb-3">Categories</h2>
+                <h2 className="filter-heading mb-3">Danh Mục</h2>
                 {categories.map((category) => (
                   <Form.Check
                     key={category.id}
@@ -314,7 +305,7 @@ useEffect(() => {
               <hr className="my-4" />
 
               <div className="mb-4">
-                <h2 className="filter-heading mb-3">Condition</h2>
+                <h2 className="filter-heading mb-3">Hiện Trạng</h2>
                 {conditions.map((condition) => (
                   <Form.Check
                     key={condition}
@@ -330,7 +321,7 @@ useEffect(() => {
               <hr className="my-4" />
 
               <div className="mb-4">
-                <h2 className="filter-heading mb-3">Price Range</h2>
+                <h2 className="filter-heading mb-3">Tầm Giá</h2>
                 <div className="d-flex gap-3">
                   <Form.Control
                     type="number"
@@ -364,14 +355,14 @@ useEffect(() => {
           <Col lg={9}>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <span className="products-count">
-                {filteredProducts.length} products found
+                {filteredProducts.length} sản phẩn được tìm thấy
               </span>
               <Form.Group>
-                <Form.Label className="me-2">Sort by:</Form.Label>
+                <Form.Label className="me-2">Sắp xếp theo:</Form.Label>
                 <Form.Select value={sortBy} onChange={handleSortChange}>
-                  <option value="newest">Newest First</option>
-                  <option value="priceAsc">Price: Low to High</option>
-                  <option value="priceDesc">Price: High to Low</option>
+                  <option value="newest">Mới nhất</option>
+                  <option value="priceAsc">Giá: Thấp tới cao</option>
+                  <option value="priceDesc">Giá: Cao tới thấp</option>
                 </Form.Select>
               </Form.Group>
             </div>
