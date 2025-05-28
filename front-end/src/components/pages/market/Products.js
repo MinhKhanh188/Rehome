@@ -19,7 +19,7 @@ const Products = () => {
   // Filter states
   const [searchValue, setSearchValue] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedConditions, setSelectedConditions] = useState([]);
+  const [selectedStatuses, setselectedStatuses] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [sortBy, setSortBy] = useState('newest');
   // Thêm state cho search tỉnh thành
@@ -34,22 +34,23 @@ const Products = () => {
 
   // Placeholder for categories and conditions (replace with actual data)
   const categories = [
-    { id: 'electronics', name: 'Thiết Bị Điện Tử', icon: '💻' },
-    { id: 'men-fashion', name: 'Thời Trang Nam', icon: '👔' },
-    { id: 'women-fashion', name: 'Thời Trang Nữ', icon: '👗' },
-    { id: 'men-accessories', name: 'Phụ Kiện Nam', icon: '🕶️' },
-    { id: 'women-accessories', name: 'Phụ Kiện Nữ', icon: '👝' },
-    { id: 'phones', name: 'Điện Thoại & Phụ Kiện', icon: '📱' },
-    { id: 'home-appliances', name: 'Thiết Bị Điện Gia Dụng', icon: '🔌' },
-    { id: 'household', name: 'Đồ Gia Dụng', icon: '🧺' },
-    { id: 'personal-items', name: 'Đồ Dùng Cá Nhân', icon: '🧴' },
-    { id: 'cosmetics', name: 'Mỹ Phẩm', icon: '💄' },
-    { id: 'furniture', name: 'Nội Thất', icon: '🛋️' },
-    { id: 'sports', name: 'Dụng Cụ Thể Thao', icon: '🏀' },
-    { id: 'education', name: 'Giáo Dục', icon: '📚' }
+    { id: 'Thiết Bị Điện Tử', name: 'Thiết Bị Điện Tử', icon: '💻' },
+    { id: 'Thời Trang Nam', name: 'Thời Trang Nam', icon: '👔' },
+    { id: 'Thời Trang Nữ', name: 'Thời Trang Nữ', icon: '👗' },
+    { id: 'Phụ Kiện Nam', name: 'Phụ Kiện Nam', icon: '🕶️' },
+    { id: 'Phụ Kiện Nữ', name: 'Phụ Kiện Nữ', icon: '👝' },
+    { id: 'Điện Thoại & Phụ Kiện', name: 'Điện Thoại & Phụ Kiện', icon: '📱' },
+    { id: 'Thiết Bị Điện Gia Dụng', name: 'Thiết Bị Điện Gia Dụng', icon: '🔌' },
+    { id: 'Đồ Gia Dụng', name: 'Đồ Gia Dụng', icon: '🧺' },
+    { id: 'Đồ Dùng Cá Nhân', name: 'Đồ Dùng Cá Nhân', icon: '🧴' },
+    { id: 'Mỹ Phẩm', name: 'Mỹ Phẩm', icon: '💄' },
+    { id: 'Nội Thất', name: 'Nội Thất', icon: '🛋️' },
+    { id: 'Dụng Cụ Thể Thao', name: 'Dụng Cụ Thể Thao', icon: '🏀' },
+    { id: 'Giáo Dục', name: 'Giáo Dục', icon: '📚' }
   ];
 
-  const conditions = ['New', 'Like New', 'Good', 'Fair', 'Poor'];
+
+  const productStatuses = ['Mới', 'Like-new', 'Cũ'];
 
   useEffect(() => {
     const fetchProductsByProvince = async () => {
@@ -60,9 +61,10 @@ const Products = () => {
         const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
         const data = await response.json();
         setProducts(data);
+        setProvince(provinceParam);
         applyFilters(
           selectedCategories,
-          selectedConditions,
+          selectedStatuses,
           priceRange,
           searchValue,
           sortBy,
@@ -80,11 +82,10 @@ const Products = () => {
   }, [searchParams]); // 💡 depend on searchParams
 
 
-
   useEffect(() => {
     const query = searchParams.get('q');
     const categoryParam = searchParams.get('category');
-    const conditionParam = searchParams.get('condition');
+    const statusParam = searchParams.get('condition');
     const sort = searchParams.get('sort');
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
@@ -92,7 +93,7 @@ const Products = () => {
 
     if (query) setSearchValue(query);
     if (categoryParam) setSelectedCategories(categoryParam.split(','));
-    if (conditionParam) setSelectedConditions(conditionParam.split(','));
+    if (statusParam) setselectedStatuses(statusParam.split(','));
     if (sort) setSortBy(sort);
     if (minPrice && maxPrice) setPriceRange([Number(minPrice), Number(maxPrice)]);
     if (provinceParam) setProvince(provinceParam);
@@ -100,7 +101,7 @@ const Products = () => {
     // ✅ Always use the most recent `products` data
     applyFilters(
       categoryParam ? categoryParam.split(',') : [],
-      conditionParam ? conditionParam.split(',') : [],
+      statusParam ? statusParam.split(',') : [],
       [Number(minPrice || 0), Number(maxPrice || 5000)],
       query || '',
       sort || 'newest',
@@ -115,7 +116,7 @@ const Products = () => {
     const params = {};
     if (searchValue) params.q = searchValue;
     if (selectedCategories.length) params.category = selectedCategories.join(',');
-    if (selectedConditions.length) params.condition = selectedConditions.join(',');
+    if (selectedStatuses.length) params.condition = selectedStatuses.join(',');
     if (priceRange[0] > 0 || priceRange[1] < 5000) {
       params.minPrice = priceRange[0].toString();
       params.maxPrice = priceRange[1].toString();
@@ -127,7 +128,7 @@ const Products = () => {
   // Placeholder filter logic (replace with actual implementation)
   const applyFilters = (
     categories = selectedCategories,
-    conditions = selectedConditions,
+    conditions = selectedStatuses,
     price = priceRange,
     search = searchValue,
     sort = sortBy,
@@ -142,7 +143,9 @@ const Products = () => {
       filtered = filtered.filter(p => categories.includes(p.category));
     }
     if (conditions.length) {
-      filtered = filtered.filter(p => conditions.includes(p.condition));
+      filtered = filtered.filter(p =>
+        conditions.map(c => c.toLowerCase().trim()).includes(p.productStatus?.toLowerCase().trim())
+      );
     }
     filtered = filtered.filter(p => p.price >= price[0] && p.price <= price[1]);
     if (sort === 'priceAsc') {
@@ -177,15 +180,15 @@ const Products = () => {
     setSearchParams(params);
 
     // Áp dụng filter
-    applyFilters(updatedCategories, selectedConditions, priceRange, searchValue, sortBy, province);
+    applyFilters(updatedCategories, selectedStatuses, priceRange, searchValue, sortBy, province);
   };
 
-  const handleConditionChange = (condition, checked) => {
+  const handleStatusChange = (condition, checked) => {
     const updatedConditions = checked
-      ? [...selectedConditions, condition]
-      : selectedConditions.filter(c => c !== condition);
+      ? [...selectedStatuses, condition]
+      : selectedStatuses.filter(c => c !== condition);
 
-    setSelectedConditions(updatedConditions);
+    setselectedStatuses(updatedConditions);
 
     // Cập nhật URL và áp dụng filter ngay lập tức
     const params = {
@@ -220,7 +223,7 @@ const Products = () => {
     setSearchParams(params);
 
     // Áp dụng filter
-    applyFilters(selectedCategories, selectedConditions, newRange, searchValue, sortBy, province);
+    applyFilters(selectedCategories, selectedStatuses, newRange, searchValue, sortBy, province);
   };
 
   const handleSortChange = (e) => {
@@ -232,13 +235,13 @@ const Products = () => {
       sort: newSort,
     };
     setSearchParams(params);
-    applyFilters(selectedCategories, selectedConditions, priceRange, searchValue, newSort, province);
+    applyFilters(selectedCategories, selectedStatuses, priceRange, searchValue, newSort, province);
   };
 
   const handleClearFilters = () => {
     setSearchValue('');
     setSelectedCategories([]);
-    setSelectedConditions([]);
+    setselectedStatuses([]);
     setPriceRange([0, 5000]);
     setSortBy('newest');
     setProvince('');
@@ -252,7 +255,7 @@ const Products = () => {
     const params = { ...Object.fromEntries(searchParams.entries()) };
     delete params.q;
     setSearchParams(params);
-    applyFilters(selectedCategories, selectedConditions, priceRange, '', sortBy, province);
+    applyFilters(selectedCategories, selectedStatuses, priceRange, '', sortBy, province);
   };
 
   const handleProductClick = (productId) => {
@@ -305,21 +308,19 @@ const Products = () => {
               <hr className="my-4" />
 
               <div className="mb-4">
-                <h2 className="filter-heading mb-3">Hiện Trạng</h2>
-                {conditions.map((condition) => (
+                <h2 className="filter-heading mb-3">Tình Trạng</h2>
+                {productStatuses.map((status) => (
                   <Form.Check
-                    key={condition}
-                    id={`condition-${condition}`}
-                    label={condition}
-                    checked={selectedConditions.includes(condition)}
-                    onChange={(e) => handleConditionChange(condition, e.target.checked)}
+                    key={status}
+                    id={`status-${status}`}
+                    label={status.charAt(0).toUpperCase() + status.slice(1)}
+                    checked={selectedStatuses.includes(status)}
+                    onChange={(e) => handleStatusChange(status, e.target.checked)}
                     className="mb-2"
                   />
                 ))}
               </div>
-
               <hr className="my-4" />
-
               <div className="mb-4">
                 <h2 className="filter-heading mb-3">Tầm Giá</h2>
                 <div className="d-flex gap-3">
@@ -343,14 +344,11 @@ const Products = () => {
                   />
                 </div>
               </div>
-
-
               <Button className="btn-primary w-100" onClick={handleClearFilters}>
                 Clear All Filters
               </Button>
             </Card>
           </Col>
-
           {/* Product Grid */}
           <Col lg={9}>
             <div className="d-flex justify-content-between align-items-center mb-4">
@@ -368,7 +366,7 @@ const Products = () => {
             </div>
 
             {/* Active Filters */}
-            {(searchValue || selectedCategories.length || selectedConditions.length || priceRange[0] > 0 || priceRange[1] < 5000 || province) && (
+            {(searchValue || selectedCategories.length || selectedStatuses.length || priceRange[0] > 0 || priceRange[1] < 5000 || province) && (
               <div className="d-flex flex-wrap gap-2 mb-4">
                 {searchValue && (
                   <Badge bg="secondary" className="filter-badge">
@@ -397,13 +395,13 @@ const Products = () => {
                     </Badge>
                   );
                 })}
-                {selectedConditions.map((condition) => (
+                {selectedStatuses.map((condition) => (
                   <Badge key={condition} bg="secondary" className="filter-badge">
                     {condition}
                     <Button
                       variant="link"
                       className="badge-close"
-                      onClick={() => handleConditionChange(condition, false)}
+                      onClick={() => handleStatusChange(condition, false)}
                     >
                       ✕
                     </Button>

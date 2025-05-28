@@ -6,7 +6,7 @@ const postSchema = new mongoose.Schema({
   categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'categories', required: true },
   province: { type: mongoose.Schema.Types.ObjectId, ref: 'provinces', required: true },
   description: { type: String },
-  productStatus: { type: String, enum: ['new', 'like-new', 'old'], required: true },
+  productStatus: { type: String, enum: ['Mới', 'Like-new', 'Cũ'], required: true },
   price: { type: Number, required: true },   
   originalPrice: { type: Number },
   images: [{ type: String }],
@@ -14,6 +14,7 @@ const postSchema = new mongoose.Schema({
   address: { type: String },
   mapUrl: { type: String },
   status: { type: String, enum: ['available', 'sold', 'pending', 'hidden'], default: 'available' },
+  isChecked: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
