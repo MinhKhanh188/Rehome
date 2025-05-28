@@ -1,17 +1,17 @@
 // front-end/src/components/pages/market/Products.js
-import { useState, useEffect } from 'react';
+import {useContext, useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, InputGroup, Pagination, Badge } from 'react-bootstrap';
 import '../../css/Products.css';
 import { ProductCard } from '../layout/ProductCard';
 import { NavbarComponent } from '../layout/Navbar';
 import { API_ENDPOINTS } from '../../../config';
-
+import { AppContext } from '../../context/AppContext';
 
 const Products = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const { clientProvince, updateProvince } = useContext(AppContext);
   // Thay đổi khởi tạo state products:
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -58,10 +58,9 @@ const Products = () => {
       if (!provinceParam) return; // avoid calling API with empty province
 
       try {
-        const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
+         const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
         const data = await response.json();
         setProducts(data);
-        setProvince(provinceParam);
         applyFilters(
           selectedCategories,
           selectedStatuses,
@@ -271,7 +270,7 @@ const Products = () => {
     <div>
       <NavbarComponent />
       <Container className="products-container py-5 px-4">
-        <h1 className="products-title mb-4">Các Đồ Second Hand Trong Khu Vực {province}</h1>
+        <h1 className="products-title mb-4">Các Đồ Second Hand Trong Khu Vực {clientProvince}</h1>
         <Row className="g-4">
           {/* Filters Sidebar */}
           <Col lg={3}>

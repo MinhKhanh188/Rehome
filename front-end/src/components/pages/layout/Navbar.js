@@ -30,9 +30,9 @@ export const NavbarComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // State cho search tỉnh thành
-  const [province, setProvince] = useState('Hà Nội');
-  const [provinceInput, setProvinceInput] = useState('Hà Nội');
-  const [searchedProvince, setSearchedProvince] = useState('Hà Nội');
+  const [province, setProvince] = useState('');
+  const [provinceInput, setProvinceInput] = useState('');
+  const [searchedProvince, setSearchedProvince] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
 
 
@@ -66,7 +66,7 @@ export const NavbarComponent = () => {
     const isOnProductPage = location.pathname === '/products';
 
     if (isOnProductPage && !currentProvince) {
-      navigate(`/products?province=${encodeURIComponent('Hà Nội')}`);
+      navigate(`/products?province=${encodeURIComponent(clientProvince)}`);
     }
   }, []);
 
