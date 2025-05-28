@@ -1,5 +1,5 @@
 // front-end/src/components/pages/market/Products.js
-import {useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, InputGroup, Pagination, Badge } from 'react-bootstrap';
 import '../../css/Products.css';
@@ -20,19 +20,19 @@ const Products = () => {
   const [searchValue, setSearchValue] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedStatuses, setselectedStatuses] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 5000]);
+  const [priceRange, setPriceRange] = useState([5000, 1_000_000_000]); // ₫5,000 to ₫1 billion
   const [sortBy, setSortBy] = useState('newest');
   // Thêm state cho search tỉnh thành
   const [province, setProvince] = useState('');
   const [provinceInput, setProvinceInput] = useState('');
   const [loading, setLoading] = useState(true);
 
-
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
   // Placeholder for categories and conditions (replace with actual data)
+  const productStatuses = ['Mới', 'Like-new', 'Cũ'];
   const categories = [
     { id: 'Thiết Bị Điện Tử', name: 'Thiết Bị Điện Tử', icon: '💻' },
     { id: 'Thời Trang Nam', name: 'Thời Trang Nam', icon: '👔' },
@@ -49,27 +49,14 @@ const Products = () => {
     { id: 'Giáo Dục', name: 'Giáo Dục', icon: '📚' }
   ];
 
-
-  const productStatuses = ['Mới', 'Like-new', 'Cũ'];
-
   useEffect(() => {
     const fetchProductsByProvince = async () => {
       const provinceParam = searchParams.get('province');
       if (!provinceParam) return; // avoid calling API with empty province
-
       try {
-         const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
+        const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
         const data = await response.json();
         setProducts(data);
-        applyFilters(
-          selectedCategories,
-          selectedStatuses,
-          priceRange,
-          searchValue,
-          sortBy,
-          provinceParam,
-          data
-        );
         setLoading(false);
         console.log('Fetched products:', data);
       } catch (error) {
@@ -78,36 +65,38 @@ const Products = () => {
     };
 
     fetchProductsByProvince();
-  }, [searchParams]); // 💡 depend on searchParams
+  }, [searchParams.get('province')]); // 💡 depend on searchParams
 
 
+  // Apply filters whenever products or filters change
   useEffect(() => {
-    const query = searchParams.get('q');
-    const categoryParam = searchParams.get('category');
-    const statusParam = searchParams.get('condition');
-    const sort = searchParams.get('sort');
-    const minPrice = searchParams.get('minPrice');
-    const maxPrice = searchParams.get('maxPrice');
-    const provinceParam = searchParams.get('province');
+    let filtered = [...products];
 
-    if (query) setSearchValue(query);
-    if (categoryParam) setSelectedCategories(categoryParam.split(','));
-    if (statusParam) setselectedStatuses(statusParam.split(','));
-    if (sort) setSortBy(sort);
-    if (minPrice && maxPrice) setPriceRange([Number(minPrice), Number(maxPrice)]);
-    if (provinceParam) setProvince(provinceParam);
+    if (searchValue) {
+      filtered = filtered.filter(p => p.name.toLowerCase().includes(searchValue.toLowerCase()));
+    }
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(p => selectedCategories.includes(p.category));
+    }
+    if (selectedStatuses.length > 0) {
+      filtered = filtered.filter(p => selectedStatuses
+        .map(s => s.toLowerCase().trim())
+        .includes(p.productStatus?.toLowerCase().trim()));
+    }
+    filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
 
-    // ✅ Always use the most recent `products` data
-    applyFilters(
-      categoryParam ? categoryParam.split(',') : [],
-      statusParam ? statusParam.split(',') : [],
-      [Number(minPrice || 0), Number(maxPrice || 5000)],
-      query || '',
-      sort || 'newest',
-      provinceParam || '',
-      products // ✅ ensure correct data is used
-    );
-  }, [searchParams, products]); // 🔁 add products as a dependency
+    // Sort
+    if (sortBy === 'priceAsc') {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'priceDesc') {
+      filtered.sort((a, b) => b.price - a.price);
+    } else {
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    setFilteredProducts(filtered);
+    setCurrentPage(1); // reset to page 1 on filter change
+  }, [products, searchValue, selectedCategories, selectedStatuses, priceRange, sortBy]);
 
 
   // Update URL when filters change
@@ -116,7 +105,7 @@ const Products = () => {
     if (searchValue) params.q = searchValue;
     if (selectedCategories.length) params.category = selectedCategories.join(',');
     if (selectedStatuses.length) params.condition = selectedStatuses.join(',');
-    if (priceRange[0] > 0 || priceRange[1] < 5000) {
+    if (priceRange[0] !== 5000 || priceRange[1] !== 1_000_000_000) {
       params.minPrice = priceRange[0].toString();
       params.maxPrice = priceRange[1].toString();
     }
@@ -133,7 +122,7 @@ const Products = () => {
     sort = sortBy,
     productList = products
   ) => {
-    let filtered = [...products];
+    let filtered = [...productList];
 
     if (search) {
       filtered = filtered.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
@@ -241,7 +230,7 @@ const Products = () => {
     setSearchValue('');
     setSelectedCategories([]);
     setselectedStatuses([]);
-    setPriceRange([0, 5000]);
+    setPriceRange([5000, 1_000_000_000]);
     setSortBy('newest');
     setProvince('');
     setProvinceInput('');
@@ -328,18 +317,18 @@ const Products = () => {
                     name="minPrice"
                     value={priceRange[0]}
                     onChange={handlePriceChange}
-                    placeholder="Min"
-                    min="0"
-                    max="5000"
+                    placeholder="Tối thiểu"
+                    min="5000"
+                    max="1000000000"
                   />
                   <Form.Control
                     type="number"
                     name="maxPrice"
                     value={priceRange[1]}
                     onChange={handlePriceChange}
-                    placeholder="Max"
-                    min="0"
-                    max="5000"
+                    placeholder="Tối đa"
+                    min="5000"
+                    max="1000000000"
                   />
                 </div>
               </div>
@@ -406,9 +395,9 @@ const Products = () => {
                     </Button>
                   </Badge>
                 ))}
-                {(priceRange[0] > 0 || priceRange[1] < 5000) && (
+                {(priceRange[0] !== 5000 || priceRange[1] !== 1_000_000_000) && (
                   <Badge bg="secondary" className="filter-badge">
-                    ${priceRange[0]} - ${priceRange[1]}
+                    {priceRange[0].toLocaleString()}₫ - {priceRange[1].toLocaleString()}₫
                   </Badge>
                 )}
               </div>
