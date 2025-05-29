@@ -54,7 +54,7 @@ class postController {
   // POST /posts
   async createPost(req, res) {
     try {
-      const { name, categoryId, province, description, productStatus, price, originalPrice, address, mapUrl } = req.body;
+      const { name, categoryId, province, description, productStatus, price, address, mapUrl } = req.body;
 
       const sellerId = req.user.id;
 
@@ -99,7 +99,6 @@ class postController {
         description,
         productStatus,
         price,
-        originalPrice,
         address,
         mapUrl,
         sellerId,

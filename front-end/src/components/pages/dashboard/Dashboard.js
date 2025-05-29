@@ -7,7 +7,8 @@ import PurchaseHistory from './PurchaseHistory';
 import Analytics from './Analytics';
 import Settings from './Settings';
 import ProductForm from './ProductForm';
-import { NavbarComponent } from './Navbar';
+import { NavbarComponent } from '../layout/Navbar';
+
 export default function Dashboard() {
   return (
     <div className='dashboard-container'>

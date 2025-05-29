@@ -1,14 +1,15 @@
+// front-end/src/components/pages/DashboardLayout.js
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import { Package, ShoppingCart, Settings, BarChart } from 'lucide-react';
-import '../css/DashboardLayout.css';
+import '../../css/DashboardLayout.css';
 
 const sidebarItems = [
-  { icon: Package, label: 'My Listings', path: '/dashboard' },
-  { icon: ShoppingCart, label: 'Purchase History', path: '/dashboard/purchases' },
-  { icon: BarChart, label: 'Analytics', path: '/dashboard/analytics' },
-  { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
+  { icon: Package, label: 'Kho hàng', path: '/dashboard' },
+  { icon: ShoppingCart, label: 'Lịch sử mua', path: '/dashboard/purchases' },
+  { icon: BarChart, label: 'Thống kê', path: '/dashboard/analytics' },
+  { icon: Settings, label: 'Cài đặt', path: '/dashboard/settings' },
 ];
 
 export default function DashboardLayout({ children }) {

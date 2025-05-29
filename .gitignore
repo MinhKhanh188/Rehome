@@ -4,7 +4,7 @@ front-end/node_modules/
 
 # Ignore environment files in both frontend and backend
 #back-end/
-#front-end/.env
+#front-end/
 
 # Ignore build folder for frontend
 front-end/build/

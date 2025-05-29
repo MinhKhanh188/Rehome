@@ -65,7 +65,7 @@ const Products = () => {
     };
 
     fetchProductsByProvince();
-  }, [searchParams.get('province')]); // 💡 depend on searchParams
+  }, [searchParams.get('province')]); 
 
 
   // Apply filters whenever products or filters change
@@ -397,7 +397,8 @@ const Products = () => {
                 ))}
                 {(priceRange[0] !== 5000 || priceRange[1] !== 1_000_000_000) && (
                   <Badge bg="secondary" className="filter-badge">
-                    {priceRange[0].toLocaleString()}₫ - {priceRange[1].toLocaleString()}₫
+                    {priceRange[0].toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} -
+                    {priceRange[1].toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                   </Badge>
                 )}
               </div>

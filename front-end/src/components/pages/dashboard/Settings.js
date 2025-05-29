@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { Bell, Lock, User, CreditCard } from 'lucide-react';
-import '../css/Settings.css';
+import '../../css/Settings.css';
 
 export default function Settings() {
   const [notificationSettings, setNotificationSettings] = useState({

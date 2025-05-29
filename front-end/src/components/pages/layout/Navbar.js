@@ -81,9 +81,9 @@ export const NavbarComponent = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Products', path: '/products' },
-    { name: 'About Us', path: '/about' },
-    { name: 'Contact', path: '/contact' }
+    { name: 'Cửa Hàng', path: '/products' },
+    { name: 'Về Chúng Tôi', path: '/about' },
+    { name: 'Liên Hệ', path: '/contact' }
   ];
 
   const handleProvinceSelect = (prov) => {
@@ -180,18 +180,36 @@ export const NavbarComponent = () => {
             {isLoading ? (
               <div className="spinner"></div>
             ) : isLoggedIn ? (
-              <div className='d-flex'>
-                <span className="avatar">
-                  {user?.name ? user.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase()}
-                </span>
+              <div className="dropdown">
+                <button
+                  className="btn profile-btn dropdown-toggle"
+                  type="button"
+                  id="userDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <span className="avatar">
+                    {user?.name ? user.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase()}
+                  </span>
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <li>
+                    <button className="dropdown-item" onClick={() => navigate('/dashboard')}>
+                      Trang Cá Nhân
+                    </button>
+                    <button className="dropdown-item" onClick={handleSignOut}>
+                      Đăng Xuất
+                    </button>
+                  </li>
+                </ul>
               </div>
             ) : (
               <>
                 <Button variant="link" className="login-btn" onClick={() => navigate('/login')}>
-                  Login
+                  Đăng Nhập
                 </Button>
                 <Button variant="primary" className="signup-btn-deco" onClick={() => navigate('/register')}>
-                  Sign Up
+                  Đăng Ký
                 </Button>
               </>
             )}

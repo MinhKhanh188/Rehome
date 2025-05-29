@@ -13,12 +13,14 @@ export const API_ENDPOINTS = {
 
   // User endpoints
   GET_USER_PROFILE: `${baseUrl}/api/users/profile`,
+  GET_USER_POSTS: `${baseUrl}/api/posts/getPersonalPosts`,
 
   // Post endpoints
   CREATE_POST: `${baseUrl}/api/posts/createPost`,
   GET_POST_BY_PROVINCE: `${baseUrl}/api/posts/province`,
 
-  GET_ALL_CATEGORY: `${baseUrl}/api/posts/getListCategories`
+  GET_ALL_CATEGORY: `${baseUrl}/api/posts/getListCategories`,
+  GET_ALL_PROVINCE: `${baseUrl}/api/posts/getListProvinces`
 };
 
 export const NAME_CONFIG = {

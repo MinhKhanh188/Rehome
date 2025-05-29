@@ -27,7 +27,7 @@ export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = fal
       <div className="product-info">
         <h3>{title}</h3>
         <div className="product-details">
-          <span className="price">${price.toFixed(2)}</span>
+          <span className="price">${price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
           <span className="condition">{condition}</span>
         </div>
       </div>

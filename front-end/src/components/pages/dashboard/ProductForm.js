@@ -1,62 +1,108 @@
-import React, { useState } from 'react';
-import { Container, Form, Card, Row, Col, Button, Alert } from 'react-bootstrap';
-import { X, AlertCircle } from 'lucide-react';
-import ImageUploader from './ImageUploader';
-import '../css/ProductForm.css';
+// front-end/src/components/pages/dashboard/ProductForm.js
+import axios from 'axios';
+import { AlertCircle, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
+import '../../css/ProductForm.css';
 
-// Placeholder data for categories and conditions
-const categories = [
-  { id: 'electronics', name: 'Electronics' },
-  { id: 'furniture', name: 'Furniture' },
-  { id: 'clothing', name: 'Clothing' },
-];
+const conditions = ['Mới', 'Like-new', 'Cũ'];
+export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }, product = {} }) {
 
-const conditions = ['New', 'Like New', 'Good', 'Fair', 'Poor'];
+  const [categories, setCategories] = useState([]);
+  const [provinces, setProvinces] = useState([]);
 
-// Placeholder product data (optional, for editing)
-const defaultProduct = {
-  id: '0',
-  title: '',
-  price: 0,
-  originalPrice: undefined,
-  description: '',
-  condition: '',
-  imageUrl: '',
-  additionalImages: [],
-  category: '',
-  categorySlug: '',
-  specifications: {},
-  isAvailable: true,
-  location: '',
-  sellerName: '',
-  sellerRating: 0,
-  listedDate: '',
-};
-
-export default function ProductForm({ product = defaultProduct, onSubmit, onCancel }) {
   const [formData, setFormData] = useState({
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    originalPrice: product.originalPrice,
-    description: product.description,
-    condition: product.condition,
-    imageUrl: product.imageUrl,
-    additionalImages: product.additionalImages,
-    category: product.category,
-    categorySlug: product.categorySlug,
-    specifications: product.specifications,
-    isAvailable: product.isAvailable,
-    location: product.location,
-    sellerName: product.sellerName,
-    sellerRating: product.sellerRating,
-    listedDate: product.listedDate,
+    name: '',
+    categoryId: '',
+    province: '',
+    description: '',
+    productStatus: '',
+    price: undefined,
+    address: '',
+    mapUrl: '',
+    images: [],
   });
 
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await axios.get(API_ENDPOINTS.GET_ALL_CATEGORY);
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    }
+    async function fetchProvinces() {
+      try {
+        const response = await axios.get(API_ENDPOINTS.GET_ALL_PROVINCE);
+        setProvinces(response.data);
+      } catch (error) {
+        console.error('Error fetching provinces:', error);
+      }
+    }
+    fetchCategories();
+    fetchProvinces();
+  }, []);
+
+  const createProduct = async () => {
+    try {
+      const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+      if (!token) throw new Error('No token found');
+
+      const category = categories.find(cat => cat.id === formData.categoryId || cat._id === formData.categoryId);
+      const categoryId = category ? category.id || category._id : null;
+
+      const province = provinces.find(p => p.id === formData.province || p._id === formData.province);
+      const provinceId = province ? province.id || province._id : null;
+
+      if (!categoryId || !provinceId) throw new Error('Invalid category or province');
+
+      // Create FormData instance
+      const formPayload = new FormData();
+      formPayload.append('name', formData.name);
+      formPayload.append('categoryId', categoryId);
+      formPayload.append('province', provinceId);
+      formPayload.append('description', formData.description);
+      formPayload.append('productStatus', formData.productStatus);
+      formPayload.append('price', formData.price);
+      formPayload.append('address', formData.address);
+      formPayload.append('mapUrl', formData.mapUrl || '');
+
+      // Append images (assuming formData.images contains File objects)
+      formData.images.forEach((image) => {
+        formPayload.append('images', image); // or use 'images[]' depending on backend
+      });
+
+      const response = await axios.post(API_ENDPOINTS.CREATE_POST, formPayload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data', // important!
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Create product error:', error);
+      throw error;
+    }
+  };
+
+
+  // Replace handleImageChange with this
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files).slice(0, 5); // max 5 images
+    setFormData(prev => ({
+      ...prev,
+      images: files,
+    }));
+  };
+
   const [specifications, setSpecifications] = useState(
-    Object.entries(product.specifications || {}).map(([key, value]) => ({ key, value })) || [
-      { key: '', value: '' },
-    ]
+    product.specifications
+      ? Object.entries(product.specifications).map(([key, value]) => ({ key, value }))
+      : [{ key: '', value: '' }]
   );
 
   const [errors, setErrors] = useState({});
@@ -78,24 +124,11 @@ export default function ProductForm({ product = defaultProduct, onSubmit, onCanc
   };
 
   const handleCategoryChange = (e) => {
-    const selectedCategory = categories.find((cat) => cat.name === e.target.value);
-    if (selectedCategory) {
-      setFormData({
-        ...formData,
-        category: selectedCategory.name,
-        categorySlug: selectedCategory.id,
-      });
-      if (errors.category) setErrors({ ...errors, category: '' });
-    }
-  };
-
-  const handleMainImageUpload = (imageUrl) => {
-    setFormData({ ...formData, imageUrl });
-    if (errors.imageUrl) setErrors({ ...errors, imageUrl: '' });
-  };
-
-  const handleAdditionalImagesUpload = (imageUrls) => {
-    setFormData({ ...formData, additionalImages: imageUrls });
+    setFormData({
+      ...formData,
+      categoryId: e.target.value,
+    });
+    if (errors.categoryId) setErrors({ ...errors, categoryId: '' });
   };
 
   const handleSpecKeyChange = (index, value) => {
@@ -134,22 +167,20 @@ export default function ProductForm({ product = defaultProduct, onSubmit, onCanc
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.title?.trim()) newErrors.title = 'Title is required';
-    else if (formData.title.length < 10) newErrors.title = 'Title must be at least 10 characters';
+    if (!formData.name?.trim()) newErrors.name = 'Product name is required';
+    else if (formData.title.length < 1) newErrors.title = 'Title must be at least 10 characters';
 
     if (!formData.price || formData.price <= 0) newErrors.price = 'Price must be greater than zero';
 
-    if (!formData.category) newErrors.category = 'Category is required';
+    if (!formData.categoryId) newErrors.categoryId = 'Category is required';
 
     if (!formData.condition) newErrors.condition = 'Condition is required';
 
     if (!formData.description?.trim()) newErrors.description = 'Description is required';
-    else if (formData.description.length < 20)
+    else if (formData.description.length < 2)
       newErrors.description = 'Description must be at least 20 characters';
 
-    if (!formData.imageUrl) newErrors.imageUrl = 'Main product image is required';
-
-    if (!formData.location?.trim()) newErrors.location = 'Location is required';
+    if (!formData.province?.trim()) newErrors.province = 'Province is required';
 
     setErrors(newErrors);
     setShowAllErrors(Object.keys(newErrors).length > 0);
@@ -157,12 +188,18 @@ export default function ProductForm({ product = defaultProduct, onSubmit, onCanc
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit(formData);
+      try {
+        const result = await createProduct();
+        onSubmit(result);
+      } catch (error) {
+        console.error('Failed to submit product:', error);
+      }
     }
   };
+
 
   return (
     <Container className="product-form py-5">
@@ -186,25 +223,25 @@ export default function ProductForm({ product = defaultProduct, onSubmit, onCanc
         {/* Basic Information */}
         <Card className="form-section mb-4">
           <Card.Body className="p-4">
-            <h2 className="section-title mb-4">Basic Information</h2>
+            <h2 className="section-title mb-4">Thông Tin Sản Phẩm</h2>
             <Row className="g-3">
               <Col xs={12}>
                 <Form.Group>
-                  <Form.Label>Product Title *</Form.Label>
+                  <Form.Label>Tên Sản Phẩm *</Form.Label>
                   <Form.Control
                     type="text"
-                    name="title"
-                    value={formData.title}
+                    name="name"
+                    value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="e.g. iPhone 13 Pro - 256GB - Excellent Condition"
-                    isInvalid={!!errors.title}
+                    placeholder=""
+                    isInvalid={!!errors.name}
                   />
-                  <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Price ($) *</Form.Label>
+                  <Form.Label>Giá Mong Muốn (vnd) *</Form.Label>
                   <Form.Control
                     type="number"
                     name="price"
@@ -220,33 +257,16 @@ export default function ProductForm({ product = defaultProduct, onSubmit, onCanc
               </Col>
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Original Price ($) <span className="optional-text">(Optional)</span></Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="originalPrice"
-                    step="0.01"
-                    min="0"
-                    value={formData.originalPrice === undefined ? '' : formData.originalPrice}
-                    onChange={handleInputChange}
-                    placeholder="e.g. 599.99"
-                  />
-                  <Form.Text className="optional-text">
-                    Include if you're offering a discount from the original price
-                  </Form.Text>
-                </Form.Group>
-              </Col>
-              <Col xs={12} md={6}>
-                <Form.Group>
-                  <Form.Label>Category *</Form.Label>
+                  <Form.Label>Danh Mục *</Form.Label>
                   <Form.Select
-                    name="category"
-                    value={formData.category}
+                    name="categoryId"
+                    value={formData.categoryId}
                     onChange={handleCategoryChange}
-                    isInvalid={!!errors.category}
+                    isInvalid={!!errors.categoryId}
                   >
-                    <option value="">Select a category</option>
+                    <option value="">Chọn danh mục</option>
                     {categories.map((category) => (
-                      <option key={category.id} value={category.name}>
+                      <option key={category.id} value={category._id}>
                         {category.name}
                       </option>
                     ))}
@@ -256,76 +276,84 @@ export default function ProductForm({ product = defaultProduct, onSubmit, onCanc
               </Col>
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Condition *</Form.Label>
+                  <Form.Label>Hiện Trạng *</Form.Label>
                   <Form.Select
-                    name="condition"
-                    value={formData.condition}
+                    name="productStatus"
+                    value={formData.productStatus}
                     onChange={handleInputChange}
-                    isInvalid={!!errors.condition}
+                    isInvalid={!!errors.productStatus}
                   >
-                    <option value="">Select condition</option>
+                    <option value="">Chọn hiện trạng</option>
                     {conditions.map((condition) => (
                       <option key={condition} value={condition}>
                         {condition}
                       </option>
                     ))}
                   </Form.Select>
-                  <Form.Control.Feedback type="invalid">{errors.condition}</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{errors.productStatus}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col xs={12}>
                 <Form.Group>
-                  <Form.Label>Location *</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="location"
-                    value={formData.location}
+                  <Form.Label>Địa Điểm *</Form.Label>
+                  <Form.Select
+                    name="province"
+                    value={formData.province}
                     onChange={handleInputChange}
-                    placeholder="e.g. San Francisco, CA"
-                    isInvalid={!!errors.location}
-                  />
-                  <Form.Control.Feedback type="invalid">{errors.location}</Form.Control.Feedback>
+                  >
+                    <option value="">Chọn tỉnh/thành phố</option>
+                    {provinces.map((province) => (
+                      <option key={province.id} value={province._id}>
+                        {province.name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">{errors.province}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col xs={12}>
-                <Form.Check
-                  type="checkbox"
-                  id="isAvailable"
-                  name="isAvailable"
-                  label="List as active and available for purchase"
-                  checked={formData.isAvailable}
-                  onChange={handleInputChange}
-                />
+                <Form.Group>
+                  <Form.Label>Địa Chỉ *</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    placeholder="Nhập địa chỉ"
+                    isInvalid={!!errors.address}
+                  />
+                  <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
+                </Form.Group>
               </Col>
             </Row>
           </Card.Body>
         </Card>
 
-        {/* Product Images */}
-        <Card className="form-section mb-4">
-          <Card.Body className="p-4">
-            <h2 className="section-title mb-4">Product Images</h2>
-            <Form.Group className="mb-4">
-              <Form.Label>Main Product Image *</Form.Label>
-              <ImageUploader
-                imageUrl={formData.imageUrl}
-                onImageUploaded={handleMainImageUpload}
-                isSingleImage
+        {/* Image Upload */}
+        <Form.Group>
+          <Form.Label>Product Images <span className="optional-text">(Optional, up to 5)</span></Form.Label>
+          <Form.Control
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+            isInvalid={!!errors.images}
+          />
+          <Form.Control.Feedback type="invalid">{errors.images}</Form.Control.Feedback>
+
+          <div className="d-flex gap-2 flex-wrap mt-2">
+            {formData.images?.map((file, i) => (
+              <img
+                key={i}
+                src={typeof file === 'string' ? file : URL.createObjectURL(file)}
+                alt={`Preview ${i}`}
+                style={{ maxHeight: 100 }}
               />
-              {errors.imageUrl && <div className="invalid-feedback">{errors.imageUrl}</div>}
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>
-                Additional Images <span className="optional-text">(Optional, up to 4)</span>
-              </Form.Label>
-              <ImageUploader
-                imageUrls={formData.additionalImages}
-                onImagesUploaded={handleAdditionalImagesUpload}
-                maxImages={4}
-              />
-            </Form.Group>
-          </Card.Body>
-        </Card>
+            ))}
+          </div>
+        </Form.Group>
+
+
 
         {/* Description */}
         <Card className="form-section mb-4">

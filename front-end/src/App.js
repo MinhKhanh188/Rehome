@@ -7,8 +7,7 @@ import Register from './components/pages/Auth/Register';
 import ForgotPassword from './components/pages/Auth/ForgotPassword';
 import Products from './components/pages/market/Products';
 
-
-
+import Dashboard from './components/pages/dashboard/Dashboard';
 
 function App() {
   return (
@@ -20,9 +19,12 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/products" element={<Products />} />
 
+        {/* 🛠️ Single entry for all dashboard routes */}
+        <Route path="/dashboard/*" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+ 

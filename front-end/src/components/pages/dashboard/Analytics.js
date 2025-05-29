@@ -1,7 +1,8 @@
+// front-end/src/components/pages/Analytics.js
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { TrendingUp, Users, DollarSign, ShoppingBag } from 'lucide-react';
-import '../css/Analytics.css';
+import '../../css/Analytics.css';
 
 // Placeholder analytics data
 const analyticsData = {

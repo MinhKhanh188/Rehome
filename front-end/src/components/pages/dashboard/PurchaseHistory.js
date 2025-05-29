@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Card, Row, Col, Badge } from 'react-bootstrap';
 import { Package, Truck, CheckCircle } from 'lucide-react';
-import '../css/PurchaseHistory.css';
+import '../../css/PurchaseHistory.css';
 
 // Placeholder purchase data
 const purchases = [
