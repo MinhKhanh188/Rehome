@@ -27,9 +27,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="forgot-password-page">
-      {/* Add your Navbar component here */}
       <NavbarComponent/>
-      
       <Container className="py-5">
         <Row className="justify-content-center">
           <Col md={6} lg={5}>
@@ -120,8 +118,6 @@ export default function ForgotPassword() {
           </Col>
         </Row>
       </Container>
-
-      {/* Add your Footer component here */}
       <Footer/>
     </div>
   );

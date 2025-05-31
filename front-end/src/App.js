@@ -8,6 +8,7 @@ import ForgotPassword from './components/pages/Auth/ForgotPassword';
 import Products from './components/pages/market/Products';
 
 import Dashboard from './components/pages/dashboard/Dashboard';
+import AdminDashboard from './components/pages/admin/AdminDashboard';
 
 function App() {
   return (
@@ -21,10 +22,10 @@ function App() {
 
         {/* 🛠️ Single entry for all dashboard routes */}
         <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
- 
