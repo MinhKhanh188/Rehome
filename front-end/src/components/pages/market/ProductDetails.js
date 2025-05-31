@@ -1,3 +1,4 @@
+// front-end/src/components/pages/market/ProductDetails.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Card, Badge, Spinner } from 'react-bootstrap';
@@ -10,15 +11,15 @@ import {
   MapPin,
   Calendar,
 } from 'lucide-react';
-import { NavbarComponent } from './Navbar';
-import { Footer } from './Footer';
-import { ImageGallery } from './ImageGallery';
-import { ConditionExplainer } from './ConditionExplainer';
-import { ProductSpecifications } from './ProductSpecifications';
-import { SellerProfile } from './SellerProfile';
-import { RelatedProducts } from './RelatedProducts';
-import { TrustBadges } from './TrustBadges';
-import '../css/ProductDetails.css';
+import { NavbarComponent } from '../layout/Navbar';
+import { Footer } from '../layout/Footer';
+import { ImageGallery } from '../ImageGallery';
+import { ConditionExplainer } from '../ConditionExplainer';
+import { ProductSpecifications } from '../ProductSpecifications';
+import { SellerProfile } from '../SellerProfile';
+import { RelatedProducts } from '../RelatedProducts';
+import { TrustBadges } from '../TrustBadges';
+import '../../css/ProductDetails.css';
 
 // Copy mockProducts từ Products.js
 const mockProducts = [
@@ -49,100 +50,7 @@ const mockProducts = [
     additionalImages: [
       'https://images.unsplash.com/photo-1642053551054-8d60215e1518'
     ]
-  },
-  {
-    id: 2,
-    name: 'Samsung Galaxy S22 Ultra',
-    price: 699.99,
-    condition: 'Excellent',
-    category: 'electronics',
-    images: [
-      'https://images.unsplash.com/photo-1642053551054-8d60215e1518'
-    ],
-    isVip: false,
-    createdAt: '2024-05-10T12:00:00Z',
-    sellerRating: 4.7,
-    sellerName: 'Jane Smith',
-    listedDate: '1 week ago',
-    location: 'Los Angeles, CA',
-    description: 'Excellent condition Galaxy S22 Ultra. Minor signs of use, fully functional with charger included.',
-    specifications: {
-      Storage: '128GB',
-      'Screen Size': '6.8 inches',
-      Processor: 'Snapdragon 8 Gen 1',
-    },
-    additionalImages: []
-  },
-  {
-    id: 3,
-    name: 'Modern Sofa',
-    price: 350,
-    condition: 'Good',
-    category: 'furniture',
-    images: [
-      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4'
-    ],
-    isVip: false,
-    createdAt: '2024-05-15T09:00:00Z',
-    sellerRating: 4.5,
-    sellerName: 'Sofa Store',
-    listedDate: '5 days ago',
-    location: 'Chicago, IL',
-    description: 'Comfortable modern sofa, gently used, no stains or tears.',
-    specifications: {
-      Material: 'Fabric',
-      Color: 'Gray',
-      Size: '3-seater',
-    },
-    additionalImages: []
-  },
-  {
-    id: 4,
-    name: 'Hoang Kong Style Sofa',
-    price: 350,
-    condition: 'Good',
-    category: 'furniture',
-    images: [
-      'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2'
-    ],
-    isVip: false,
-    createdAt: '2024-05-15T09:00:00Z',
-    sellerRating: 4.5,
-    sellerName: 'Sofa Store',
-    listedDate: '5 days ago',
-    location: 'Chicago, IL',
-    description: 'Comfortable modern sofa, gently used, no stains or tears.',
-    specifications: {
-      Material: 'Fabric',
-      Color: 'Gray',
-      Size: '3-seater',
-    },
-    additionalImages: []
-  },
-  {
-    id: 5,
-    name: 'Huong Kong Style Sofa',
-    price: 500,
-    condition: 'Good',
-    category: 'furniture',
-    images: [
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836'
-    ],
-    isVip: false,
-    createdAt: '2024-05-15T09:00:00Z',
-    sellerRating: 4.5,
-    sellerName: 'Sofa Store',
-    listedDate: '5 days ago',
-    location: 'Chicago, IL',
-    description: 'Comfortable modern sofa, gently used, no stains or tears.',
-    specifications: {
-      Material: 'Fabric',
-      Color: 'Gray',
-      Size: '3-seater',
-    },
-    additionalImages: []
   }
-  // ...thêm các sản phẩm khác nếu muốn
 ];
 
 export default function ProductDetails() {
