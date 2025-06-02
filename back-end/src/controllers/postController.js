@@ -5,6 +5,7 @@ const CategoryModel = require('../models/Category');
 const ProvinceModel = require('../models/Province');
 const cloudinary = require('../config/upload/cloudinary');
 const fs = require('fs');
+const axios = require('axios');  
 
 class postController {
 
