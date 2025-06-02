@@ -5,7 +5,8 @@ const CategoryModel = require('../models/Category');
 const ProvinceModel = require('../models/Province');
 const cloudinary = require('../config/upload/cloudinary');
 const fs = require('fs');
-const axios = require('axios');  
+const axios = require('axios');
+const { log } = require('console');
 
 class postController {
 
@@ -132,6 +133,28 @@ class postController {
         return res.status(400).json({ error: 'No images uploaded 💔' });
       }
 
+      // 💡 Content filter check via Python API (safe try-catch)
+      const textsToCheck = [name, description, address];
+      try {
+        const filterResponse = await axios.post('http://127.0.0.1:5000/filter_content_for_rehome', {
+          texts: textsToCheck,
+        });
+
+        console.log('Text sent to filter:', textsToCheck);
+        console.log('Filter API response:', filterResponse.data);
+
+        const predictions = filterResponse.data.predictions || [];
+
+        if (predictions.includes('unapproved')) {
+          return res.status(400).json({ error: 'Your post contains inappropriate content 💔' });
+        }
+      } catch (filterError) {
+        console.warn('⚠️ Content filter API failed. Skipping filter check:', filterError.message);
+        // Optional: block post if filter fails
+        // return res.status(503).json({ error: 'Content filter service unavailable 💔' });
+      }
+
+
       // Upload images to Cloudinary
       const imageUrls = [];
 
@@ -177,7 +200,7 @@ class postController {
         address,
         mapUrl,
         sellerId,
-        images: imageUrls
+        images: imageUrls || 'hehehe', // Use the uploaded image URLs
       });
 
       await newPost.save();
