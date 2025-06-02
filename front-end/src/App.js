@@ -6,8 +6,9 @@ import Login from './components/pages/Auth/Login';
 import Register from './components/pages/Auth/Register';
 import ForgotPassword from './components/pages/Auth/ForgotPassword';
 import Products from './components/pages/market/Products';
-
+import ProductDetails from './components/pages/market/ProductDetails';
 import Dashboard from './components/pages/dashboard/Dashboard';
+import AdminDashboard from './components/pages/admin/AdminDashboard';
 
 function App() {
   return (
@@ -18,13 +19,14 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/products/product-details/" element={<ProductDetails />} />
 
         {/* 🛠️ Single entry for all dashboard routes */}
         <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
- 

@@ -9,21 +9,83 @@ const axios = require('axios');
 
 class postController {
 
+  // GET product detail by ID
+  async getProductDetail(req, res) {
+    try {
+      const post = await PostModel.findById(req.params.productId)
+        .populate('categoryId', 'name')
+        .populate('province', 'name')
+        .populate('sellerId', 'name profilePic');
+
+      if (!post) return res.status(404).json({ error: 'Post not found 💔' });
+
+      const filteredPost = {
+        _id: post._id,
+        name: post.name,
+        category: post.categoryId?.name || null,
+        province: post.province?.name || null,
+        productStatus: post.productStatus,
+        price: post.price,
+        images: post.images,
+        sellerName: post.sellerId?.name || null,
+        sellerProfilePic: post.sellerId?.profilePic || null,
+        address: post.address,
+        mapUrl: post.mapUrl,
+        description: post.description,
+        specifications: post.specifications || {},
+        uploadDate: post.createdAt,
+        isChecked: post.isChecked,
+        isVip: post.isVip,
+        originalPrice: post.originalPrice || null,
+        // views: post.views,
+        status: post.status
+      };
+
+      res.status(200).json(filteredPost);
+    } catch (error) {
+      console.error('Fetch product detail error:', error);
+      res.status(500).json({ error: 'Failed to fetch product 💔' });
+    }
+  }
+
   // GET personal posts
   async getPersonalPosts(req, res, next) {
     try {
       const userId = req.user.id;
 
       const posts = await PostModel.find({ sellerId: userId })
-        .populate('categoryId', 'name')     // optional: show category name
-        .sort({ createdAt: -1 });           // newest first
+        .populate('categoryId', 'name')
+        .populate('province', 'name')
+        .populate('sellerId', 'name profilePic')
+        .sort({ createdAt: -1 });
 
-      res.status(200).json(posts);
+      const filteredPosts = posts.map(post => ({
+        _id: post._id,
+        name: post.name,
+        category: post.categoryId?.name || null,
+        province: post.province?.name || null,
+        productStatus: post.productStatus,
+        price: post.price,
+        images: post.images,
+        address: post.address,
+        mapUrl: post.mapUrl,
+        description: post.description,
+        specifications: post.specifications || {},
+        uploadDate: post.createdAt,
+        isChecked: post.isChecked,
+        isVip: post.isVip,
+        originalPrice: post.originalPrice || null,
+        createdAt: post.createdAt,
+        status: post.status
+      }));
+
+      res.status(200).json(filteredPosts);
     } catch (error) {
       console.error('Fetch personal posts error:', error);
       res.status(500).json({ error: 'Failed to fetch your posts 💔' });
     }
   }
+
 
   // DELETE a post by owner
   async deletePost(req, res) {
@@ -55,7 +117,7 @@ class postController {
   // POST /posts
   async createPost(req, res) {
     try {
-      const { name, categoryId, province, description, productStatus, price, address, mapUrl } = req.body;
+      const { name, categoryId, province, description, specifications, productStatus, price, originalPrice, address, mapUrl } = req.body;
 
       const sellerId = req.user.id;
 
@@ -91,6 +153,16 @@ class postController {
         }
       }
 
+      // ✅ Parse specifications if it's a JSON string
+      let parsedSpecifications = specifications;
+      if (typeof specifications === 'string') {
+        try {
+          parsedSpecifications = JSON.parse(specifications);
+        } catch (err) {
+          return res.status(400).json({ error: 'Invalid JSON in specifications 💔' });
+        }
+      }
+
 
       // Create post document
       const newPost = new PostModel({
@@ -98,8 +170,10 @@ class postController {
         categoryId,
         province,
         description,
+        specifications: parsedSpecifications,
         productStatus,
         price,
+        originalPrice: originalPrice || null,
         address,
         mapUrl,
         sellerId,

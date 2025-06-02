@@ -408,13 +408,12 @@ const Products = () => {
             {paginatedProducts.length === 0 ? null : (
               <Row className="g-4">
                 {paginatedProducts.map((product) => (
-                  <Col md={6} lg={4} key={product.id}>
+                  <Col md={6} lg={4} key={product._id}>
                     <div
                       className="product-card-wrapper"
-                      onClick={() => handleProductClick(product.id)}
+                      onClick={() => handleProductClick(product._id)}
                     >
                       <ProductCard
-                        id={product.id}
                         title={product.name}
                         price={product.price}
                         condition={product.condition}

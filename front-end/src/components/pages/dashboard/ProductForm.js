@@ -2,23 +2,29 @@
 import axios from 'axios';
 import { AlertCircle, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import '../../css/ProductForm.css';
 
 const conditions = ['Mới', 'Like-new', 'Cũ'];
 export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }, product = {} }) {
-
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [provinces, setProvinces] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
 
   const [formData, setFormData] = useState({
     name: '',
     categoryId: '',
     province: '',
     description: '',
+    specifications: {},
     productStatus: '',
     price: undefined,
+    originalPrice: undefined,
     address: '',
     mapUrl: '',
     images: [],
@@ -65,8 +71,10 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
       formPayload.append('categoryId', categoryId);
       formPayload.append('province', provinceId);
       formPayload.append('description', formData.description);
+      formPayload.append('specifications', JSON.stringify(formData.specifications));
       formPayload.append('productStatus', formData.productStatus);
       formPayload.append('price', formData.price);
+      formPayload.append('originalPrice', formData.originalPrice || '');
       formPayload.append('address', formData.address);
       formPayload.append('mapUrl', formData.mapUrl || '');
 
@@ -90,9 +98,8 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
   };
 
 
-  // Replace handleImageChange with this
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files).slice(0, 5); // max 5 images
+    const files = Array.from(e.target.files).slice(0, 4); // max 4 images
     setFormData(prev => ({
       ...prev,
       images: files,
@@ -168,13 +175,13 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name?.trim()) newErrors.name = 'Product name is required';
-    else if (formData.title.length < 1) newErrors.title = 'Title must be at least 10 characters';
+    else if (formData.name.length < 1) newErrors.name = 'Product name must be at least 1 character';
 
     if (!formData.price || formData.price <= 0) newErrors.price = 'Price must be greater than zero';
 
     if (!formData.categoryId) newErrors.categoryId = 'Category is required';
 
-    if (!formData.condition) newErrors.condition = 'Condition is required';
+    if (!formData.productStatus) newErrors.productStatus = 'Product status is required';
 
     if (!formData.description?.trim()) newErrors.description = 'Description is required';
     else if (formData.description.length < 2)
@@ -191,14 +198,29 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setIsSubmitting(true);
       try {
         const result = await createProduct();
-        onSubmit(result);
+        setSuccessMessage(result.message || 'Đăng sản phẩm thành công ✨');
+        setTimeout(() => {
+          navigate(-1); // go back
+        }, 2000);
       } catch (error) {
         console.error('Failed to submit product:', error);
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
+
+
+  const handleRemoveImage = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
+
 
 
   return (
@@ -249,10 +271,26 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
                     min="0"
                     value={formData.price === undefined ? '' : formData.price}
                     onChange={handleInputChange}
-                    placeholder="e.g. 499.99"
+                    placeholder="vd: 99.000"
                     isInvalid={!!errors.price}
                   />
                   <Form.Control.Feedback type="invalid">{errors.price}</Form.Control.Feedback>
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={6}>
+                <Form.Group>
+                  <Form.Label>Giá Gốc Sản Phẩm (không bắt buộc)  *</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="originalPrice" // ✅ Corrected name
+                    step="0.01"
+                    min="0"
+                    value={formData.originalPrice === undefined ? '' : formData.originalPrice}
+                    onChange={handleInputChange}
+                    placeholder="vd: 199.000"
+                    isInvalid={!!errors.originalPrice}
+                  />
+                  <Form.Control.Feedback type="invalid">{errors.originalPrice}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col xs={12} md={6}>
@@ -329,38 +367,74 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
           </Card.Body>
         </Card>
 
-        {/* Image Upload */}
         <Form.Group>
-          <Form.Label>Product Images <span className="optional-text">(Optional, up to 5)</span></Form.Label>
-          <Form.Control
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageChange}
-            isInvalid={!!errors.images}
-          />
-          <Form.Control.Feedback type="invalid">{errors.images}</Form.Control.Feedback>
+          <Form.Label>
+            Đăng Ảnh <span className="optional-text">(có thể đăng tới 4 ảnh)</span>
+          </Form.Label>
 
-          <div className="d-flex gap-2 flex-wrap mt-2">
-            {formData.images?.map((file, i) => (
-              <img
-                key={i}
-                src={typeof file === 'string' ? file : URL.createObjectURL(file)}
-                alt={`Preview ${i}`}
-                style={{ maxHeight: 100 }}
-              />
-            ))}
+          <div
+            className="dropzone d-flex flex-column align-items-center"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const droppedFiles = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'));
+              const newFiles = droppedFiles.slice(0, 4 - formData.images.length);
+              setFormData(prev => ({
+                ...prev,
+                images: [...prev.images, ...newFiles],
+              }));
+            }}
+            onClick={() => document.getElementById('image-upload').click()}
+          >
+            <p className="mb-2">Kéo và thả hình ảnh vào đây hoặc nhấn để chọn</p>
+
+            <Form.Control
+              id="image-upload"
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: 'none' }}
+              onChange={handleImageChange}
+              isInvalid={!!errors.images}
+            />
+
+            <div className="d-flex gap-3 flex-wrap justify-content-center mt-2 w-100">
+              {formData.images?.map((file, i) => (
+                <div key={i} className="position-relative" style={{ height: 100 }}>
+                  <img
+                    src={typeof file === 'string' ? file : URL.createObjectURL(file)}
+                    alt={`Preview ${i}`}
+                    style={{ height: '100%', width: 'auto', borderRadius: 4 }}
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveImage(i);
+                    }}
+                    className="btn-orange position-absolute top-0 end-0"
+                    style={{ transform: 'translate(50%, -50%)' }}
+                  >
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
+
           </div>
-        </Form.Group>
 
+          <Form.Control.Feedback type="invalid">
+            {errors.images}
+          </Form.Control.Feedback>
+        </Form.Group>
 
 
         {/* Description */}
         <Card className="form-section mb-4">
           <Card.Body className="p-4">
-            <h2 className="section-title mb-4">Product Description</h2>
+            <h2 className="section-title mb-4">Mô Tả Sản Phẩm</h2>
             <Form.Group>
-              <Form.Label>Description *</Form.Label>
+              <Form.Label>Mô Tả *</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={4}
@@ -380,10 +454,10 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
           <Card.Body className="p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2 className="section-title">
-                Specifications <span className="optional-text">(Optional)</span>
+                Đặc Tả <span className="optional-text">(Không bắt buộc)</span>
               </h2>
               <Button variant="outline-primary" size="sm" onClick={addSpecification}>
-                Add Specification
+                Thêm Dòng Đặc Tả
               </Button>
             </div>
             {specifications.map((spec, index) => (
@@ -421,11 +495,12 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
         {/* Form Actions */}
         <div className="d-flex justify-content-end gap-3">
           <Button variant="outline-secondary" onClick={onCancel}>
-            Cancel
+            Hủy
           </Button>
-          <Button variant="primary" type="submit">
-            {product.id === '0' ? 'Add Product' : 'Update Product'}
+          <Button variant="primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Đang tải...' : 'Thêm Sản Phẩm'}
           </Button>
+
         </div>
       </Form>
     </Container>

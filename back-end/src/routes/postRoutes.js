@@ -13,6 +13,8 @@ router.get('/getListCategories', postPublicController.getListCategory);
 router.get('/getListProvinces', postPublicController.getListProvince);
 router.get('/province', postPublicController.getPostsByProvince);
 
+router.get('/productDetail/:productId', postController.getProductDetail);
+
 
 // private routes
 router.get('/getPersonalPosts', authMiddleware, postController.getPersonalPosts);
