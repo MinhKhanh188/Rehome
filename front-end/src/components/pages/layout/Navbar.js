@@ -80,7 +80,7 @@ export const NavbarComponent = () => {
   };
 
   const navLinks = [
-    { name: 'Home', path: '/' },
+    { name: 'Trang chủ', path: '/' },
     { name: 'Cửa Hàng', path: '/products' },
     { name: 'Về Chúng Tôi', path: '/about' },
     { name: 'Liên Hệ', path: '/contact' }

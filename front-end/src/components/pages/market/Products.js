@@ -265,15 +265,15 @@ const Products = () => {
           <Col lg={3}>
             <Card className="filters-card shadow-sm p-4">
               <div className="mb-4">
-                <h2 className="filter-heading mb-3">Search</h2>
+                <h2 className="filter-heading mb-3">Tìm kiếm</h2>
                 <InputGroup>
                   <Form.Control
-                    placeholder="Search products..."
+                    placeholder="Tìm sản phẩm..."
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                   />
-                  <Button onClick={handleSearch} className='btn-primary'>Search</Button>
+                  <Button onClick={handleSearch} className='btn-primary'>Tìm kiếm</Button>
                 </InputGroup>
               </div>
 
@@ -333,7 +333,7 @@ const Products = () => {
                 </div>
               </div>
               <Button className="btn-primary w-100" onClick={handleClearFilters}>
-                Clear All Filters
+                Đặt lại bộ lọc
               </Button>
             </Card>
           </Col>
@@ -416,7 +416,7 @@ const Products = () => {
                       <ProductCard
                         title={product.name}
                         price={product.price}
-                        condition={product.condition}
+                        condition={product.productStatus}
                         imageUrl={product.images ? product.images[0] : ''}
                         isVip={product.isVip}
                       />

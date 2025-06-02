@@ -1,16 +1,32 @@
 // ProductCard.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaHeart } from 'react-icons/fa';
 import '../../css/ProductCard.css';
 
-export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = false }) => {
+export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = false, onFavorite }) => {
   const navigate = useNavigate();
+
+  const handleFavorite = (e) => {
+    e.stopPropagation(); // Ngăn click vào card
+    if (onFavorite) onFavorite(id);
+    // Nếu muốn lưu vào localStorage hoặc gọi API, xử lý tại đây
+  };
 
   return (
     <div 
       className={`product-card ${isVip ? 'vip' : ''}`}
       onClick={() => navigate(`/product/${id}`)}
     >
+      {/* Nút yêu thích */}
+      <button
+        className="favorite-btn"
+        onClick={handleFavorite}
+        title="Thêm vào yêu thích"
+      >
+        <FaHeart />
+      </button>
+
       {isVip && (
         <div className="vip-badge">
           VIP
