@@ -79,3 +79,24 @@
     border-radius: 4px;
     font-size: 14px;
   }
+  
+  .favorite-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    color: #f97316;
+    font-size: 1.2rem;
+    padding: 5px 8px 5px 8px;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.08);
+    cursor: pointer;
+    z-index: 2;
+    transition: background 0.2s, color 0.2s;
+  }
+  
+  .favorite-btn:hover {
+    background: #f97316;
+    color: #fff;
+  }
