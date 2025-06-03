@@ -1,7 +1,9 @@
 // front-end/src/components/pages/market/ProductDetails.js
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Card, Badge, Spinner } from 'react-bootstrap';
+import { API_ENDPOINTS } from '../../../config';
 import {
   Star,
   Clock,
@@ -21,37 +23,6 @@ import { RelatedProducts } from '../RelatedProducts';
 import { TrustBadges } from '../TrustBadges';
 import '../../css/ProductDetails.css';
 
-// Copy mockProducts từ Products.js
-const mockProducts = [
-  {
-    id: 1,
-    name: 'iPhone 13 Pro 256GB - Graphite',
-    price: 799.99,
-    condition: 'Like New',
-    category: 'electronics',
-    images: [
-      'https://images.unsplash.com/photo-1630691711598-5c9f4f37f4e6',
-      'https://images.unsplash.com/photo-1642053551054-8d60215e1518'
-    ],
-    isVip: true,
-    createdAt: '2024-05-01T10:00:00Z',
-    sellerRating: 4.8,
-    sellerName: 'John Doe',
-    listedDate: '2 days ago',
-    location: 'New York, NY',
-    description: 'Like-new iPhone 13 Pro in Graphite. Fully functional with no scratches or dents. Comes with original box and charger.',
-    specifications: {
-      Storage: '256GB',
-      'Screen Size': '6.1 inches',
-      Processor: 'A15 Bionic',
-      Battery: '3095 mAh',
-    },
-    originalPrice: 999.99,
-    additionalImages: [
-      'https://images.unsplash.com/photo-1642053551054-8d60215e1518'
-    ]
-  }
-];
 
 export default function ProductDetails() {
   const location = useLocation();
@@ -60,27 +31,35 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const productId = params.get('id');
-    setLoading(true);
-    setTimeout(() => {
-      // Tìm sản phẩm theo id
-      const foundProduct = mockProducts.find((p) => p.id === Number(productId));
-      // Chuyển đổi cho tương thích với các prop trong giao diện
-      if (foundProduct) {
+useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const productId = params.get('id');
+
+  const fetchProduct = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${API_ENDPOINTS.GET_POST_DETAIL_BY_ID}/${productId}`);
+      if (data) {
         setProduct({
-          ...foundProduct,
-          title: foundProduct.name,
-          imageUrl: foundProduct.images[0],
-          additionalImages: foundProduct.images.slice(1),
+          ...data,
+          title: data.name || data.title,
+          imageUrl: data.images?.[0] || '',
+          additionalImages: data.images?.slice(1) || [],
         });
       } else {
         setProduct(null);
       }
+    } catch (err) {
+      console.error('Failed to fetch product:', err);
+      setProduct(null);
+    } finally {
       setLoading(false);
-    }, 400);
-  }, [location.search]);
+    }
+  };
+
+  if (productId) fetchProduct();
+}, [location.search]);
+
 
   if (loading) {
     return (
@@ -152,7 +131,7 @@ export default function ProductDetails() {
                   </Button>
                 </div>
                 <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
-                  <Badge bg="warning" text="dark">{product.condition}</Badge>
+                  <Badge bg="warning" text="dark">{product.productStatus}</Badge>
                   <span className="d-flex align-items-center text-warning">
                     <Star size={16} fill="#facc15" className="me-1" />
                     {product.sellerRating}
@@ -160,7 +139,7 @@ export default function ProductDetails() {
                   </span>
                   <span className="d-flex align-items-center text-muted">
                     <Clock size={16} className="me-1" />
-                    Listed {product.listedDate}
+                    Listed {product.uploadDate}
                   </span>
                 </div>
                 <div className="mb-3">
@@ -181,7 +160,7 @@ export default function ProductDetails() {
                     variant="warning"
                     size="lg"
                     className="text-white"
-                    onClick={() => navigate(`/payment?id=${product.id}`)}
+                    onClick={() => navigate(`/payment?id=${product._id}`)}
                   >
                     Buy Now
                   </Button>
@@ -205,12 +184,12 @@ export default function ProductDetails() {
                     Available Now
                   </div>
                   <div>
-                    ID: P{product.id.toString().padStart(5, "0")}
+                    ID: P{product._id?.slice(-5)}
                   </div>
                 </div>
               </Card.Body>
             </Card>
-            <ConditionExplainer condition={product.condition} />
+            <ConditionExplainer condition={product.productStatus} />
             {/* Seller Profile - Mobile Only */}
             <div className="d-md-none">
               <SellerProfile sellerName={product.sellerName} sellerRating={product.sellerRating} location={product.location} />
@@ -239,7 +218,7 @@ export default function ProductDetails() {
         {/* Trust Badges */}
         <TrustBadges />
         {/* Related Products */}
-        <RelatedProducts currentProductId={product.id} currentCategory={product.category} />
+        <RelatedProducts currentProductId={product._id} currentCategory={product.category} />
       </Container>
       {/* Share button */}
       <Button
