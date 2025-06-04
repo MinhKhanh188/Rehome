@@ -1,4 +1,4 @@
-// ProductCard.jsx
+// front-end/src/components/pages/layout/ProductCard.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaHeart } from 'react-icons/fa';
@@ -16,7 +16,8 @@ export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = fal
   return (
     <div 
       className={`product-card ${isVip ? 'vip' : ''}`}
-      onClick={() => navigate(`/product/${id}`)}
+      onClick={() => navigate(`/products`)}
+
     >
       {/* Nút yêu thích */}
       <button

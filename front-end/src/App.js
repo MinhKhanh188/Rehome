@@ -23,7 +23,8 @@ function App() {
 
         {/* 🛠️ Single entry for all dashboard routes */}
         <Route path="/dashboard/*" element={<Dashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        {/* 🛠️ Single entry for all admin routes */}
+        <Route path="/admin/*" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
   );

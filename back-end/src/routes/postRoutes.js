@@ -13,14 +13,20 @@ router.get('/getListCategories', postPublicController.getListCategory);
 router.get('/getListProvinces', postPublicController.getListProvince);
 router.get('/province', postPublicController.getPostsByProvince);
 
-router.get('/productDetail/:productId', postController.getProductDetail);
+// user routes
+router.get('/productDetail/:productId', authMiddleware(false), postController.getProductDetail);
+
+
 
 
 // private routes
-router.get('/getPersonalPosts', authMiddleware, postController.getPersonalPosts);
-router.post('/createPost', authMiddleware, upload.array('images'), postController.createPost);
-router.delete('/deletePost/:id', authMiddleware, postController.deletePost);
+router.get('/getPersonalPosts', authMiddleware(false), postController.getPersonalPosts);
+router.post('/createPost', authMiddleware(false), upload.array('images'), postController.createPost);
+router.delete('/deletePost/:id', authMiddleware(false), postController.deletePost);
 
-
+// admin routes
+router.get('/unverifiedPosts', authMiddleware(true), postController.getAllUnverifiedPosts);
+router.get('/verifiedPosts', authMiddleware(true), postController.getAllVerifiedPosts);
+router.put('/verify/:id', authMiddleware(true), postController.verifyPost);
 
 module.exports = router;

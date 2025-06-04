@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Card, Button, Row, Col } from 'react-bootstrap';
-import { Star, Shield, User, Calendar, MessageSquare, Phone, ChevronRight, ThumbsUp } from 'lucide-react';
+import { Calendar, ChevronRight, MessageSquare, Phone, Shield, Star, ThumbsUp, User } from 'lucide-react';
+import { useState } from 'react';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import '../css/SellerProfile.css';
 
 export function SellerProfile({ sellerName, sellerRating, location, className = '' }) {
@@ -25,7 +25,7 @@ export function SellerProfile({ sellerName, sellerRating, location, className = 
   return (
     <Card className={`seller-profile ${className}`}>
       <Card.Body className="p-4">
-        <h2 className="seller-title">Seller Information</h2>
+        <h2 className="seller-title">Thông Tin Người Bán</h2>
 
         {/* Seller basic info */}
         <div className="seller-info mb-4">
@@ -59,28 +59,28 @@ export function SellerProfile({ sellerName, sellerRating, location, className = 
           <Col xs={6} className="stat-item">
             <Calendar className="stat-icon" />
             <div>
-              <div className="stat-label">Member Since</div>
+              <div className="stat-label">Tham Gia Từ</div>
               <div className="stat-value">{sellerData.joinDate}</div>
             </div>
           </Col>
           <Col xs={6} className="stat-item">
             <User className="stat-icon" />
             <div>
-              <div className="stat-label">Total Listings</div>
+              <div className="stat-label">Tổng Số Tin Đăng</div>
               <div className="stat-value">{sellerData.totalListings}</div>
             </div>
           </Col>
           <Col xs={6} className="stat-item">
             <MessageSquare className="stat-icon" />
             <div>
-              <div className="stat-label">Response Rate</div>
+              <div className="stat-label">Tỷ Lệ Phản Hồi</div>
               <div className="stat-value">{sellerData.responseRate}</div>
             </div>
           </Col>
           <Col xs={6} className="stat-item">
             <ThumbsUp className="stat-icon" />
             <div>
-              <div className="stat-label">Positive Ratings</div>
+              <div className="stat-label">Đánh Giá Tích Cực</div>
               <div className="stat-value">{sellerData.positiveRatings}</div>
             </div>
           </Col>
@@ -88,7 +88,7 @@ export function SellerProfile({ sellerName, sellerRating, location, className = 
 
         {/* About seller */}
         <div className="about-seller mb-4">
-          <h4 className="about-title">About</h4>
+          <h4 className="about-title">Giới Thiệu</h4>
           <p className="about-text">{sellerData.about}</p>
         </div>
 
@@ -99,7 +99,7 @@ export function SellerProfile({ sellerName, sellerRating, location, className = 
               <Col xs={6}>
                 <Button className="contact-button w-100" onClick={handleToggleContact}>
                   <MessageSquare size={16} className="me-2" />
-                  Message Seller
+                  Nhắn Tin Cho Người Bán
                 </Button>
               </Col>
               <Col xs={6}>
@@ -109,13 +109,13 @@ export function SellerProfile({ sellerName, sellerRating, location, className = 
                   onClick={handleToggleContact}
                 >
                   <Phone size={16} className="me-2" />
-                  Show Contact
+                  Hiện Thông Tin Liên Hệ
                 </Button>
               </Col>
             </Row>
           ) : (
             <div className="contact-info">
-              <h4 className="contact-title">Contact Information</h4>
+              <h4 className="contact-title">Thông Tin Liên Hệ</h4>
               <div className="contact-details">
                 <div className="contact-item">
                   <div className="contact-content">
@@ -148,7 +148,7 @@ export function SellerProfile({ sellerName, sellerRating, location, className = 
 
         <div className="view-profile">
           <a href="#" className="profile-link">
-            View Seller Profile
+            Xem Hồ Sơ Người Bán
             <ChevronRight size={16} className="ms-1" />
           </a>
         </div>

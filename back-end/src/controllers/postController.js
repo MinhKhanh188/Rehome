@@ -10,6 +10,95 @@ const { log } = require('console');
 
 class postController {
 
+  // GET all unverified posts with pagination + search
+  async getAllUnverifiedPosts(req, res) {
+    try {
+      const { page = 1, name = '', province = '' } = req.query;
+      const limit = 15;
+      const skip = (page - 1) * limit;
+
+      const filter = {
+        isChecked: false,
+        ...(name && { name: { $regex: name, $options: 'i' } }),
+        ...(province && { province })
+      };
+
+      const posts = await PostModel.find(filter)
+        .populate('categoryId', 'name')
+        .populate('province', 'name')
+        .populate('sellerId', 'name profilePic')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
+
+      const total = await PostModel.countDocuments(filter);
+
+      res.status(200).json({
+        posts,
+        totalPages: Math.ceil(total / limit),
+        currentPage: +page
+      });
+    } catch (error) {
+      console.error('Fetch unverified posts error:', error);
+      res.status(500).json({ error: 'Failed to fetch unverified posts 💔' });
+    }
+  }
+
+  // GET all verified posts with pagination + search
+  async getAllVerifiedPosts(req, res) {
+    try {
+      const { page = 1, name = '', province = '' } = req.query;
+      const limit = 15;
+      const skip = (page - 1) * limit;
+
+      const filter = {
+        isChecked: true,
+        ...(name && { name: { $regex: name, $options: 'i' } }),
+        ...(province && { province })
+      };
+
+      const posts = await PostModel.find(filter)
+        .populate('categoryId', 'name')
+        .populate('province', 'name')
+        .populate('sellerId', 'name profilePic')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
+
+      const total = await PostModel.countDocuments(filter);
+
+      res.status(200).json({
+        posts,
+        totalPages: Math.ceil(total / limit),
+        currentPage: +page
+      });
+    } catch (error) {
+      console.error('Fetch verified posts error:', error);
+      res.status(500).json({ error: 'Failed to fetch verified posts 💔' });
+    }
+  }
+
+  // PUT /posts/:id/verify — Admin verifies a post
+  async verifyPost(req, res) {
+    try {
+      const postId = req.params.id;
+
+      const post = await PostModel.findById(postId);
+      if (!post) {
+        return res.status(404).json({ error: 'Post not found 💔' });
+      }
+
+      post.isChecked = true;
+      await post.save();
+
+      res.status(200).json({ message: 'Post verified successfully ✅' });
+    } catch (error) {
+      console.error('Verify post error:', error);
+      res.status(500).json({ error: 'Failed to verify post 💔' });
+    }
+  }
+
+
   // GET product detail by ID
   async getProductDetail(req, res) {
     try {

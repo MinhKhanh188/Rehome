@@ -142,7 +142,7 @@ export function RelatedProducts({ currentProductId, currentCategory, className =
 
   return (
     <div className={`related-products ${className}`}>
-      <h2 className="section-title">Similar Products</h2>
+      <h2 className="section-title">Sản Phẩm Liên Quan</h2>
       <Row xs={1} sm={2} md={4} className="g-4">
         {relatedProducts.map((product) => (
           <Col key={product.id}>

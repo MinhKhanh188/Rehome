@@ -50,22 +50,21 @@ const Products = () => {
   ];
 
   useEffect(() => {
+    const provinceParam = searchParams.get('province');
+    if (!provinceParam) return;
     const fetchProductsByProvince = async () => {
-      const provinceParam = searchParams.get('province');
-      if (!provinceParam) return; // avoid calling API with empty province
       try {
         const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
         const data = await response.json();
         setProducts(data);
         setLoading(false);
-        console.log('Fetched products:', data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
-
     fetchProductsByProvince();
-  }, [searchParams.get('province')]); 
+  }, [searchParams.toString()]);
+
 
 
   // Apply filters whenever products or filters change

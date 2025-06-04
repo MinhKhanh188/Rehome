@@ -52,7 +52,7 @@ export function ProductSpecifications({ specifications, product, className = '' 
   return (
     <Card className={`product-specifications ${className}`}>
       <Card.Body className="p-5">
-        <h2 className="specifications-title">Product Specifications</h2>
+        <h2 className="specifications-title">Thông Số Kỹ Thuật Sản Phẩm</h2>
 
         <div className="specifications-list">
           {visibleSpecs.map(([key, value]) => {
@@ -89,12 +89,12 @@ export function ProductSpecifications({ specifications, product, className = '' 
             {expanded ? (
               <>
                 <ChevronUp size={16} className="me-1" />
-                Show Less
+                Hiện Ít Hơn
               </>
             ) : (
               <>
                 <ChevronDown size={16} className="me-1" />
-                Show All Specifications
+                Hiện Tất Cả Thông Số
               </>
             )}
           </Button>

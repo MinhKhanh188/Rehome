@@ -1,27 +1,28 @@
 // front-end/src/components/pages/market/ProductDetails.js
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import { Container, Row, Col, Button, Card, Badge, Spinner } from 'react-bootstrap';
-import { API_ENDPOINTS } from '../../../config';
 import {
-  Star,
+  ArrowLeft,
+  Calendar,
   Clock,
   Heart,
-  ArrowLeft,
-  Shield,
   MapPin,
-  Calendar,
+  Shield,
+  Star,
 } from 'lucide-react';
-import { NavbarComponent } from '../layout/Navbar';
-import { Footer } from '../layout/Footer';
-import { ImageGallery } from '../ImageGallery';
-import { ConditionExplainer } from '../ConditionExplainer';
-import { ProductSpecifications } from '../ProductSpecifications';
-import { SellerProfile } from '../SellerProfile';
-import { RelatedProducts } from '../RelatedProducts';
-import { TrustBadges } from '../TrustBadges';
+import { useEffect, useState } from 'react';
+import { Badge, Button, Card, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import '../../css/ProductDetails.css';
+import { ConditionExplainer } from '../ConditionExplainer';
+import { ImageGallery } from '../ImageGallery';
+import { Footer } from '../layout/Footer';
+import { NavbarComponent } from '../layout/Navbar';
+import { ProductSpecifications } from '../ProductSpecifications';
+import { RelatedProducts } from '../RelatedProducts';
+import { SellerProfile } from '../SellerProfile';
+import { TrustBadges } from '../TrustBadges';
+
 
 
 export default function ProductDetails() {
@@ -31,34 +32,42 @@ export default function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
 
-useEffect(() => {
-  const params = new URLSearchParams(location.search);
-  const productId = params.get('id');
+  useEffect(() => {
+    const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+    const params = new URLSearchParams(location.search);
+    const productId = params.get('id');
 
-  const fetchProduct = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(`${API_ENDPOINTS.GET_POST_DETAIL_BY_ID}/${productId}`);
-      if (data) {
-        setProduct({
-          ...data,
-          title: data.name || data.title,
-          imageUrl: data.images?.[0] || '',
-          additionalImages: data.images?.slice(1) || [],
-        });
-      } else {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axios.get(`${API_ENDPOINTS.GET_POST_DETAIL_BY_ID}/${productId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`  
+            },
+          }
+
+        );
+        if (data) {
+          setProduct({
+            ...data,
+            title: data.name || data.title,
+            imageUrl: data.images?.[0] || '',
+            additionalImages: data.images?.slice(1) || [],
+          });
+        } else {
+          setProduct(null);
+        }
+      } catch (err) {
+        console.error('Failed to fetch product:', err);
         setProduct(null);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('Failed to fetch product:', err);
-      setProduct(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  if (productId) fetchProduct();
-}, [location.search]);
+    if (productId) fetchProduct();
+  }, [location.search]);
 
 
   if (loading) {
@@ -100,7 +109,7 @@ useEffect(() => {
           onClick={() => navigate(-1)}
           style={{ textDecoration: "none" }}
         >
-          <ArrowLeft size={18} className="me-1" /> Back to results
+          <ArrowLeft size={18} className="me-1" /> Trở Lại
         </Button>
 
         <Row className="g-4 mb-4">
@@ -135,23 +144,28 @@ useEffect(() => {
                   <span className="d-flex align-items-center text-warning">
                     <Star size={16} fill="#facc15" className="me-1" />
                     {product.sellerRating}
-                    <span className="text-muted ms-1">(Seller Rating)</span>
+                    <span className="text-muted ms-1">(Đánh Giá Người Bán)</span>
                   </span>
                   <span className="d-flex align-items-center text-muted">
                     <Clock size={16} className="me-1" />
-                    Listed {product.uploadDate}
+                    Đăng lúc: {product.uploadDate}
                   </span>
                 </div>
                 <div className="mb-3">
-                  <span className="fs-2 fw-bold">${product.price.toFixed(2)}</span>
+                  <span className="fs-2 fw-bold">
+                    {product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </span>
                   {product.originalPrice && (
                     <span className="fs-5 text-muted text-decoration-line-through ms-2">
-                      ${product.originalPrice.toFixed(2)}
+                      {product.originalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                     </span>
                   )}
                   {product.originalPrice && (
                     <div className="text-success fw-medium">
-                      Save ${(product.originalPrice - product.price).toFixed(2)} ({Math.round((1 - product.price / product.originalPrice) * 100)}% off)
+                      <span className="me-1">Tiết Kiệm</span>
+                      {(
+                        product.originalPrice - product.price
+                      ).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} ({Math.round((1 - product.price / product.originalPrice) * 100)}% off)
                     </div>
                   )}
                 </div>
@@ -162,14 +176,14 @@ useEffect(() => {
                     className="text-white"
                     onClick={() => navigate(`/payment?id=${product._id}`)}
                   >
-                    Buy Now
+                    Mua Ngay
                   </Button>
                   <Button variant="outline-secondary" size="lg">
-                    Make an Offer
+                    Đưa Ra Đề Nghị
                   </Button>
                   <div className="d-flex align-items-start text-success mt-2 small">
                     <Shield size={18} className="me-2" />
-                    <span>This item is eligible for our buyer protection program</span>
+                    <span>Sản phẩm này đủ điều kiện cho chương trình bảo vệ người mua của chúng tôi</span>
                   </div>
                 </div>
                 {product.location && (
@@ -181,7 +195,7 @@ useEffect(() => {
                 <div className="d-flex justify-content-between text-muted small mb-2">
                   <div className="d-flex align-items-center">
                     <Calendar size={16} className="me-1" />
-                    Available Now
+                    Có Sẵn Ngay
                   </div>
                   <div>
                     ID: P{product._id?.slice(-5)}
@@ -199,7 +213,7 @@ useEffect(() => {
         {/* Description */}
         <Card className="mb-4 shadow-sm">
           <Card.Body>
-            <h4 className="mb-3">Product Description</h4>
+            <h4 className="mb-3">Mô Tả Sản Phẩm</h4>
             <div className="text-muted">{product.description}</div>
           </Card.Body>
         </Card>

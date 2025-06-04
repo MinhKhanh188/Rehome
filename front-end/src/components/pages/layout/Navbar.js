@@ -37,9 +37,7 @@ export const NavbarComponent = () => {
 
 
   useEffect(() => {
-    setProvince(clientProvince);
     setProvinceInput(clientProvince);
-    setSearchedProvince(clientProvince);
   }, [clientProvince]);
 
 
@@ -87,16 +85,26 @@ export const NavbarComponent = () => {
   ];
 
   const handleProvinceSelect = (prov) => {
-    updateProvince(prov); // update global + local
+    updateProvince(prov);
     setProvinceInput(prov);
-    setSearchedProvince(prov);
     setShowDropdown(false);
     navigate(`/products?province=${encodeURIComponent(prov)}`);
   };
-  // Lọc danh sách tỉnh thành theo input
+
+  const normalizeText = (text) => {
+    return text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // remove accents
+      .replace(/đ/g, "d")              // convert 'đ' to 'd'
+      .replace(/Đ/g, "D")              // convert 'Đ' to 'D'
+      .toLowerCase();
+  };
+
   const filteredProvinces = VIETNAM_PROVINCES.filter(p =>
-    p.toLowerCase().includes(provinceInput.toLowerCase())
+    normalizeText(p).includes(normalizeText(provinceInput))
   );
+
+
 
   return (
     <Navbar bg="light" expand="md" className="custom-navbar">

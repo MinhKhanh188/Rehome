@@ -5,20 +5,27 @@ import { NAME_CONFIG } from '../../config';
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-    const [clientProvince, setClientProvince] = useState('Hà Nội');
+    const storedProvince = localStorage.getItem(NAME_CONFIG.USER_PROVINCE);
+    const [clientProvince, setClientProvince] = useState(() => {
+        const stored = localStorage.getItem(NAME_CONFIG.USER_PROVINCE);
+        if (stored) return stored;
+        const defaultProvince = 'Hà Nội';
+        localStorage.setItem(NAME_CONFIG.USER_PROVINCE, defaultProvince);
+        return defaultProvince;
+    });
+
 
     useEffect(() => {
-        const storedProvince = localStorage.getItem(NAME_CONFIG.USER_PROVINCE);
+        const syncProvince = () => {
+            const province = localStorage.getItem(NAME_CONFIG.USER_PROVINCE);
+            if (province && province !== clientProvince) {
+                setClientProvince(province);
+            }
+        };
+        window.addEventListener('storage', syncProvince);
+        return () => window.removeEventListener('storage', syncProvince);
+    }, [clientProvince]);
 
-        if (storedProvince) {
-            setClientProvince(storedProvince);
-        } else {
-            // Set default province and store it
-            const defaultProvince = 'Hà Nội';
-            setClientProvince(defaultProvince);
-            localStorage.setItem(NAME_CONFIG.USER_PROVINCE, defaultProvince);
-        }
-    }, []);
 
 
     const updateProvince = (province) => {
