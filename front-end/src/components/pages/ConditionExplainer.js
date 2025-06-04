@@ -6,53 +6,34 @@ import '../css/ConditionExplainer.css';
 export function ConditionExplainer({ condition, className = '' }) {
   // Define condition descriptions
   const conditionDescriptions = {
-    'Like New': {
-      description: 'Almost indistinguishable from a brand new item',
-      points: [
-        'May be in original packaging or with tags',
-        'No signs of use or wear',
-        'All original accessories included',
-        'Fully functional with no issues',
-      ],
-    },
-    Excellent: {
-      description: 'Very minor signs of use with great overall condition',
-      points: [
-        'Very minimal signs of use',
-        'No significant scratches, dents, or marks',
-        'Most or all original accessories included',
-        'Fully functional with no issues',
-      ],
-    },
-    'Very Good': {
-      description: 'Minor signs of use, but well maintained',
-      points: [
-        'Some signs of previous use',
-        'Minor scratches or marks that don’t affect functionality',
-        'Most essential accessories included',
-        'Fully functional with no significant issues',
-      ],
-    },
-    Good: {
-      description: 'Normal signs of use, but still reliable',
-      points: [
-        'Visible signs of previous use',
-        'Noticeable scratches or wear on exterior',
-        'Basic accessories may be included',
-        'Fully functional but may have minor issues',
-      ],
-    },
-    Fair: {
-      description: 'Heavy signs of use, but functional',
-      points: [
-        'Significant signs of wear and tear',
-        'Obvious scratches, dents, or cosmetic damage',
-        'May be missing non-essential accessories',
-        'Functional but may have some issues',
-      ],
-    },
-  };
-
+  "Mới": {
+    description: "Gần như không thể phân biệt với sản phẩm mới",
+    points: [
+      "Có thể còn bao bì gốc hoặc còn tem nhãn",
+      "Không có dấu hiệu sử dụng hoặc hao mòn",
+      "Bao gồm đầy đủ phụ kiện gốc",
+      "Hoạt động hoàn hảo, không có lỗi"
+    ]
+  },
+  "Gần như mới": {
+    description: "Dấu hiệu sử dụng rất nhẹ, tổng thể còn rất tốt",
+    points: [
+      "Dấu hiệu sử dụng rất nhẹ",
+      "Không có trầy xước, móp hoặc hư hại đáng kể",
+      "Có đầy đủ hoặc hầu hết phụ kiện gốc",
+      "Hoạt động hoàn hảo, không có lỗi"
+    ]
+  },
+  "Cũ": {
+    description: "Nhiều dấu hiệu sử dụng, nhưng vẫn còn dùng được",
+    points: [
+      "Hao mòn rõ rệt",
+      "Có vết trầy xước, móp hoặc hư hại thẩm mỹ dễ thấy",
+      "Có thể thiếu phụ kiện không quan trọng",
+      "Vẫn sử dụng được nhưng có thể gặp một số vấn đề nhỏ"
+    ]
+  }
+};
   // Get correct condition info or default
   const conditionInfo = conditionDescriptions[condition] || {
     description: 'Condition details unavailable',
@@ -62,15 +43,11 @@ export function ConditionExplainer({ condition, className = '' }) {
   // Determine color based on condition
   const getConditionColor = () => {
     switch (condition) {
-      case 'Like New':
+      case 'Mới':
         return 'condition-like-new';
-      case 'Excellent':
-        return 'condition-excellent';
-      case 'Very Good':
-        return 'condition-very-good';
-      case 'Good':
-        return 'condition-good';
-      case 'Fair':
+      case 'Like New':
+        return 'condition-new';
+      case 'Cũ':
         return 'condition-fair';
       default:
         return 'condition-default';
@@ -79,7 +56,7 @@ export function ConditionExplainer({ condition, className = '' }) {
 
   // Render condition rating visually
   const renderConditionRating = () => {
-    const ratings = ['Fair', 'Good', 'Very Good', 'Excellent', 'Like New'];
+    const ratings = ['Cũ', 'Like New', 'Mới'];
     const currentIndex = ratings.indexOf(condition);
 
     return (
@@ -105,15 +82,11 @@ export function ConditionExplainer({ condition, className = '' }) {
   // Get color for rating circles
   const getCircleColor = (rating) => {
     switch (rating) {
-      case 'Like New':
+      case 'Mới':
         return 'bg-green';
-      case 'Excellent':
+      case 'Like New':
         return 'bg-emerald';
-      case 'Very Good':
-        return 'bg-blue';
-      case 'Good':
-        return 'bg-amber';
-      case 'Fair':
+      case 'Cũ':
         return 'bg-orange';
       default:
         return 'bg-gray';
@@ -124,7 +97,7 @@ export function ConditionExplainer({ condition, className = '' }) {
     <Card className={`condition-explainer ${className} ${getConditionColor()}`}>
       <Card.Body className="p-4">
         <div className="d-flex align-items-center mb-2">
-          <h3 className="condition-title me-2">Condition: {condition}</h3>
+          <h3 className="condition-title me-2">Tình trạng: {condition}</h3>
           <Info size={16} className="info-icon" />
         </div>
 

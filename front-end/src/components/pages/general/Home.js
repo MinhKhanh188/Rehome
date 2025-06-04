@@ -1,5 +1,5 @@
 // App.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { Leaf, Recycle, ShieldCheck, CheckCircle } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { Banner } from "../layout/Banner";
 import { CategoryCard } from "../layout/CategoryCard";
 import { ProductCard } from "../layout/ProductCard";
 import { Footer } from "../layout/Footer";
+import { API_ENDPOINTS } from '../../../config';
 import '../../css/Home.css';
 
 export default function Home() {
@@ -24,19 +25,30 @@ export default function Home() {
     { id: 'office', title: "Office", icon: "🖊️", path: "/category/office", description: "Office furniture & supplies" },
   ];
 
-  const featuredProducts = [
-    { id: "1", title: "iPhone 12", price: 499.99, condition: "Like New", imageUrl: "https://via.placeholder.com/300", isVip: true },
-    { id: "2", title: "Wooden Desk", price: 149.99, condition: "Good", imageUrl: "https://via.placeholder.com/300" },
-    { id: "3", title: "LED TV", price: 299.99, condition: "Excellent", imageUrl: "https://via.placeholder.com/300", isVip: true },
-    { id: "4", title: "Washing Machine", price: 399.99, condition: "Good", imageUrl: "https://via.placeholder.com/300" },
-  ];
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [recentProducts, setRecentProducts] = useState([]);
 
-  const recentProducts = [
-    { id: "5", title: "Gaming Chair", price: 199.99, condition: "Like New", imageUrl: "https://via.placeholder.com/300" },
-    { id: "6", title: "MacBook Pro", price: 899.99, condition: "Excellent", imageUrl: "https://via.placeholder.com/300" },
-    { id: "7", title: "Coffee Table", price: 89.99, condition: "Good", imageUrl: "https://via.placeholder.com/300" },
-    { id: "8", title: "Microwave", price: 79.99, condition: "Fair", imageUrl: "https://via.placeholder.com/300" },
-  ];
+  useEffect(() => {
+    // Gọi API lấy danh sách sản phẩm VIP
+    const fetchVipProducts = async () => {
+      try {
+        const res = await fetch(`${API_ENDPOINTS.GET_ALL_VIP_POSTS}`);
+        const data = await res.json();
+        // data.posts là danh sách sản phẩm VIP đã duyệt
+        setFeaturedProducts(data.posts || []);
+        // Lấy 4 sản phẩm VIP mới nhất cho Recently Added
+        setRecentProducts(
+          (data.posts || [])
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 4)
+        );
+      } catch (err) {
+        setFeaturedProducts([]);
+        setRecentProducts([]);
+      }
+    };
+    fetchVipProducts();
+  }, []);
 
   return (
     <div className="app-container">
@@ -70,7 +82,6 @@ export default function Home() {
           <div className="section-header">
             <div className="title-container">
               <h2>Featured Items</h2>
-              {/* <span className="vip-badge">VIP</span> */}
             </div>
             <p>Premium secondhand products from our verified sellers</p>
           </div>
@@ -78,11 +89,18 @@ export default function Home() {
           <div className="products-grid">
             {featuredProducts.map((product) => (
               <div
-                key={product.id}
-                onClick={() => navigate(`/product?id=${product.id}`)}
+                key={product._id || product.id}
+                onClick={() => navigate(`/product?id=${product._id || product.id}`)}
                 className="product-card-wrapper"
               >
-                <ProductCard {...product} />
+                <ProductCard
+                  id={product._id || product.id}
+                  title={product.name}
+                  price={product.price}
+                  condition={product.productStatus}
+                  imageUrl={product.images?.[0]}
+                  isVip={product.isVip}
+                />
               </div>
             ))}
           </div>
@@ -97,11 +115,18 @@ export default function Home() {
           <div className="products-grid">
             {recentProducts.map((product) => (
               <div
-                key={product.id}
-                onClick={() => navigate(`/product?id=${product.id}`)}
+                key={product._id || product.id}
+                onClick={() => navigate(`/product?id=${product._id || product.id}`)}
                 className="product-card-wrapper"
               >
-                <ProductCard {...product} />
+                <ProductCard
+                  id={product._id || product.id}
+                  title={product.name}
+                  price={product.price}
+                  condition={product.productStatus}
+                  imageUrl={product.images?.[0]}
+                  isVip={product.isVip}
+                />
               </div>
             ))}
           </div>

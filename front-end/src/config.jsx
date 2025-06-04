@@ -24,6 +24,7 @@ export const API_ENDPOINTS = {
   CREATE_POST: `${baseUrl}/api/posts/createPost`,
   GET_POST_BY_PROVINCE: `${baseUrl}/api/posts/province`,
   GET_POST_DETAIL_BY_ID: `${baseUrl}/api/posts/productDetail`,
+  GET_ALL_VIP_POSTS: `${baseUrl}/api/posts/allVipPosts`,
 
   GET_ALL_CATEGORY: `${baseUrl}/api/posts/getListCategories`,
   GET_ALL_PROVINCE: `${baseUrl}/api/posts/getListProvinces`

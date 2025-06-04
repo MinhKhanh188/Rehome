@@ -12,6 +12,7 @@ const upload = multer({ dest: 'temp/' }); // Set up multer for file handling
 router.get('/getListCategories', postPublicController.getListCategory);
 router.get('/getListProvinces', postPublicController.getListProvince);
 router.get('/province', postPublicController.getPostsByProvince);
+router.get('/allVipPosts', postController.getAllVipPosts);
 
 // user routes
 router.get('/productDetail/:productId', authMiddleware(false), postController.getProductDetail);

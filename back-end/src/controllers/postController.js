@@ -301,6 +301,30 @@ class postController {
     }
   }
 
+  // GET all VIP posts (không phân trang)
+  async getAllVipPosts(req, res) {
+    try {
+      const { name = '', province = '' } = req.query;
+
+      const filter = {
+        isVip: true,
+        isChecked: true, // chỉ lấy bài đã duyệt
+        ...(name && { name: { $regex: name, $options: 'i' } }),
+        ...(province && { province })
+      };
+
+      const posts = await PostModel.find(filter)
+        .populate('categoryId', 'name')
+        .populate('province', 'name')
+        .populate('sellerId', 'name profilePic')
+        .sort({ createdAt: -1 });
+
+      res.status(200).json({ posts });
+    } catch (error) {
+      console.error('Fetch VIP posts error:', error);
+      res.status(500).json({ error: 'Failed to fetch VIP posts 💔' });
+    }
+  }
 
 }
 

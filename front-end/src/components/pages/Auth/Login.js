@@ -89,8 +89,8 @@ export default function Login() {
             <Card className="login-card shadow">
               <Card.Body className="p-5">
                 <div className="text-center mb-4">
-                  <h2 className="login-title">Welcome back</h2>
-                  <p className="login-subtitle">Sign in to your Re-Home account</p>
+                  <h2 className="login-title">Chào mừng bạn quay trở lại</h2>
+                  <p className="login-subtitle">Đăng nhập vào tài khoản Re-home của bạn</p>
                 </div>
 
                 {localError && (
@@ -101,7 +101,7 @@ export default function Login() {
 
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-4" controlId="email">
-                    <Form.Label>Email address</Form.Label>
+                    <Form.Label>Địa chỉ Email</Form.Label>
                     <Form.Control
                       type="email"
                       placeholder="you@example.com"
@@ -112,7 +112,7 @@ export default function Login() {
                   </Form.Group>
 
                   <Form.Group className="mb-4" controlId="password">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Mật khẩu</Form.Label>
                     <div className="password-wrapper">
                       <Form.Control
                         type={showPassword ? 'text' : 'password'}
@@ -135,10 +135,10 @@ export default function Login() {
                     <Form.Check
                       type="checkbox"
                       id="remember-me"
-                      label="Remember me"
+                      label="Ghi nhớ đăng nhập"
                     />
                     <a href="/forgotPassword" className="forgot-password">
-                      Forgot your password?
+                      Quên mật khẩu?
                     </a>
                   </div>
 
@@ -148,12 +148,12 @@ export default function Login() {
                     className="w-100 mb-4 login-butt"
                     disabled={loading}
                   >
-                    {loading ? 'Signing in...' : 'Sign in'}
+                    {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                   </Button>
                 </Form>
 
                 <div className="divider">
-                  <span>Or continue with</span>
+                  <span>Tiếp tục với</span>
                 </div>
 
                 <div className="social-buttons mt-4">
@@ -187,11 +187,11 @@ export default function Login() {
 
                 <div className="text-center mt-4">
                   <p>
-                    Don't have an account?{' '}
+                    Bạn chưa có tài khoản?{' '}
                     <a href='/register'
                       className="signup-link"
                     >
-                      Sign up
+                      Đăng ký ngay
                     </a>
                   </p>
                 </div>

@@ -9,6 +9,7 @@ import Products from './components/pages/market/Products';
 import ProductDetails from './components/pages/market/ProductDetails';
 import Dashboard from './components/pages/dashboard/Dashboard';
 import AdminDashboard from './components/pages/admin/AdminDashboard';
+import AdminLogin from './components/pages/Auth/AdminLogin';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/dashboard/*" element={<Dashboard />} />
         {/* 🛠️ Single entry for all admin routes */}
         <Route path="/admin/*" element={<AdminDashboard />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
       </Routes>
     </BrowserRouter>
   );

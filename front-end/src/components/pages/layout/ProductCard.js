@@ -8,16 +8,14 @@ export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = fal
   const navigate = useNavigate();
 
   const handleFavorite = (e) => {
-    e.stopPropagation(); // Ngăn click vào card
+    e.stopPropagation();
     if (onFavorite) onFavorite(id);
-    // Nếu muốn lưu vào localStorage hoặc gọi API, xử lý tại đây
   };
 
   return (
     <div 
       className={`product-card ${isVip ? 'vip' : ''}`}
-      onClick={() => navigate(`/products`)}
-
+      onClick={() => navigate(`/product?id=${id}`)}
     >
       {/* Nút yêu thích */}
       <button
@@ -44,7 +42,7 @@ export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = fal
       <div className="product-info">
         <h3>{title}</h3>
         <div className="product-details">
-          <span className="price">${price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
+          <span className="price">{price?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
           <span className="condition">{condition}</span>
         </div>
       </div>

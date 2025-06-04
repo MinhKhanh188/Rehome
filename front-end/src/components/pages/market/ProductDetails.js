@@ -146,9 +146,10 @@ export default function ProductDetails() {
                     {product.sellerRating}
                     <span className="text-muted ms-1">(Đánh Giá Người Bán)</span>
                   </span>
+                  <div className='w-100'></div>
                   <span className="d-flex align-items-center text-muted">
                     <Clock size={16} className="me-1" />
-                    Đăng lúc: {product.uploadDate}
+                     Đăng lúc: {product.uploadDate ? new Date(product.uploadDate).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}
                   </span>
                 </div>
                 <div className="mb-3">
@@ -165,7 +166,7 @@ export default function ProductDetails() {
                       <span className="me-1">Tiết Kiệm</span>
                       {(
                         product.originalPrice - product.price
-                      ).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} ({Math.round((1 - product.price / product.originalPrice) * 100)}% off)
+                      ).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} (Giảm {Math.round((1 - product.price / product.originalPrice) * 100)}%)
                     </div>
                   )}
                 </div>
@@ -183,7 +184,7 @@ export default function ProductDetails() {
                   </Button>
                   <div className="d-flex align-items-start text-success mt-2 small">
                     <Shield size={18} className="me-2" />
-                    <span>Sản phẩm này đủ điều kiện cho chương trình bảo vệ người mua của chúng tôi</span>
+                    <span>Sản phẩm đủ điều kiện cho chính sách bảo vệ người mua của chúng tôi</span>
                   </div>
                 </div>
                 {product.location && (
@@ -226,7 +227,7 @@ export default function ProductDetails() {
             />
           </Col>
           <Col md={6} className="d-none d-md-block">
-            <SellerProfile sellerName={product.sellerName} sellerRating={product.sellerRating} location={product.location} />
+            <SellerProfile sellerName={product.sellerName} sellerRating={product.sellerRating} location={product.province} />
           </Col>
         </Row>
         {/* Trust Badges */}
