@@ -37,8 +37,8 @@
 }
 
 .admin-table th {
-  background: #f97316;
-  color: #fff;
+  background: #f97316 !important;
+  color: #fff !important;
   font-weight: 600;
   border: none;
 }
@@ -75,7 +75,9 @@
   padding: 4px 18px;
 }
 
-.admin-table .badge-success {
+.admin-table .badge-success,
+.admin-table .badge {
+  color: #fff !important;
   background-color: #22c55e !important;
 }
 

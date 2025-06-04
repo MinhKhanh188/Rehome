@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
+import { Table, Badge, Button } from 'react-bootstrap';
+import '../../css/AdminDashboard.css';
 
 export default function VerifiedProducts() {
   const [posts, setPosts] = useState([]);
@@ -52,9 +54,8 @@ export default function VerifiedProducts() {
 
   return (
     <div className="container mt-4">
-      <h2>Sản phẩm đã duyệt</h2>
-
-      <table className="table table-bordered mt-3">
+      
+      <Table striped bordered hover className="admin-table">
         <thead>
           <tr>
             <th>Ảnh</th>
@@ -66,37 +67,45 @@ export default function VerifiedProducts() {
         </thead>
         <tbody>
           {posts.length === 0 ? (
-            <tr><td colSpan="5" className="text-center">Không có sản phẩm</td></tr>
+            <tr>
+              <td colSpan="5" className="text-center">Không có sản phẩm</td>
+            </tr>
           ) : (
             posts.map(post => (
               <tr key={post._id}>
-                <td><img src={post.images[0]} alt={post.name} width="80" /></td>
+                <td>
+                  <img src={post.images[0]} alt={post.name} width="80" style={{ borderRadius: 8 }} />
+                </td>
                 <td>{post.name}</td>
                 <td>{post.sellerId?.name}</td>
-                <td>{post.province?.name}</td>
+                <td>
+                  <Badge bg="secondary">{post.province?.name || post.province}</Badge>
+                </td>
                 <td>{new Date(post.createdAt).toLocaleDateString()}</td>
               </tr>
             ))
           )}
         </tbody>
-      </table>
+      </Table>
 
       <div className="d-flex justify-content-center mt-3">
-        <button
-          className="btn btn-outline-primary me-2"
+        <Button
+          variant="outline-primary"
+          className="me-2"
           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
           Trước
-        </button>
+        </Button>
         <span className="align-self-center">Trang {currentPage} / {totalPages}</span>
-        <button
-          className="btn btn-outline-primary ms-2"
+        <Button
+          variant="outline-primary"
+          className="ms-2"
           onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
         >
           Tiếp
-        </button>
+        </Button>
       </div>
     </div>
   );

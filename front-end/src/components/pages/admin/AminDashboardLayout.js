@@ -6,8 +6,8 @@ import {Clock, CheckCircle, Users} from 'lucide-react';
 import '../../css/DashboardLayout.css';
 
 const sidebarItems = [
-  { icon: Clock, label: 'Chờ Duyệt', path: '/admin' },
-  { icon: CheckCircle, label: 'Đã Duyệt', path: '/admin/verified-products' },
+  { icon: Clock, label: 'Sản Phẩm Chờ Duyệt', path: '/admin' },
+  { icon: CheckCircle, label: 'Sản Phẩm Đã Duyệt', path: '/admin/verified-products' },
   { icon: Users, label: 'Người dùng', path: '/admin/users' },
 ];
 
@@ -24,7 +24,7 @@ export default function AdminDashboardLayout({ children }) {
         {/* Sidebar */}
         <Col xs={12} md={3} lg={2} className="sidebar">
           <div className="sidebar-header">
-            <h2 className="sidebar-title">Dashboard</h2>
+            <h2 className="sidebar-title">Trang quản lý</h2>
           </div>
           <Nav className="sidebar-nav flex-column">
             {sidebarItems.map(({ icon: Icon, label, path }) => (

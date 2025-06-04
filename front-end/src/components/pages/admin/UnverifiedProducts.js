@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
+import { Table, Button, Badge } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import '../../css/AdminDashboard.css';
 
 export default function UnverifiedProducts() {
   const [posts, setPosts] = useState([]);
@@ -51,23 +54,26 @@ export default function UnverifiedProducts() {
 
   // Verify post handler
   const handleVerify = async (postId) => {
-  try {
-    await axios.put(`${API_ENDPOINTS.VERIFY_POST}/${postId}`, null, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    setPosts(posts.filter(post => post._id !== postId));
-  } catch (error) {
-    console.error('Failed to verify post', error);
-    alert('Không thể duyệt sản phẩm. Thử lại nhé.');
-  }
-};
-
+    try {
+      await axios.put(`${API_ENDPOINTS.VERIFY_POST}/${postId}`, null, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPosts(posts.filter(post => post._id !== postId));
+      Swal.fire({
+        icon: 'success',
+        title: 'Duyệt sản phẩm thành công',
+        text: 'Sản phẩm đã được duyệt thành công.',
+      });
+    } catch (error) {
+      console.error('Failed to verify post', error);
+      alert('Không thể duyệt sản phẩm. Thử lại nhé.');
+    }
+  };
 
   return (
     <div className="container mt-4">
-      <h2>Sản phẩm chưa duyệt</h2>
-
-      <table className="table table-bordered mt-3">
+      
+      <Table striped bordered hover className="admin-table">
         <thead>
           <tr>
             <th>Ảnh</th>
@@ -80,45 +86,54 @@ export default function UnverifiedProducts() {
         </thead>
         <tbody>
           {posts.length === 0 ? (
-            <tr><td colSpan="6" className="text-center">Không có sản phẩm</td></tr>
+            <tr>
+              <td colSpan="6" className="text-center">Không có sản phẩm</td>
+            </tr>
           ) : (
             posts.map(post => (
               <tr key={post._id}>
-                <td><img src={post.images[0]} alt={post.name} width="80" /></td>
+                <td>
+                  <img src={post.images[0]} alt={post.name} width="80" style={{ borderRadius: 8 }} />
+                </td>
                 <td>{post.name}</td>
                 <td>{post.sellerId?.name}</td>
-                <td>{post.province?.name}</td>
+                <td>
+                  <Badge bg="secondary">{post.province?.name || post.province}</Badge>
+                </td>
                 <td>{new Date(post.createdAt).toLocaleDateString()}</td>
                 <td>
-                  <button
-                    className="btn btn-success btn-sm"
+                  <Button
+                    className="btn-sm"
+                    variant="warning"
                     onClick={() => handleVerify(post._id)}
                   >
                     Duyệt
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))
           )}
         </tbody>
-      </table>
+      </Table>
 
       <div className="d-flex justify-content-center mt-3">
-        <button
-          className="btn btn-outline-primary me-2"
+        <Button
+          variant="outline-primary"
+          className="me-2"
           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
           Trước
-        </button>
+        </Button>
         <span className="align-self-center">Trang {currentPage} / {totalPages}</span>
-        <button
-          className="btn btn-outline-primary ms-2"
+        <Button
+          variant="outline-primary"
+          className="ms-2"
           onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
         >
           Tiếp
-        </button>
+        </Button>
       </div>
     </div>
   );

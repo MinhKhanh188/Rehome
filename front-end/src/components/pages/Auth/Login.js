@@ -44,8 +44,13 @@ export default function Login() {
       localStorage.setItem(NAME_CONFIG.TOKEN, token);
       setLocalError(null);
       if (user && token) {
+      // Kiểm tra quyền admin
+      if (user.isAdmin) {
+        navigate('/admin');
+      } else {
         navigate('/');
       }
+    }
     } catch (error) {
       const message = error.response?.data?.message || "Login failed";
       setLocalError(message);
