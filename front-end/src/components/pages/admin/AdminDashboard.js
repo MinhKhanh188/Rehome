@@ -16,8 +16,9 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(API_ENDPOINTS.ADMIN_USERS);
-      setUsers(res.data);
+      const res = await axios.get(API_ENDPOINTS.GET_ALL_USERS);
+      console.log(res.data);
+      setUsers(res.data.users);
     } catch (err) {
       setUsers([]);
     }
@@ -60,12 +61,12 @@ export default function AdminDashboard() {
               {users.map(u => (
                 <tr key={u._id}>
                   <td>{u.email}</td>
-                  <td>{u.fullName}</td>
+                  <td>{u.name}</td>
                   <td>
-                    {u.banned ? <Badge bg="danger">Banned</Badge> : <Badge bg="success">Active</Badge>}
+                    {u.isVerified ? <Badge bg="danger">Banned</Badge> : <Badge bg="success">Đã kích hoạt</Badge>}
                   </td>
                   <td>
-                    {!u.banned && (
+                    {!u.isVerified && (
                       <Button size="sm" variant="danger" onClick={() => handleBanUser(u._id)}>
                         Ban
                       </Button>

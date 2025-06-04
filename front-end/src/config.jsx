@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
   // User endpoints
   GET_USER_PROFILE: `${baseUrl}/api/users/profile`,
   GET_USER_POSTS: `${baseUrl}/api/posts/getPersonalPosts`,
+  GET_ALL_USERS: `${baseUrl}/api/users/getAllUsers`,
 
   // Post endpoints
   CREATE_POST: `${baseUrl}/api/posts/createPost`,

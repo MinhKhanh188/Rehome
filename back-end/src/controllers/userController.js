@@ -99,6 +99,20 @@ class userController {
         }
     }
 
+    // GET /admin/users
+    async getAllUsers(req, res, next) {
+    try {
+        // Chỉ lấy user không phải admin
+        const users = await UserModel.find({ isAdmin: { $ne: true } }).select('-passwordHash');
+        res.status(200).json({
+            status: 200,
+            users
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
 }
 
 module.exports = new userController();
