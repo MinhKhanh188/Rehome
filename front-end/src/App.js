@@ -9,7 +9,7 @@ import Products from './components/pages/market/Products';
 import ProductDetails from './components/pages/market/ProductDetails';
 import Dashboard from './components/pages/dashboard/Dashboard';
 import AdminDashboard from './components/pages/admin/AdminDashboard';
-import AdminLogin from './components/pages/Auth/AdminLogin';
+import AdminLogin from './components/pages/admin/AdminLogin';
 
 function App() {
   return (
