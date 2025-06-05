@@ -1,7 +1,7 @@
 // front-end/src/config.js
 
 // API Configuration
-const baseUrl = 'http://localhost:9999';
+const baseUrl = 'https://rehome-backend.onrender.com';
 
 export const API_ENDPOINTS = {
   // Auth endpoints
