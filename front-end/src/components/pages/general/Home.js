@@ -305,7 +305,7 @@ export default function Home() {
             <div><span style={{fontSize: '18px'}}>Tham gia cùng hàng nghìn người dùng mua và bán các món đồ đã qua sử dụng chất lượng.</span>
             <p>Vừa nhẹ ví tiền, vừa chất vì hành tinh – mua đồ cũ chưa bao giờ "xanh" mà vẫn "chất" đến thế!</p></div>
             <div className="cta-buttons">
-              <button className="primary-btn">Bắt đầu bán hàng</button>
+              <button className="primary-btn" onClick={() => navigate('/dashboard/new-listing')}>Bắt đầu bán hàng</button>
               <button
                 className="secondary-btn"
                 onClick={() => navigate('/products')}
