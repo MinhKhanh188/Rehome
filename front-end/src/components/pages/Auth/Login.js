@@ -188,11 +188,12 @@ export default function Login() {
                 <div className="text-center mt-4">
                   <p>
                     Bạn chưa có tài khoản?{' '}
-                    <a href='/register'
+                    <span
                       className="signup-link"
+                      onClick={() => navigate('/register')}
                     >
                       Đăng ký ngay
-                    </a>
+                    </span>
                   </p>
                 </div>
               </Card.Body>

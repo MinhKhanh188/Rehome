@@ -15,14 +15,20 @@ export default function Home() {
   const navigate = useNavigate();
 
   const categories = [
-    { id: 'electronics', title: "Electronics", icon: "📱", path: "/category/electronics", description: "Phones, laptops & more" },
-    { id: 'appliances', title: "Appliances", icon: "🧺", path: "/category/appliances", description: "Home essentials" },
-    { id: 'furniture', title: "Furniture", icon: "🛋️", path: "/category/furniture", description: "Home decor" },
-    { id: 'kitchen', title: "Kitchen", icon: "🍳", path: "/category/kitchen", description: "Cookware & appliances" },
-    { id: 'decor', title: "Home Decor", icon: "🏠", path: "/category/decor", description: "Decorative items" },
-    { id: 'garden', title: "Garden", icon: "🌻", path: "/category/garden", description: "Outdoor & gardening" },
-    { id: 'lighting', title: "Lighting", icon: "💡", path: "/category/lighting", description: "Lamps & lighting" },
-    { id: 'office', title: "Office", icon: "🖊️", path: "/category/office", description: "Office furniture & supplies" },
+    { id: 'Thiết Bị Điện Tử', name: 'Thiết Bị Điện Tử', icon: '💻', path: '/thiet-bi-dien-tu', description: 'Các sản phẩm điện tử như laptop, máy tính bảng, tivi...' },
+    { id: 'Thời Trang Nam', name: 'Thời Trang Nam', icon: '👔', path: '/thoi-trang-nam', description: 'Quần áo, giày dép, phụ kiện thời trang dành cho nam giới.' },
+    { id: 'Thời Trang Nữ', name: 'Thời Trang Nữ', icon: '👗', path: '/thoi-trang-nu', description: 'Trang phục, giày dép, phụ kiện thời trang dành cho nữ giới.' },
+    { id: 'Phụ Kiện Nam', name: 'Phụ Kiện Nam', icon: '🕶️', path: '/phu-kien-nam', description: 'Phụ kiện dành cho nam như mắt kính, đồng hồ, ví da...' },
+    { id: 'Phụ Kiện Nữ', name: 'Phụ Kiện Nữ', icon: '👝', path: '/phu-kien-nu', description: 'Túi xách, trang sức, phụ kiện thời trang cho nữ.' },
+    { id: 'Điện Thoại & Phụ Kiện', name: 'Điện Thoại & Phụ Kiện', icon: '📱', path: '/dien-thoai-va-phu-kien', description: 'Điện thoại di động, ốp lưng, sạc, tai nghe và phụ kiện đi kèm.' },
+    { id: 'Thiết Bị Điện Gia Dụng', name: 'Thiết Bị Điện Gia Dụng', icon: '🔌', path: '/thiet-bi-dien-gia-dung', description: 'Thiết bị điện cho gia đình như nồi cơm điện, lò vi sóng...' },
+    { id: 'Đồ Gia Dụng', name: 'Đồ Gia Dụng', icon: '🧺', path: '/do-gia-dung', description: 'Vật dụng gia đình như chổi, xô, thùng rác, dụng cụ dọn dẹp...' },
+    { id: 'Đồ Dùng Cá Nhân', name: 'Đồ Dùng Cá Nhân', icon: '🧴', path: '/do-dung-ca-nhan', description: 'Sản phẩm chăm sóc cá nhân như bàn chải, dao cạo, dầu gội...' },
+    { id: 'Mỹ Phẩm', name: 'Mỹ Phẩm', icon: '💄', path: '/my-pham', description: 'Các sản phẩm trang điểm, chăm sóc da, dưỡng da...' },
+    { id: 'Nội Thất', name: 'Nội Thất', icon: '🛋️', path: '/noi-that', description: 'Đồ nội thất như bàn ghế, giường, tủ, kệ sách...' },
+    { id: 'Dụng Cụ Thể Thao', name: 'Dụng Cụ Thể Thao', icon: '🏀', path: '/dung-cu-the-thao', description: 'Dụng cụ luyện tập, thể thao như bóng, vợt, thảm tập...' },
+    { id: 'Giáo Dục', name: 'Giáo Dục', icon: '📚', path: '/giao-duc', description: 'Sách vở, tài liệu học tập, đồ dùng học sinh - sinh viên.' }
+
   ];
 
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -53,21 +59,21 @@ export default function Home() {
   return (
     <div className="app-container">
       <NavbarComponent />
-      
+
       <main className="main-content">
         <section className="banner-section">
           <Banner />
         </section>
-        
+
         <section className="categories-section">
           <div className="section-header">
-            <h2>Browse Categories</h2>
-            <p>Find quality secondhand items by category</p>
+            <h2>Khám phá Danh mục</h2>
+            <p>Tìm các sản phẩm đồ cũ chất lượng qua các danh mục</p>
           </div>
-          
+
           <div className="categories-grid">
             {categories.map((category) => (
-              <CategoryCard 
+              <CategoryCard
                 key={category.id}
                 title={category.title}
                 icon={<span className="category-icon">{category.icon}</span>}
@@ -77,15 +83,15 @@ export default function Home() {
             ))}
           </div>
         </section>
-        
+
         <section className="products-section">
           <div className="section-header">
             <div className="title-container">
-              <h2>Featured Items</h2>
+              <h2>Sản phẩm Nổi bật</h2>
             </div>
-            <p>Premium secondhand products from our verified sellers</p>
+            <p>Sản phẩm đồ cũ cao cấp từ những người bán đã được xác minh.</p>
           </div>
-          
+
           <div className="products-grid">
             {featuredProducts.map((product) => (
               <div
@@ -105,13 +111,13 @@ export default function Home() {
             ))}
           </div>
         </section>
-        
+
         <section className="products-section">
           <div className="section-header">
-            <h2>Recently Added</h2>
-            <p>The latest secondhand items that just arrived</p>
+            <h2>Mới thêm gần đây</h2>
+            <p>Những món đồ cũ được thêm gần đây</p>
           </div>
-          
+
           <div className="products-grid">
             {recentProducts.map((product) => (
               <div
@@ -134,184 +140,183 @@ export default function Home() {
 
         {/* Environmental Benefits Section */}
         <section className="environmental-benefits py-5 bg-white">
-        <Container>
-          <div className="text-center mb-5">
-            <h2 className="benefits-title mb-3">Why Choose Secondhand?</h2>
-            <p className="benefits-text mx-auto">
-              Every garment you buy secondhand helps create a more sustainable future. Here's how your choices make an impact:
-            </p>
-          </div>
-
-          <Row className="g-4">
-            <Col md={4}>
-              <Card className="benefit-card text-center">
-                <Card.Body>
-                  <div className="icon-circle mx-auto mb-4">
-                    <Leaf className="benefit-icon" size={28} />
-                  </div>
-                  <h3 className="benefit-card-title mb-3">Reduces Waste</h3>
-                  <Card.Text className="benefit-card-text">
-                    Extends the lifecycle of clothing items that would otherwise end up in landfills, reducing textile waste.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col md={4}>
-              <Card className="benefit-card text-center">
-                <Card.Body>
-                  <div className="icon-circle mx-auto mb-4">
-                    <Recycle className="benefit-icon" size={28} />
-                  </div>
-                  <h3 className="benefit-card-title mb-3">Saves Resources</h3>
-                  <Card.Text className="benefit-card-text">
-                    Each secondhand purchase saves thousands of liters of water and reduces carbon emissions from new clothing production.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col md={4}>
-              <Card className="benefit-card text-center">
-                <Card.Body>
-                  <div className="icon-circle mx-auto mb-4">
-                    <ShieldCheck className="benefit-icon" size={28} />
-                  </div>
-                  <h3 className="benefit-card-title mb-3">Ethical Shopping</h3>
-                  <Card.Text className="benefit-card-text">
-                    Support a circular economy and reduce the demand for fast fashion's often and unethical production practices.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-      {/* Quality Assurance Section */}
-      <section className="quality-assurance py-5">
-        <Container>
-          <Row className="align-items-center g-5">
-            <Col md={6}>
-              <h2 className="quality-title mb-4">Our Quality Promise</h2>
-              <p className="quality-text mb-4">
-                Every item on Re:Wear goes through our meticulous quality assurance process. We carefully inspect, clean, and authenticate each piece to ensure you receive only the best secondhand items.
+          <Container>
+            <div className="text-center mb-5">
+              <h2 className="benefits-title mb-3">Tại sao nên chọn đồ cũ?</h2>
+              <p className="benefits-text mx-auto">
+                Mỗi món đồ bạn mua lại đều góp phần xây dựng một tương lai bền vững hơn. Đây là cách các lựa chọn của bạn tạo ra sự ảnh hưởng:
               </p>
-              
-              <ul className="quality-list">
-                <li className="d-flex align-items-start mb-3">
-                  <CheckCircle className="quality-icon me-3" size={20} />
-                  <span>
-                    <strong>Thorough Inspection:</strong> Each item is carefully examined for any damage or wear.
-                  </span>
-                </li>
-                <li className="d-flex align-items-start mb-3">
-                  <CheckCircle className="quality-icon me-3" size={20} />
-                  <span>
-                    <strong>Professional Cleaning:</strong> All items are professionally cleaned and sanitized.
-                  </span>
-                </li>
-                <li className="d-flex align-items-start mb-3">
-                  <CheckCircle className="quality-icon me-3" size={20} />
-                  <span>
-                    <strong>Condition Rating:</strong> Every piece receives a transparent condition rating.
-                  </span>
-                </li>
-                <li className="d-flex align-items-start">
-                  <CheckCircle className="quality-icon me-3" size={20} />
-                  <span>
-                    <strong>Authenticity Verification:</strong> Brand name items are authenticated to ensure genuineness.
-                  </span>
-                </li>
-              </ul>
-            </Col>
+            </div>
 
-            <Col md={6}>
-              <Card className="quality-image-card shadow">
-                <Card.Body className="p-1">
-                  <div className="image-placeholder rounded">
-                    <div className="text-center p-5">
-                      <div className="icon-circle-large mx-auto mb-4">
-                        <ShieldCheck className="benefit-icon" size={36} />
-                      </div>
-                      <p className="placeholder-text">Quality Assurance Image Placeholder</p>
+            <Row className="g-4">
+              <Col md={4}>
+                <Card className="benefit-card text-center">
+                  <Card.Body>
+                    <div className="icon-circle mx-auto mb-4">
+                      <Leaf className="benefit-icon" size={28} />
                     </div>
+                    <h3 className="benefit-card-title mb-3">Giảm lượng rác thải ra môi trường</h3>
+                    <Card.Text className="benefit-card-text">
+                      Kéo dài vòng đời của sản phẩm vốn có thể bị thải ra bãi rác, giúp giảm lượng rác thải ngoài môi trường.
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col md={4}>
+                <Card className="benefit-card text-center">
+                  <Card.Body>
+                    <div className="icon-circle mx-auto mb-4">
+                      <Recycle className="benefit-icon" size={28} />
+                    </div>
+                    <h3 className="benefit-card-title mb-3">Tiết kiệm tài nguyên và năng lượng</h3>
+                    <Card.Text className="benefit-card-text">
+                      Mỗi lần mua đồ cũ giúp tiết kiệm hàng nghìn lít nước và giảm lượng khí thải carbon từ quá trình sản xuất sản phẩm mới.
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col md={4}>
+                <Card className="benefit-card text-center">
+                  <Card.Body>
+                    <div className="icon-circle mx-auto mb-4">
+                      <ShieldCheck className="benefit-icon" size={28} />
+                    </div>
+                    <h3 className="benefit-card-title mb-3">Lựa chọn mua sắm có đạo đức hơn</h3>
+                    <Card.Text className="benefit-card-text">
+                      Hỗ trợ nền kinh tế tuần hoàn và xây dựng một lối sống tiêu dùng có trách nhiệm hơn.
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+
+        {/* Quality Assurance Section */}
+        <section className="quality-assurance py-5">
+          <Container>
+            <Row className="align-items-center g-5">
+              <Col md={6}>
+                <h2 className="quality-title mb-4">Cam Kết Chất Lượng Của Chúng Tôi</h2>
+                <p className="quality-text mb-4">
+                  Mỗi sản phẩm trên Re-Home đều trải qua quy trình đảm bảo chất lượng tỉ mỉ của chúng tôi để đảm bảo bạn chỉ nhận được những sản phẩm đã qua sử dụng tốt nhất.
+                </p>
+
+                <ul className="quality-list">
+                  <li className="d-flex align-items-start mb-3">
+                    <CheckCircle className="quality-icon me-3" size={20} />
+                    <span>
+                      <strong>Kiểm Tra Kỹ Lưỡng:</strong> Mỗi sản phẩm được kiểm tra cẩn thận để phát hiện bất kỳ hư hỏng hoặc hao mòn nào.
+                    </span>
+                  </li>
+                  <li className="d-flex align-items-start mb-3">
+                    <CheckCircle className="quality-icon me-3" size={20} />
+                    <span>
+                      <strong>Vệ Sinh Chuyên Nghiệp:</strong> Tất cả sản phẩm được vệ sinh và khử trùng một cách chuyên nghiệp.
+                    </span>
+                  </li>
+                  <li className="d-flex align-items-start mb-3">
+                    <CheckCircle className="quality-icon me-3" size={20} />
+                    <span>
+                      <strong>Đánh Giá Tình Trạng:</strong> Mỗi sản phẩm đều nhận được đánh giá tình trạng minh bạch.
+                    </span>
+                  </li>
+                  <li className="d-flex align-items-start">
+                    <CheckCircle className="quality-icon me-3" size={20} />
+                    <span>
+                      <strong>Xác Minh Tính Chính Hãng:</strong> Các sản phẩm thương hiệu được xác thực để đảm bảo tính chính hãng.
+                    </span>
+                  </li>
+                </ul>
+              </Col>
+
+              <Col md={6}>
+                <Card className="quality-image-card shadow">
+                  <Card.Body className="p-1">
+                    <div className="image-placeholder rounded">
+                      <div className="text-center p-5">
+                        <div className="icon-circle-large mx-auto mb-4">
+                          <ShieldCheck className="benefit-icon" size={36} />
+                        </div>
+                        <p className="placeholder-text">Hình Ảnh Minh Họa Đảm Bảo Chất Lượng</p>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        {/* How It Works Section */}
+        <section className="how-it-works py-5 bg-white">
+          <Container>
+            <div className="text-center mb-5">
+              <h2 className="how-it-works-title mb-3">Re-Home hoạt động như thế nào</h2>
+              <p className="how-it-works-text mx-auto">
+                Khám phá quy trình đơn giản để tìm kiếm những món đồ cũ chất lượng và tiết kiệm.
+              </p>
+            </div>
+
+            <Row className="g-4 position-relative">
+              <Col md={4}>
+                <div className="step-item text-center text-md-start">
+                  <div className="step-number mb-4">
+                    <span>1</span>
                   </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-      {/* How It Works Section */}
-      <section className="how-it-works py-5 bg-white">
-        <Container>
-          <div className="text-center mb-5">
-            <h2 className="how-it-works-title mb-3">How Re-Home Works</h2>
-            <p className="how-it-works-text mx-auto">
-              Discover the simple process of finding sustainable fashion treasures.
-            </p>
-          </div>
-
-          <Row className="g-4 position-relative">
-            <Col md={4}>
-              <div className="step-item text-center text-md-start">
-                <div className="step-number mb-4">
-                  <span>1</span>
+                  <h3 className="step-title mb-3">Duyệt Qua Các Danh Mục Của Chúng Tôi</h3>
+                  <p className="step-text">
+                    Khám phá các danh mục với đa dạng sản phẩm đã qua sử dụng chất lượng cao bao gồm thiết bị điện tử, đồ gia dụng, dụng cụ nhà bếp và nhiều danh mục khác.
+                  </p>
                 </div>
-                <h3 className="step-title mb-3">Browse Our Collection</h3>
-                <p className="step-text">
-                  Explore our carefully curated collection of high-quality secondhand clothing items across various categories and styles.
-                </p>
-              </div>
-            </Col>
+              </Col>
 
-            <Col md={4}>
-              <div className="step-item text-center text-md-start">
-                <div className="step-number mb-4">
-                  <span>2</span>
+              <Col md={4}>
+                <div className="step-item text-center text-md-start">
+                  <div className="step-number mb-4">
+                    <span>2</span>
+                  </div>
+                  <h3 className="step-title mb-3">Tìm Sản Phẩm Hoàn Hảo Cho Bạn</h3>
+                  <p className="step-text">
+                    Sử dụng mô tả chi tiết, thông tin kỹ thuật và đánh giá tình trạng của chúng tôi để tìm những sản phẩm phù hợp với nhu cầu và mong đợi của bạn.
+                  </p>
                 </div>
-                <h3 className="step-title mb-3">Find Your Perfect Match</h3>
-                <p className="step-text">
-                  Use our detailed descriptions, sizing information, and condition ratings to find items that match your style and expectations.
-                </p>
-              </div>
-            </Col>
+              </Col>
 
-            <Col md={4}>
-              <div className="step-item text-center text-md-start">
-                <div className="step-number mb-4">
-                  <span>3</span>
+              <Col md={4}>
+                <div className="step-item text-center text-md-start">
+                  <div className="step-number mb-4">
+                    <span>3</span>
+                  </div>
+                  <h3 className="step-title mb-3">Giao Hàng Bền Vững</h3>
+                  <p className="step-text">
+                    Nhận sản phẩm của bạn với bao bì thân thiện với môi trường, và bắt đầu tận hưởng những sản phẩm chất lượng với giá cả hợp lý và thân thiện với môi trường.
+                  </p>
                 </div>
-                <h3 className="step-title mb-3">Sustainable Delivery</h3>
-                <p className="step-text">
-                  Receive your items with our eco-friendly packaging, and start enjoying sustainable fashion that looks good and feels good.
-                </p>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-        
+              </Col>
+            </Row>
+          </Container>
+        </section>
+
         <section className="cta-section">
           <div className="cta-content">
-            <h2>Ready to give your items a second life?</h2>
-            <p>Join thousands of users who buy and sell quality secondhand items. 
-              It's good for your wallet and better for the planet.</p>
+            <h2>Sẵn sàng cho món đồ của bạn một cuộc sống thứ hai?</h2>
+            <div><span style={{fontSize: '18px'}}>Tham gia cùng hàng nghìn người dùng mua và bán các món đồ đã qua sử dụng chất lượng.</span>
+            <p>Vừa nhẹ ví tiền, vừa chất vì hành tinh – mua đồ cũ chưa bao giờ "xanh" mà vẫn "chất" đến thế!</p></div>
             <div className="cta-buttons">
-              <button className="primary-btn">Start Selling</button>
-              <button 
+              <button className="primary-btn">Bắt đầu bán hàng</button>
+              <button
                 className="secondary-btn"
                 onClick={() => navigate('/products')}
               >
-                Browse Items
+                Mua sắm ngay
               </button>
             </div>
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

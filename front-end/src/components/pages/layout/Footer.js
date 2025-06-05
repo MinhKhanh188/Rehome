@@ -6,7 +6,7 @@ import '../../css/Footer.css';
 export const Footer = () => {
   const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
-  
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -16,36 +16,36 @@ export const Footer = () => {
               <img src="/images/logo.png" alt="Re-Home Logo" className="footer-logo" />
             </h2>
             <p>
-              Your marketplace for quality secondhand electronics, appliances, and furniture.
+              Thị trường của bạn dành cho các thiết bị điện tử, đồ gia dụng, nội thất,... đã qua sử dụng chất lượng.
             </p>
           </div>
-          
+
           <div className="footer-section">
-            <h3>Quick Links</h3>
+            <h3>Liên Kết Nhanh</h3>
             <ul>
-              <li><span onClick={() => navigate('/')}>Home</span></li>
-              <li><span onClick={() => navigate('/shop')}>Shop</span></li>
-              <li><span onClick={() => navigate('/about')}>About Us</span></li>
-              <li><span onClick={() => navigate('/contact')}>Contact</span></li>
+              <li><span onClick={() => navigate('/')}>Trang Chủ</span></li>
+              <li><span onClick={() => navigate('/shop')}>Cửa Hàng</span></li>
+              <li><span onClick={() => navigate('/about')}>Về Chúng Tôi</span></li>
+              <li><span onClick={() => navigate('/contact')}>Liên Hệ</span></li>
             </ul>
           </div>
-          
+
           <div className="footer-section">
-            <h3>Categories</h3>
+            <h3>Danh Mục</h3>
             <ul>
-              <li><span onClick={() => navigate('/category/electronics')}>Electronics</span></li>
-              <li><span onClick={() => navigate('/category/appliances')}>Home Appliances</span></li>
-              <li><span onClick={() => navigate('/category/furniture')}>Furniture</span></li>
+              <li><span onClick={() => navigate('/category/electronics')}>Thiết Bị Điện Tử</span></li>
+              <li><span onClick={() => navigate('/category/appliances')}>Đồ Gia Dụng</span></li>
+              <li><span onClick={() => navigate('/category/furniture')}>Nội Thất</span></li>
             </ul>
           </div>
-          
+
           <div className="footer-section">
-            <h3>Contact Us</h3>
+            <h3>Liên hệ với chúng tôi</h3>
             <ul>
               <li><a href="mailto:info@rehome.com">info@rehome.com</a></li>
               <li><a href="tel:+123456789">+1 (234) 567-89</a></li>
             </ul>
-            
+
             <div className="social-links">
               <a href="/facebook.com">
                 <svg xmlns="http://www.w3.org/2000/svg" className="social-icon" fill="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@ export const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="footer-bottom">
           <p>© {currentYear} RE-HOME. All rights reserved.</p>
         </div>

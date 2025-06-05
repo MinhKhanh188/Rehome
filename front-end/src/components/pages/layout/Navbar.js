@@ -108,7 +108,7 @@ export const NavbarComponent = () => {
 
   return (
     <Navbar bg="light" expand="md" className="custom-navbar">
-      <Container fluid className="px-4" style={{ maxWidth: '65%' }}>
+      <Container fluid className="px-4" style={{ /*maxWidth: '65%',*/ paddingLeft: 0, paddingRight: 0 }}>
         <Navbar.Brand onClick={() => navigate('/')} className="logo-text">
           <img src="/images/logo.png" alt="Logo" />
         </Navbar.Brand>

@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import '../../css/Banner.css';
 
 export const Banner = ({
-  title = 'Give Your Items a Second Life',
-  subtitle = 'Buy and sell quality secondhand electronics, appliances, and furniture',
+  // title = 'Give Your Items a Second Life',
+  // subtitle = 'Buy and sell quality secondhand electronics, appliances, and furniture',
   ctaText = 'Start Browsing',
   ctaLink = '/products',
-  backgroundImage
+  backgroundImage = '/images/banner2.png'
 }) => {
   const navigate = useNavigate();
   
@@ -22,19 +22,21 @@ export const Banner = ({
         className="banner-content"
         style={backgroundImage ? { 
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundColor: '#f0f4f8',
         } : {}}
       >
         <div className="banner-text">
-          <h1>{title}</h1>
+          {/* <h1>{title}</h1>
           <p>{subtitle}</p>
           <button 
             className="banner-btn"
             onClick={() => navigate(ctaLink)}
           >
             {ctaText}
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
