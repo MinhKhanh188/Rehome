@@ -6,8 +6,6 @@ front-end/node_modules/
 #back-end/
 #front-end/
 
-# Ignore build folder for frontend
-front-end/build/
 
 # General ignore rules for misc files and logs
 **/.DS_Store
