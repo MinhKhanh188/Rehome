@@ -28,10 +28,15 @@ function App() {
         <Route path="/please-login-first" element={<PleaseLoginFirst />} />
         <Route path="/reset-password/:email" element={<ResetPassword />} />
 
-        {/* ✅ Verified User Routes */}
-        <Route element={<ProtectedLayout verifiedOnly={true} />}>
+        {/* Protected Routes */}
+        <Route element={<ProtectedLayout />}>
           <Route path="/products/product-details/" element={<ProductDetails />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
+          {/* Add more protected routes here */}  
+        </Route>
+
+        {/* ✅ Verified User Routes */}
+        <Route element={<ProtectedLayout verifiedOnly={true} />}>
           {/* Add more verified-only routes here */}
         </Route>
 
