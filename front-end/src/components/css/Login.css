@@ -133,6 +133,7 @@
   
   .signup-link {
     color: orange;
+    cursor: pointer;
     text-decoration: none;
     font-weight: 500;
   }

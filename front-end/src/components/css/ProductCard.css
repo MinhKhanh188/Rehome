@@ -20,7 +20,7 @@
   .vip-badge {
     position: absolute;
     top: 8px;
-    right: 8px;
+    left: 4px;
     background-color: #f97316;
     color: white;
     font-size: 12px;
@@ -89,7 +89,7 @@
     border-radius: 50%;
     color: #f97316;
     font-size: 1.2rem;
-    padding: 5px 8px 5px 8px;
+    padding: 3px 8px 5px 8px;
     box-shadow: 0 2px 8px rgba(249, 115, 22, 0.08);
     cursor: pointer;
     z-index: 2;

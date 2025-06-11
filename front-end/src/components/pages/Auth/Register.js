@@ -159,27 +159,27 @@ const handleSubmit = async (e) => {
                     </div>
                     {passwordFocus && (
                       <div className="password-requirements mt-2">
-                        <p>Password must have:</p>
+                        <p>Mật khẩu phải có:</p>
                         <div className="requirements-grid">
                           <div className={hasMinLength ? 'valid' : ''}>
                             {hasMinLength ? <Check size={12} /> : <X size={12} />}
-                            At least 8 characters
+                            Ít nhất 8 ký tự
                           </div>
                           <div className={hasUpperCase ? 'valid' : ''}>
                             {hasUpperCase ? <Check size={12} /> : <X size={12} />}
-                            One uppercase letter
+                            Một ký tự viết hoa
                           </div>
                           <div className={hasLowerCase ? 'valid' : ''}>
                             {hasLowerCase ? <Check size={12} /> : <X size={12} />}
-                            One lowercase letter
+                            Một ký tự viết thường
                           </div>
                           <div className={hasNumber ? 'valid' : ''}>
                             {hasNumber ? <Check size={12} /> : <X size={12} />}
-                            One number
+                            Một chữ số
                           </div>
                           <div className={hasSpecialChar ? 'valid' : ''}>
                             {hasSpecialChar ? <Check size={12} /> : <X size={12} />}
-                            One special character
+                            Một ký tự đặc biệt
                           </div>
                         </div>
                       </div>
@@ -208,11 +208,11 @@ const handleSubmit = async (e) => {
                       <div className={`mt-1 ${passwordsMatch ? 'valid' : 'invalid'}`}>
                         {passwordsMatch ? (
                           <>
-                            <Check size={12} /> Passwords match
+                            <Check size={12} /> Mật khẩu khớp
                           </>
                         ) : (
                           <>
-                            <X size={12} /> Passwords do not match
+                            <X size={12} /> Mật khẩu không khớp
                           </>
                         )}
                       </div>
@@ -226,9 +226,10 @@ const handleSubmit = async (e) => {
                       label={
                         <>
                           Tôi đồng ý với{' '}
-                          <a href="#" className="terms-link">Terms of Service</a>
+                          <a href="#" className="terms-link">Điều khoản dịch vụ</a>
                           {' '}và{' '}
-                          <a href="#" className="terms-link">Privacy Policy</a>
+                          <a href="#" className="terms-link">Chính sách bảo mật</a>
+                          {' '}của Re-Home
                         </>
                       }
                     />

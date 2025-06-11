@@ -15,7 +15,7 @@ export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = fal
   return (
     <div 
       className={`product-card ${isVip ? 'vip' : ''}`}
-      onClick={() => navigate(`/product?id=${id}`)}
+      onClick={() => navigate(`/products`)}
     >
       {/* Nút yêu thích */}
       <button

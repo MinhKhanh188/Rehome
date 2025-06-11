@@ -143,21 +143,75 @@
   }
   
   @media (max-width: 767px) {
-    .auth-section {
-      flex-direction: column; /* Đặt avatar và username theo cột */
-      align-items: flex-start;
-      gap: 10px;
-    }
-  
-    .nav-link {
-      margin: 10px 0;
+    .custom-navbar {
+      padding: 0 !important;
+      min-height: 56px;
     }
 
-    .profile-btn {
-      justify-content: flex-start; /* Căn trái avatar và username */
+    .custom-navbar .logo-text img {
+      height: 32px;
+    }
+
+    .custom-navbar .logo-text {
+      font-size: 18px;
+      padding-left: 0;
+    }
+
+    .nav-link {
+      margin: 8px 0;
+      font-size: 16px;
+      padding: 8px 0 !important;
+      text-align: left;
+    }
+
+    .navbar-collapse {
+      padding: 0 8px;
+      background: #fff;
+    }
+
+    .province-search-wrapper {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      margin: 12px 0 0 0 !important;
+    }
+
+    .province-search-input {
+      font-size: 15px;
+      padding: 8px 12px !important;
+      border-radius: 14px !important;
+    }
+
+    .auth-section {
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 10px !important;
+      margin-top: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .profile-btn, .login-btn, .signup-btn-deco {
+      font-size: 15px !important;
+      padding: 6px 12px !important;
+    }
+
+    .dropdown-menu {
+      min-width: 140px !important;
+      font-size: 15px;
     }
   }
-  
+
+  /* Đảm bảo container không bị bó hẹp trên mobile */
+@media (max-width: 991px) {
+  .custom-navbar .container,
+  .custom-navbar .container-fluid {
+    max-width: 100% !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+}
+
   @keyframes spin {
     to {
       transform: rotate(360deg);
