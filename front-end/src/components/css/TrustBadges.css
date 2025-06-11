@@ -13,25 +13,25 @@
 }
 
 .badge-icon {
-  width: 2rem ;
-  height: 2rem ;
-  flex-shrink: 0;
+  width: 2rem !important; ;
+  height: 2rem !important; ;
+  flex-shrink: 0 !important;
 }
 
 .shield-icon {
-  color: #ff9500;
+  color: #ff9500 !important;
 }
 
 .check-icon {
-  color: #22c55e;
+  color: #22c55e !important;
 }
 
 .rotate-icon {
-  color: #f97316;
+  color: #f97316 !important;
 }
 
 .thumbs-icon {
-  color: #3b82f6;
+  color: #3b82f6 !important;
 }
 
 .badge-title {

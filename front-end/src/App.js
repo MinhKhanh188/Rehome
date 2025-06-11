@@ -13,6 +13,7 @@ import AdminLogin from './components/pages/admin/AdminLogin';
 import ProtectedLayout from './components/utils/ProtectedLayout';
 import PleaseLoginFirst from './components/pages/general/PleaseLoginFirst';
 import ResetPassword from './components/pages/Auth/ResetPassword';
+import Payment from './components/pages/Payment';
 
 function App() {
   return (
@@ -24,6 +25,13 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/products/product-details/" element={<ProductDetails />} />
+        <Route path="/payment" element={<Payment />} />
+
+        {/* 🛠️ Single entry for all dashboard routes */}
+        <Route path="/dashboard/*" element={<Dashboard />} />
+        {/* 🛠️ Single entry for all admin routes */}
+        <Route path="/admin/*" element={<AdminDashboard />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/please-login-first" element={<PleaseLoginFirst />} />
         <Route path="/reset-password/:email" element={<ResetPassword />} />

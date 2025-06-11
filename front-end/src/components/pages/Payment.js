@@ -2,34 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, Spinner } from 'react-bootstrap';
 import { ShieldCheck, CreditCard, ArrowLeft, Check, Truck } from 'lucide-react';
-import { NavbarComponent } from './Navbar';
-import { Footer } from './Footer';
+import { NavbarComponent } from './layout/Navbar';
+import { Footer } from './layout/Footer';
+import { API_ENDPOINTS, NAME_CONFIG } from '../../config'; // Thêm dòng này
+import axios from 'axios'; // Thêm dòng này
 import '../css/Payment.css';
-
-// Mock product data (replacing mockProducts from utils)
-const products = [
-  {
-    id: 1,
-    title: 'iPhone 13 Pro 256GB - Graphite',
-    price: 799.99,
-    imageUrl: 'https://images.unsplash.com/photo-1630691711598-5c9f4f37f4e6',
-    condition: 'Like New',
-  },
-  {
-    id: 2,
-    title: 'Samsung Galaxy S22 Ultra',
-    price: 699.99,
-    imageUrl: 'https://images.unsplash.com/photo-1642053551054-8d60215e1518',
-    condition: 'Excellent',
-  },
-  {
-    id: 3,
-    title: 'MacBook Pro 14" M1 Pro',
-    price: 1499.99,
-    imageUrl: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45',
-    condition: 'Very Good',
-  },
-];
 
 export default function Payment() {
   const location = useLocation();
@@ -73,7 +50,7 @@ export default function Payment() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
-  // Load product details
+  // Load product details từ API
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const productId = params.get('id');
@@ -86,10 +63,19 @@ export default function Payment() {
     const loadProduct = async () => {
       setLoading(true);
       try {
-        const foundProduct = products.find((p) => p.id === Number(productId));
-        if (foundProduct) {
-          setProduct(foundProduct);
-          const subtotal = foundProduct.price;
+        const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+        const { data } = await axios.get(`${API_ENDPOINTS.GET_POST_DETAIL_BY_ID}/${productId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (data) {
+          setProduct({
+            ...data,
+            title: data.name || data.title,
+            imageUrl: data.images?.[0] || '',
+            condition: data.productStatus,
+            price: data.price,
+          });
+          const subtotal = data.price;
           const shipping = 15;
           const tax = subtotal * 0.1;
           const total = subtotal + shipping + tax;
@@ -99,6 +85,7 @@ export default function Payment() {
         }
       } catch (error) {
         console.error('Error loading product:', error);
+        navigate('/products');
       } finally {
         setLoading(false);
       }
@@ -515,6 +502,43 @@ export default function Payment() {
                         <p>{errors.payment}</p>
                       </div>
                     )}
+                    <Form.Group className="mt-3">
+                      <Form.Check
+                        type="radio"
+                        id="qr-code"
+                        label={
+                          <span className="d-flex align-items-center">
+                            <svg className="payment-icon me-2" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                              <rect x="3" y="3" width="6" height="6" stroke="#0ea5e9" strokeWidth="2" />
+                              <rect x="15" y="3" width="6" height="6" stroke="#0ea5e9" strokeWidth="2" />
+                              <rect x="3" y="15" width="6" height="6" stroke="#0ea5e9" strokeWidth="2" />
+                              <rect x="10" y="10" width="4" height="4" stroke="#0ea5e9" strokeWidth="2" />
+                              <rect x="15" y="15" width="6" height="6" stroke="#0ea5e9" strokeWidth="2" />
+                            </svg>
+                            QR Code (Momo, VietQR, v.v.)
+                          </span>
+                        }
+                        checked={paymentMethod === 'qr-code'}
+                        onChange={() => setPaymentMethod('qr-code')}
+                      />
+                    </Form.Group>
+                    {paymentMethod === 'qr-code' && (
+                      <div className="qr-payment-info text-center py-3">
+                        <p className="mb-2 text-muted">Quét mã QR để thanh toán bằng ứng dụng ngân hàng hoặc ví điện tử:</p>
+                        <img
+                          src="/images/qr.jpg"
+                          alt="QR Code"
+                          style={{ width: 180, height: 180, objectFit: 'contain', background: '#fff', border: '1px solid #eee', borderRadius: 8 }}
+                        />
+                        <div className="mt-2 small text-muted">Vui lòng nhập nội dung: <b>Thanh toán đơn hàng #{product._id?.slice(-5)}</b></div>
+                      </div>
+                    )}
+
+                    {errors.payment && (
+                      <div className="payment-error">
+                        <p>{errors.payment}</p>
+                      </div>
+                    )}
                   </Card.Body>
                 </Card>
 
@@ -543,30 +567,34 @@ export default function Payment() {
                         src={product.imageUrl}
                         alt={product.title}
                         className="product-image"
+                      // style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 8, background: '#f8fafc' }} // Sửa objectFit thành 'contain'
+
                       />
                     </div>
                     <div className="product-details">
                       <h3 className="product-title">{product.title}</h3>
-                      <div className="product-condition">Condition: {product.condition}</div>
-                      <div className="product-price">${product.price.toFixed(2)}</div>
+                      <div className="product-condition">Tình trạng: {product.condition}</div>
+                      <div className="product-price">
+                        {product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                      </div>
                     </div>
                   </div>
                   <div className="price-breakdown">
                     <div className="price-item">
-                      <span>Subtotal</span>
-                      <span>${orderSummary.subtotal.toFixed(2)}</span>
+                      <span>Tạm tính</span>
+                      <span>{orderSummary.subtotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
                     </div>
                     <div className="price-item">
-                      <span>Shipping</span>
-                      <span>${orderSummary.shipping.toFixed(2)}</span>
+                      <span>Phí vận chuyển</span>
+                      <span>{orderSummary.shipping.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
                     </div>
                     <div className="price-item">
-                      <span>Tax (10%)</span>
-                      <span>${orderSummary.tax.toFixed(2)}</span>
+                      <span>Thuế (10%)</span>
+                      <span>{orderSummary.tax.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
                     </div>
                     <div className="price-total">
-                      <span>Total</span>
-                      <span>${orderSummary.total.toFixed(2)}</span>
+                      <span>Tổng cộng</span>
+                      <span>{orderSummary.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
                     </div>
                   </div>
                   <div className="delivery-info">
@@ -598,7 +626,7 @@ export default function Payment() {
                     >
                       {isProcessingPayment
                         ? 'Processing Payment...'
-                        : `Pay $${orderSummary.total.toFixed(2)}`}
+                        : `Thanh toán ${orderSummary.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`}
                     </Button>
                   </div>
                 </Card.Body>
