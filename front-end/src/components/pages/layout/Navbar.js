@@ -72,6 +72,7 @@ export const NavbarComponent = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem(NAME_CONFIG.USER);
+    localStorage.removeItem(NAME_CONFIG.TOKEN);
     setIsLoggedIn(false);
     setUser(null);
     navigate('/');

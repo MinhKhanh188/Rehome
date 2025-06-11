@@ -1,4 +1,7 @@
+// front-end/src/components/pages/Auth/ForgotPassword.js
 import React, { useState } from 'react';
+import axios from 'axios';
+import { API_ENDPOINTS } from '../../../config';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
@@ -13,21 +16,28 @@ export default function ForgotPassword() {
   const [localError, setLocalError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLocalError(null);
     setLoading(true);
 
-    // Simulate sending reset email
-    setTimeout(() => {
+    try {
+      const res = await axios.post(API_ENDPOINTS.FORGOT_PASSWORD, { email });
+
+      console.log(res.data.message); // optional log
+      navigate(`/reset-password/${encodeURIComponent(email)}`);
+    } catch (err) {
+      setLocalError(err.response?.data?.message || 'Đã xảy ra lỗi.');
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-    }, 1000);
+    }
   };
+
+
 
   return (
     <div className="forgot-password-page">
-      <NavbarComponent/>
+      <NavbarComponent />
       <Container className="py-5">
         <Row className="justify-content-center">
           <Col md={6} lg={5}>
@@ -36,7 +46,7 @@ export default function ForgotPassword() {
                 {submitted ? (
                   <div className="text-center">
                     <CheckCircle className="mx-auto mb-4" size={48} color="#89b96e" />
-                    <h2 className="forgot-password-title mb-2">Check your email</h2>
+                    <h2 className="forgot-password-title mb-2">Password reset email sent</h2>
                     <p className="forgot-password-text mb-4">
                       We've sent a password reset link to <span className="email-text">{email}</span>.
                       Please check your inbox and follow the instructions to reset your password.
@@ -67,9 +77,9 @@ export default function ForgotPassword() {
                 ) : (
                   <>
                     <div className="text-center mb-4">
-                      <h2 className="forgot-password-title">Reset your password</h2>
+                      <h2 className="forgot-password-title">Quên Mật Khẩu</h2>
                       <p className="forgot-password-subtitle">
-                        Enter your email address and we'll send you a link to reset your password
+                        Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn một liên kết để đặt lại mật khẩu
                       </p>
                     </div>
 
@@ -81,10 +91,10 @@ export default function ForgotPassword() {
                       )}
 
                       <Form.Group className="mb-4" controlId="email">
-                        <Form.Label>Email address</Form.Label>
+                        <Form.Label>Địa chỉ email</Form.Label>
                         <Form.Control
                           type="email"
-                          placeholder="you@example.com"
+                          placeholder="Ví dụ: khanhdz123@gmail.com"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
@@ -97,7 +107,7 @@ export default function ForgotPassword() {
                         className="w-100 mb-4 send-reset-btt"
                         disabled={loading || !email}
                       >
-                        {loading ? 'Sending...' : 'Send reset link'}
+                        {loading ? 'Sending...' : 'Gửi liên kết đặt lại'}
                       </Button>
                     </Form>
 
@@ -108,7 +118,7 @@ export default function ForgotPassword() {
                         onClick={() => navigate('/login')}
                       >
                         <ArrowLeft size={16} className="me-1" />
-                        Back to login
+                        Quay lại đăng nhập
                       </Button>
                     </div>
                   </>
@@ -118,7 +128,7 @@ export default function ForgotPassword() {
           </Col>
         </Row>
       </Container>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

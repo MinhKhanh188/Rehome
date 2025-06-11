@@ -8,5 +8,7 @@ router.get('/profile', authMiddleware, userController.getUserProfile);
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/getAllUsers', authMiddleware(true), userController.getAllUsers);
+router.post('/forgotPassword', userController.forgotPassword);
+router.post('/resetPassword', userController.resetPassword);
 
 module.exports = router;

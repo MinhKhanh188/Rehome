@@ -1,3 +1,4 @@
+// front-end/src/components/pages/Auth/Register.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
@@ -36,15 +37,15 @@ const handleSubmit = async (e) => {
   setLocalError(null);
 
   if (!hasMinLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-    setLocalError('Please ensure your password meets all requirements.');
+    setLocalError('Xin vui lòng đảm bảo mật khẩu của bạn đáp ứng tất cả các yêu cầu.');
     return;
   }
 
   if (!passwordsMatch) {
-    setLocalError('Passwords do not match.');
+    setLocalError('Mật khẩu không khớp.');
     return;
   }
-
+  
   try {
     setLoading(true);
     const payload = {
@@ -63,10 +64,10 @@ const handleSubmit = async (e) => {
     if (user && token) {
       navigate('/');
     } else {
-      setLocalError('Registration failed. Please try again.');
+      setLocalError('Đăng ký không thành công. Vui lòng thử lại.');
     }
   } catch (err) {
-    const msg = err.response?.data?.message || 'Registration error. Please check your input.';
+    const msg = err.response?.data?.message || 'Lỗi đăng ký. Vui lòng kiểm tra thông tin của bạn.';
     setLocalError(msg);
   } finally {
     setLoading(false);

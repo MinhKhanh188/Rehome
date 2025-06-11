@@ -24,7 +24,9 @@
         "mongoose": "^8.14.2",
         "morgan": "^1.10.0",
         "multer": "^1.4.5-lts.2",
-        "ReHome": "file:"
+        "nodemailer": "^7.0.3",
+        "ReHome": "file:",
+        "resend": "^4.5.2"
     },
     "devDependencies": {
         "dotenv": "^16.5.0",

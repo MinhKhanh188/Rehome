@@ -10,7 +10,9 @@ const userSchema = new mongoose.Schema({
   facebookUrl: { type: String },
   location: { type: String },
   isVerified: { type: Boolean, default: false },
-  isAdmin: { type: Boolean, default: false }
+  isAdmin: { type: Boolean, default: false },
+  resetCode: { type: String },
+  resetCodeExpires: { type: Date },
 }, { timestamps: true });
 
-module.exports = mongoose.model('users', userSchema,);
+module.exports = mongoose.model('users', userSchema);

@@ -29,12 +29,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Parses URL-encoded form data
 // Method override middleware
 app.use(methodOverride('_method'));
-// Static file serving middleware
-app.use(errorHandler);
 
 // Routes init - only use the indexRoute here
 const indexRoute = require('./routes/indexRoute');
 app.use('/api/', indexRoute);
+
+
+app.use(errorHandler);
 
 // Server init
 app.listen(port, () => {
