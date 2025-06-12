@@ -25,13 +25,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/products/product-details/" element={<ProductDetails />} />
         <Route path="/payment" element={<Payment />} />
 
-        {/* 🛠️ Single entry for all dashboard routes */}
-        <Route path="/dashboard/*" element={<Dashboard />} />
+        
         {/* 🛠️ Single entry for all admin routes */}
-        <Route path="/admin/*" element={<AdminDashboard />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/please-login-first" element={<PleaseLoginFirst />} />
         <Route path="/reset-password/:email" element={<ResetPassword />} />
@@ -40,18 +37,18 @@ function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="/products/product-details/" element={<ProductDetails />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
-          {/* Add more protected routes here */}  
+      
         </Route>
 
         {/* ✅ Verified User Routes */}
         <Route element={<ProtectedLayout verifiedOnly={true} />}>
-          {/* Add more verified-only routes here */}
+          
         </Route>
 
         {/* ✅ Admin Routes */}
         <Route element={<ProtectedLayout adminOnly={true} />}>
           <Route path="/admin/*" element={<AdminDashboard />} />
-          {/* Add more admin-only routes here */}
+         
         </Route>
       </Routes>
     </BrowserRouter>
