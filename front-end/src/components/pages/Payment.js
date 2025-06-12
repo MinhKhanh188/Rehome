@@ -4,8 +4,8 @@ import { Container, Row, Col, Card, Form, Button, Spinner } from 'react-bootstra
 import { ShieldCheck, CreditCard, ArrowLeft, Check, Truck } from 'lucide-react';
 import { NavbarComponent } from './layout/Navbar';
 import { Footer } from './layout/Footer';
-import { API_ENDPOINTS, NAME_CONFIG } from '../../config'; // Thêm dòng này
-import axios from 'axios'; // Thêm dòng này
+import { API_ENDPOINTS, NAME_CONFIG } from '../../config';
+import axios from 'axios';
 import '../css/Payment.css';
 
 export default function Payment() {
@@ -170,7 +170,7 @@ export default function Payment() {
     setIsProcessingPayment(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      navigate(`/payment-confirmation?id=${product?.id}`);
+      navigate(`/payment-confirmation?id=${product._id}`);
     } catch (error) {
       console.error('Payment processing error:', error);
       setErrors({ payment: 'Payment processing failed. Please try again.' });

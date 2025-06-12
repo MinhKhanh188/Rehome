@@ -1,15 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { Bell, Lock, User, CreditCard } from 'lucide-react';
+import axios from 'axios';
 import '../../css/Settings.css';
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config'; // Đảm bảo đúng đường dẫn
 
 export default function Settings() {
+  const [profile, setProfile] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    location: '',
+  });
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
     pushNotifications: false,
     productUpdates: true,
     marketingEmails: false,
   });
+
+  // Lấy thông tin user khi vào trang
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+        const { data } = await axios.get(API_ENDPOINTS.GET_USER_PROFILE, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log('User profile data:', data); // Debugging line
+        setProfile({
+          fullName: data.user.name,
+          email: data.user.email || '',
+          phone: data.user.phone || '',
+          location: data.user.location || '',
+        });
+      } catch (error) {
+        // Xử lý lỗi nếu cần
+      }
+    };
+    fetchProfile();
+  }, []);
 
   return (
     <Container className="settings-container py-5">
@@ -29,8 +59,11 @@ export default function Settings() {
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control
                     type="text"
-                    defaultValue="John Doe"
+                    value={profile.fullName}
                     className="settings-input"
+                    onChange={(e) =>
+                      setProfile({ ...profile, fullName: e.target.value })
+                    }
                   />
                 </Form.Group>
               </Col>
@@ -39,8 +72,11 @@ export default function Settings() {
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     type="email"
-                    defaultValue="john@example.com"
+                    value={profile.email}
                     className="settings-input"
+                    onChange={(e) =>
+                      setProfile({ ...profile, email: e.target.value })
+                    }
                   />
                 </Form.Group>
               </Col>
@@ -49,8 +85,11 @@ export default function Settings() {
                   <Form.Label>Phone</Form.Label>
                   <Form.Control
                     type="tel"
-                    defaultValue="+1 (555) 123-4567"
+                    value={profile.phone}
                     className="settings-input"
+                    onChange={(e) =>
+                      setProfile({ ...profile, phone: e.target.value })
+                    }
                   />
                 </Form.Group>
               </Col>
@@ -59,8 +98,11 @@ export default function Settings() {
                   <Form.Label>Location</Form.Label>
                   <Form.Control
                     type="text"
-                    defaultValue="New York, NY"
+                    value={profile.location}
                     className="settings-input"
+                    onChange={(e) =>
+                      setProfile({ ...profile, location: e.target.value })
+                    }
                   />
                 </Form.Group>
               </Col>
@@ -113,11 +155,16 @@ export default function Settings() {
                     <CreditCard className="payment-icon" size={20} />
                   </div>
                   <div>
-                    <p className="payment-card-number mb-0">•••• •••• •••• 4242</p>
+                    <p className="payment-card-number mb-0">
+                      •••• •••• •••• 4242
+                    </p>
                     <p className="payment-expiry">Expires 12/25</p>
                   </div>
                 </div>
-                <Button variant="link" className="remove-payment text-danger">
+                <Button
+                  variant="link"
+                  className="remove-payment text-danger"
+                >
                   Remove
                 </Button>
               </div>

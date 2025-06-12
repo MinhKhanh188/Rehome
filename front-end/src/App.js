@@ -14,6 +14,7 @@ import ProtectedLayout from './components/utils/ProtectedLayout';
 import PleaseLoginFirst from './components/pages/general/PleaseLoginFirst';
 import ResetPassword from './components/pages/Auth/ResetPassword';
 import Payment from './components/pages/Payment';
+import PaymentConfirmation from './components/pages/PaymentConfirmation'; 
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/products" element={<Products />} />
         <Route path="/payment" element={<Payment />} />
-
+        <Route path="/payment-confirmation" element={<PaymentConfirmation />} />
         
         {/* 🛠️ Single entry for all admin routes */}
         <Route path="/admin-login" element={<AdminLogin />} />
