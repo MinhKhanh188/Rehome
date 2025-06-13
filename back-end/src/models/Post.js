@@ -18,7 +18,7 @@ const postSchema = new mongoose.Schema({
   sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
   address: { type: String, required: true },
   mapUrl: { type: String },
-  status: { type: String, enum: ['available', 'sold', 'pending', 'hidden'], default: 'available' },
+  status: { type: String, enum: ['available', 'sold', 'pending', 'hidden'], default: 'pending' },
   isChecked: { type: Boolean, default: false },
   isVip: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },

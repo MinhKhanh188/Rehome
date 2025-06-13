@@ -1,4 +1,4 @@
-// front-end/src/components/pages/MyListings.js
+// front-end/src/components/pages/dashboard/MyListings.js
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
@@ -8,14 +8,7 @@ import { Plus, Filter } from 'lucide-react';
 import ProductListingCard from './ProductListingCard';
 import '../../css/MyListings.css';
 
-// Placeholder data (replace with actual data source)
-const MY_LISTINGS = [
 
-];
-
-const PRODUCT_STATS = {
-
-};
 
 export default function MyListings() {
   const [myListings, setMyListings] = useState([]);
@@ -34,6 +27,7 @@ export default function MyListings() {
       }
     })
       .then((res) => {
+        console.log('Fetched personal posts:', res.data);
         setMyListings(res.data); // assumes data is the array
       })
       .catch((err) => {

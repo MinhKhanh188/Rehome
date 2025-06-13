@@ -326,6 +326,56 @@ class postController {
     }
   }
 
+  // GET post detail for admin (with full seller info)
+  async adminGetPostDetail(req, res, next) {
+    try {
+      const postId = req.params.id;
+
+      const post = await PostModel.findById(postId)
+        .populate('categoryId', 'name')
+        .populate('province', 'name')
+        .populate('sellerId', 'name email phone profilePic createdAt');
+
+      if (!post) {
+        return res.status(404).json({ error: 'Post not found 💔' });
+      }
+
+      res.status(200).json({
+        _id: post._id,
+        name: post.name,
+        category: post.categoryId?.name || null,
+        province: post.province?.name || null,
+        productStatus: post.productStatus,
+        price: post.price,
+        originalPrice: post.originalPrice || null,
+        images: post.images,
+        address: post.address,
+        mapUrl: post.mapUrl,
+        description: post.description,
+        specifications: post.specifications || {},
+        isChecked: post.isChecked,
+        isVip: post.isVip,
+        status: post.status,
+        createdAt: post.createdAt,
+
+        // Full seller info
+        seller: {
+          _id: post.sellerId?._id || null,
+          name: post.sellerId?.name || null,
+          email: post.sellerId?.email || null,
+          phone: post.sellerId?.phone || null,
+          profilePic: post.sellerId?.profilePic || null,
+          joinedAt: post.sellerId?.createdAt || null,
+        }
+      });
+    } catch (error) {
+      console.error('Admin fetch post detail error:', error);
+      res.status(500).json({ error: 'Failed to fetch post detail 💔' });
+    }
+  }
+
+
+
 }
 
 module.exports = new postController();

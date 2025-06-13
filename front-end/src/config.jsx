@@ -20,6 +20,7 @@ export const API_ENDPOINTS = {
   GET_UNVERIFIED_POSTS: `${baseUrl}/api/posts/unverifiedPosts`,
   GET_VERIFIED_POSTS: `${baseUrl}/api/posts/verifiedPosts`,
   VERIFY_POST: `${baseUrl}/api/posts/verify`,
+  ADMIN_GET_POST_DETAIL: `${baseUrl}/api/posts/viewDetailPost`,
 
   // Post endpoints
   CREATE_POST: `${baseUrl}/api/posts/createPost`,

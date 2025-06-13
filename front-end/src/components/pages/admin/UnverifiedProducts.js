@@ -5,6 +5,7 @@ import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import { Table, Button, Badge } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import '../../css/AdminDashboard.css';
+import PostDetailModal from './modal/PostDetailModal';
 
 export default function UnverifiedProducts() {
   const [posts, setPosts] = useState([]);
@@ -13,6 +14,9 @@ export default function UnverifiedProducts() {
   const [searchName, setSearchName] = useState('');
   const [provinceFilter, setProvinceFilter] = useState('');
   const [provinces, setProvinces] = useState([]);
+  const [selectedPostId, setSelectedPostId] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
+
   const token = localStorage.getItem(NAME_CONFIG.TOKEN);
 
   useEffect(() => {
@@ -70,71 +74,94 @@ export default function UnverifiedProducts() {
     }
   };
 
-  return (
-    <div className="container mt-4">
-      
-      <Table striped bordered hover className="admin-table">
-        <thead>
-          <tr>
-            <th>Ảnh</th>
-            <th>Tên</th>
-            <th>Người bán</th>
-            <th>Tỉnh</th>
-            <th>Ngày đăng</th>
-            <th>Duyệt</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.length === 0 ? (
-            <tr>
-              <td colSpan="6" className="text-center">Không có sản phẩm</td>
-            </tr>
-          ) : (
-            posts.map(post => (
-              <tr key={post._id}>
-                <td>
-                  <img src={post.images[0]} alt={post.name} width="80" style={{ borderRadius: 8 }} />
-                </td>
-                <td>{post.name}</td>
-                <td>{post.sellerId?.name}</td>
-                <td>
-                  <Badge bg="secondary">{post.province?.name || post.province}</Badge>
-                </td>
-                <td>{new Date(post.createdAt).toLocaleDateString()}</td>
-                <td>
-                  <Button
-                    className="btn-sm"
-                    variant="warning"
-                    onClick={() => handleVerify(post._id)}
-                  >
-                    Duyệt
-                  </Button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </Table>
+  const handleViewDetail = (postId) => {
+    setSelectedPostId(postId);
+    setModalShow(true);
+  };
 
-      <div className="d-flex justify-content-center mt-3">
-        <Button
-          variant="outline-primary"
-          className="me-2"
-          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          Trước
-        </Button>
-        <span className="align-self-center">Trang {currentPage} / {totalPages}</span>
-        <Button
-          variant="outline-primary"
-          className="ms-2"
-          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          Tiếp
-        </Button>
+
+  return (
+    <>
+      <div className="container mt-4">
+        <Table striped bordered hover className="admin-table">
+          <thead>
+            <tr>
+              <th>Ảnh</th>
+              <th>Tên</th>
+              <th>Người bán</th>
+              <th>Tỉnh</th>
+              <th>Ngày đăng</th>
+              <th>Duyệt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {posts.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="text-center">Không có sản phẩm</td>
+              </tr>
+            ) : (
+              posts.map(post => (
+                <tr key={post._id}>
+                  <td>
+                    <img src={post.images[0]} alt={post.name} width="80" style={{ borderRadius: 8 }} />
+                  </td>
+                  <td>{post.name}</td>
+                  <td>{post.sellerId?.name}</td>
+                  <td>
+                    <Badge bg="secondary">{post.province?.name || post.province}</Badge>
+                  </td>
+                  <td>{new Date(post.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    <div className="d-flex gap-2">
+                      <Button
+                        className="btn-sm"
+                        variant="info"
+                        onClick={() => handleViewDetail(post._id)}
+                      >
+                        Xem
+                      </Button>
+                      <Button
+                        className="btn-sm"
+                        variant="warning"
+                        onClick={() => handleVerify(post._id)}
+                      >
+                        Duyệt
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </Table>
+
+        <div className="d-flex justify-content-center mt-3">
+          <Button
+            variant="outline-primary"
+            className="me-2"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Trước
+          </Button>
+          <span className="align-self-center">Trang {currentPage} / {totalPages}</span>
+          <Button
+            variant="outline-primary"
+            className="ms-2"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Tiếp
+          </Button>
+        </div>
       </div>
-    </div>
+
+      <PostDetailModal
+        show={modalShow}
+        handleClose={() => setModalShow(false)}
+        postId={selectedPostId}
+      />
+    </>
   );
+
 }

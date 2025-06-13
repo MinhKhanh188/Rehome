@@ -35,24 +35,28 @@ const ProductListingCard = ({
           className="listing-image"
         />
         <Badge
-          className={`status-badge ${
-            status === 'sold'
-              ? 'sold'
-              : status === 'archived'
+          className={`status-badge ${status === 'sold'
+            ? 'sold'
+            : status === 'archived'
               ? 'archived'
-              : is_vip
-              ? 'vip'
-              : 'active'
-          }`}
+              : status === 'pending'
+                ? 'pending'
+                : is_vip
+                  ? 'vip'
+                  : 'active'
+            }`}
         >
           {status === 'sold'
             ? 'Đã bán'
             : status === 'archived'
-            ? 'Đã lưu trữ'
-            : is_vip
-            ? 'VIP'
-            : 'Hoạt động'}
+              ? 'Đã lưu trữ'
+              : status === 'pending'
+                ? 'Đang chờ duyệt'
+                : is_vip
+                  ? 'VIP'
+                  : 'Đang bày bán'}
         </Badge>
+
       </div>
 
       <Card.Body className="menu p-4">

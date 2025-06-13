@@ -29,5 +29,6 @@ router.delete('/deletePost/:id', authMiddleware(false), postController.deletePos
 router.get('/unverifiedPosts', authMiddleware(true), postController.getAllUnverifiedPosts);
 router.get('/verifiedPosts', authMiddleware(true), postController.getAllVerifiedPosts);
 router.put('/verify/:id', authMiddleware(true), postController.verifyPost);
+router.get('/viewDetailPost/:id', authMiddleware(true), postController.adminGetPostDetail);
 
 module.exports = router;
