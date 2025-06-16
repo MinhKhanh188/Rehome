@@ -6,24 +6,25 @@ const UserModel = require('../models/User');
 class MessageController {
 
     async createOrGetConversation(req, res) {
-        const { productId, participantId } = req.body;
+        const { participantId } = req.body;
         const currentUserId = req.user._id;
 
         try {
             let convo = await ConversationModel.findOne({
-                productId,
+
                 participants: { $all: [currentUserId, participantId] },
             });
 
             if (!convo) {
                 convo = await ConversationModel.create({
-                    productId,
+
                     participants: [currentUserId, participantId],
                 });
             }
 
             res.status(200).json(convo);
         } catch (err) {
+             console.error('💥 Conversation Error:', err); // log it
             res.status(500).json({ message: 'Failed to get or create conversation.' });
         }
     }
@@ -61,4 +62,4 @@ class MessageController {
 
 }
 
-module.exports = MessageController;
+module.exports = new MessageController();

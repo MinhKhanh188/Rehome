@@ -1,8 +1,8 @@
 // front-end/src/config.js
 
 // API Configuration
-const baseUrl = 'https://rehome-backend.onrender.com';
-//const baseUrl = 'http://localhost:9999'; // Use this for local development
+//const baseUrl = 'https://rehome-backend.onrender.com';
+const baseUrl = 'http://localhost:9999'; // Use this for local development
 
 export const API_ENDPOINTS = {
   // Auth endpoints
@@ -29,7 +29,13 @@ export const API_ENDPOINTS = {
   GET_ALL_VIP_POSTS: `${baseUrl}/api/posts/allVipPosts`,
 
   GET_ALL_CATEGORY: `${baseUrl}/api/posts/getListCategories`,
-  GET_ALL_PROVINCE: `${baseUrl}/api/posts/getListProvinces`
+  GET_ALL_PROVINCE: `${baseUrl}/api/posts/getListProvinces`,
+
+
+  // Message endpoints
+  GET_MESSAGES: `${baseUrl}/api/messages/getMessages`,
+  SEND_MESSAGE: `${baseUrl}/api/messages/sendMessage`,
+  JOIN_CONVERSATION: `${baseUrl}/api/messages/createOrGetConversation`
 };
 
 export const NAME_CONFIG = {

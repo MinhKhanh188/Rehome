@@ -13,7 +13,7 @@ const authMiddleware = (requireAdmin = false) => async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    req.user = { _id: decoded.id };
 
     // If admin is required, check user role from DB
     if (requireAdmin) {

@@ -19,10 +19,10 @@ databaseConnect.connect();
 
 // CORS setup
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: process.env.FRONTEND_LOCAL_URL || 'http://localhost:3000',
+    credentials: true
 }));
+
 
 app.use(morgan('dev'));
 app.use(express.json());
@@ -39,30 +39,33 @@ app.use(errorHandler);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: '*',
+        origin: process.env.FRONTEND_LOCAL_URL || 'http://localhost:3000',
         methods: ['GET', 'POST']
     }
 });
 
 io.on('connection', (socket) => {
-    console.log('🔌 New socket connected:', socket.id);
+    console.log('User connected:', socket.id);
 
     socket.on('join_conversation', (conversationId) => {
         socket.join(conversationId);
-        console.log(`User joined room: ${conversationId}`);
     });
 
-    socket.on('send_message', (data) => {
-        io.to(data.conversationId).emit('receive_message', {
-            ...data,
-            sentAt: new Date()
-        });
+    socket.on('send_message', async (data) => {
+        const { conversationId, senderId, text } = data;
+
+        // Save to DB
+        const message = await MessageModel.create({ conversationId, senderId, text });
+
+        // Emit to all clients in the room
+        io.to(conversationId).emit('receive_message', message);
     });
 
     socket.on('disconnect', () => {
-        console.log('Socket disconnected:', socket.id);
+        console.log('User disconnected:', socket.id);
     });
 });
+
 
 // ✅ Start server
 server.listen(port, () => {

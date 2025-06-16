@@ -5,7 +5,6 @@ const conversationSchema = new mongoose.Schema({
   participants: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }
   ],
-  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'posts', required: true },
   createdAt: { type: Date, default: Date.now }
 });
 

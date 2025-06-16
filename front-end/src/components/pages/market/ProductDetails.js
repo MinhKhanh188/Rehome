@@ -43,7 +43,7 @@ export default function ProductDetails() {
         const { data } = await axios.get(`${API_ENDPOINTS.GET_POST_DETAIL_BY_ID}/${productId}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`  
+              Authorization: `Bearer ${token}`
             },
           }
 
@@ -98,6 +98,29 @@ export default function ProductDetails() {
     );
   }
 
+  const handleChatStart = async () => {
+  const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+  if (!token) return alert('Vui lòng đăng nhập để bắt đầu trò chuyện.');
+
+  try {
+    const response = await axios.post(`${API_ENDPOINTS.CREATE_OR_GET_CONVERSATION}`, {
+      productId: product._id,
+      participantId: product.ownerId, // You must ensure `product.ownerId` is passed from backend
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const conversationId = response.data._id;
+    navigate(`/chat/${conversationId}`); // Or open a modal/chat component
+  } catch (err) {
+    console.error('Failed to start chat:', err);
+    alert('Không thể bắt đầu trò chuyện.');
+  }
+};
+
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       <NavbarComponent />
@@ -149,7 +172,7 @@ export default function ProductDetails() {
                   <div className='w-100'></div>
                   <span className="d-flex align-items-center text-muted">
                     <Clock size={16} className="me-1" />
-                     Đăng lúc: {product.uploadDate ? new Date(product.uploadDate).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}
+                    Đăng lúc: {product.uploadDate ? new Date(product.uploadDate).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}
                   </span>
                 </div>
                 <div className="mb-3">
@@ -180,9 +203,14 @@ export default function ProductDetails() {
                   >
                     Mua Ngay
                   </Button>
-                  <Button variant="outline-secondary" size="lg">
+                  <Button
+                    variant="outline-secondary"
+                    size="lg"
+                    onClick={handleChatStart}
+                  >
                     Đưa Ra Đề Nghị
                   </Button>
+
                   <div className="d-flex align-items-start text-success mt-2 small">
                     <Shield size={18} className="me-2" />
                     <span>Sản phẩm đủ điều kiện cho chính sách bảo vệ người mua của chúng tôi</span>
