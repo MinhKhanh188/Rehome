@@ -19,7 +19,6 @@ router.get('/productDetail/:productId', authMiddleware(false), postController.ge
 
 
 
-
 // private routes
 router.get('/getPersonalPosts', authMiddleware(false), postController.getPersonalPosts);
 router.post('/createPost', authMiddleware(false), upload.array('images'), postController.createPost);

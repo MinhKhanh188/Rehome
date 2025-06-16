@@ -70,20 +70,20 @@ export function SellerProfile({ sellerName, sellerRating, location, className = 
               <div className="stat-value">{sellerData.totalListings}</div>
             </div>
           </Col>
-          <Col xs={6} className="stat-item">
+          {/* <Col xs={6} className="stat-item">
             <MessageSquare className="stat-icon" />
             <div>
               <div className="stat-label">Tỷ Lệ Phản Hồi</div>
               <div className="stat-value">{sellerData.responseRate}</div>
             </div>
-          </Col>
-          <Col xs={6} className="stat-item">
+          </Col> */}
+          {/* <Col xs={6} className="stat-item">
             <ThumbsUp className="stat-icon" />
             <div>
               <div className="stat-label">Đánh Giá Tích Cực</div>
               <div className="stat-value">{sellerData.positiveRatings}</div>
             </div>
-          </Col>
+          </Col> */}
         </Row>
 
         {/* About seller */}

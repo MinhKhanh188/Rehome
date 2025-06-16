@@ -175,7 +175,8 @@ export default function ProductDetails() {
                     variant="warning"
                     size="lg"
                     className="text-white"
-                    onClick={() => navigate(`/payment?id=${product._id}`)}
+                    // onClick={() => navigate(`/payment?id=${product._id}`)}
+                    onClick={() => alert('Chức năng này hiện tại chưa được triển khai.')}
                   >
                     Mua Ngay
                   </Button>
@@ -226,12 +227,12 @@ export default function ProductDetails() {
               product={product} // Thêm dòng này!
             />
           </Col>
-          <Col md={6} className="d-none d-md-block">
+          {/* <Col md={6} className="d-none d-md-block">
             <SellerProfile sellerName={product.sellerName} sellerRating={product.sellerRating} location={product.province} />
-          </Col>
+          </Col> */}
         </Row>
         {/* Trust Badges */}
-        <TrustBadges />
+        {/* <TrustBadges /> */}
         {/* Related Products */}
         <RelatedProducts currentProductId={product._id} currentCategory={product.category} />
       </Container>

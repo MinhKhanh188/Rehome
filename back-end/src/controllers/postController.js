@@ -81,20 +81,18 @@ class postController {
   // PUT /posts/:id/verify — Admin verifies a post
   async verifyPost(req, res) {
     try {
-      const postId = req.params.id;
-
-      const post = await PostModel.findById(postId);
+      const { id } = req.params;
+      const post = await PostModel.findByIdAndUpdate(
+        id,
+        { status: 'available', isChecked: true, updatedAt: Date.now() },
+        { new: true }
+      );
       if (!post) {
-        return res.status(404).json({ error: 'Post not found 💔' });
+        return res.status(404).json({ message: 'Post not found' });
       }
-
-      post.isChecked = true;
-      await post.save();
-
-      res.status(200).json({ message: 'Post verified successfully ✅' });
+      res.json({ message: 'Post verified and status set to available', post });
     } catch (error) {
-      console.error('Verify post error:', error);
-      res.status(500).json({ error: 'Failed to verify post 💔' });
+      res.status(500).json({ message: 'Server error', error: error.message });
     }
   }
 

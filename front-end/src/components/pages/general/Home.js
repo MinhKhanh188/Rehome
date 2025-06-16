@@ -96,7 +96,7 @@ export default function Home() {
             {featuredProducts.map((product) => (
               <div
                 key={product._id || product.id}
-                onClick={() => navigate(`/product?id=${product._id || product.id}`)}
+                onClick={() => navigate(`/products/product-details/?id=${product._id || product.id}`)}
                 className="product-card-wrapper"
               >
                 <ProductCard
