@@ -9,21 +9,23 @@ import Analytics from './Analytics';
 import Settings from './Settings';
 import ProductForm from './ProductForm';
 import { NavbarComponent } from '../layout/Navbar';
+import Chat from './Chat';
 
 export default function Dashboard() {
   return (
     <div className='dashboard-container'>
       <NavbarComponent />
-      <div className='section' 
-      style={{
-        margin: '40px auto',
-        maxWidth: '1300px',
-        padding: '0 20px'
-      }}>
+      <div className='section'
+        style={{
+          margin: '40px auto',
+          maxWidth: '1300px',
+          padding: '0 20px'
+        }}>
         <DashboardLayout>
           <Routes>
             <Route index element={<MyListings />} />
             <Route path="new-listing" element={<ProductForm />} />
+            <Route path="chat" element={<Chat />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="purchases" element={<PurchaseHistory />} />
             <Route path="settings" element={<Settings />} />
