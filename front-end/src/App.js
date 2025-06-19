@@ -15,7 +15,6 @@ import PleaseLoginFirst from './components/pages/general/PleaseLoginFirst';
 import ResetPassword from './components/pages/Auth/ResetPassword';
 import Payment from './components/pages/Payment';
 import PaymentConfirmation from './components/pages/PaymentConfirmation'; 
-import ChatBox from './components/communication/ChatBox';
 
 function App() {
   return (
@@ -39,7 +38,6 @@ function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="/products/product-details/" element={<ProductDetails />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
-          <Route path="/chat/:conversationId" element={<ChatBox />} />
       
         </Route>
 

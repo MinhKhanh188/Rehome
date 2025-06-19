@@ -24,7 +24,7 @@ class MessageController {
 
             res.status(200).json(convo);
         } catch (err) {
-             console.error('💥 Conversation Error:', err); // log it
+            console.error('💥 Conversation Error:', err); // log it
             res.status(500).json({ message: 'Failed to get or create conversation.' });
         }
     }
@@ -56,6 +56,40 @@ class MessageController {
             res.status(200).json(messages);
         } catch (err) {
             res.status(500).json({ message: 'Failed to fetch messages.' });
+        }
+    }
+
+    async getUserConversations(req, res) {
+        const currentUserId = req.user._id;
+
+        try {
+            const conversations = await ConversationModel.find({
+                participants: currentUserId
+            })
+                .populate({
+                    path: 'participants',
+                    select: '_id name avatar email'
+                })
+                .lean();
+
+            // Optionally get last message for each conversation
+            const convoWithLastMessage = await Promise.all(
+                conversations.map(async (convo) => {
+                    const lastMsg = await MessageModel.findOne({ conversationId: convo._id })
+                        .sort({ createdAt: -1 })
+                        .lean();
+
+                    return {
+                        ...convo,
+                        lastMessage: lastMsg || null,
+                    };
+                })
+            );
+
+            res.status(200).json(convoWithLastMessage);
+        } catch (err) {
+            console.error('💥 Fetch Conversations Error:', err);
+            res.status(500).json({ message: 'Failed to fetch conversations.' });
         }
     }
 

@@ -35,7 +35,8 @@ export const API_ENDPOINTS = {
   // Message endpoints
   GET_MESSAGES: `${baseUrl}/api/messages/getMessages`,
   SEND_MESSAGE: `${baseUrl}/api/messages/sendMessage`,
-  JOIN_CONVERSATION: `${baseUrl}/api/messages/createOrGetConversation`
+  JOIN_CONVERSATION: `${baseUrl}/api/messages/createOrGetConversation`,
+  GET_USER_CONVERSATIONS: `${baseUrl}/api/messages/getUserConversations`,
 };
 
 export const NAME_CONFIG = {

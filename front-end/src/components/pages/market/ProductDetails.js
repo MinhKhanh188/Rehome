@@ -103,9 +103,8 @@ export default function ProductDetails() {
   if (!token) return alert('Vui lòng đăng nhập để bắt đầu trò chuyện.');
 
   try {
-    const response = await axios.post(`${API_ENDPOINTS.CREATE_OR_GET_CONVERSATION}`, {
-      productId: product._id,
-      participantId: product.ownerId, // You must ensure `product.ownerId` is passed from backend
+    const response = await axios.post(`${API_ENDPOINTS.JOIN_CONVERSATION}`, {
+      participantId: product.sellerId, // You must ensure `product.ownerId` is passed from backend
     }, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -113,7 +112,8 @@ export default function ProductDetails() {
     });
 
     const conversationId = response.data._id;
-    navigate(`/chat/${conversationId}`); // Or open a modal/chat component
+    navigate(`/dashboard/chat`);
+    //navigate(`/dashboard/chat/${conversationId}`);
   } catch (err) {
     console.error('Failed to start chat:', err);
     alert('Không thể bắt đầu trò chuyện.');

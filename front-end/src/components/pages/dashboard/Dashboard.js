@@ -1,4 +1,4 @@
-// front-end/src/components/pages/layout/ProductCard.js
+// front-end/src/components/pages/dashboard/Dashboard.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import DashboardLayout from './DashboardLayout';
@@ -9,7 +9,8 @@ import Analytics from './Analytics';
 import Settings from './Settings';
 import ProductForm from './ProductForm';
 import { NavbarComponent } from '../layout/Navbar';
-import Chat from './Chat';
+import Chat from './chat/Chat';
+
 
 export default function Dashboard() {
   return (
@@ -25,7 +26,7 @@ export default function Dashboard() {
           <Routes>
             <Route index element={<MyListings />} />
             <Route path="new-listing" element={<ProductForm />} />
-            <Route path="chat" element={<Chat />} />
+            <Route path="chat/*" element={<Chat />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="purchases" element={<PurchaseHistory />} />
             <Route path="settings" element={<Settings />} />

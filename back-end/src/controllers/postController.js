@@ -115,6 +115,7 @@ class postController {
         productStatus: post.productStatus,
         price: post.price,
         images: post.images,
+        sellerId: post.sellerId?._id || null,
         sellerName: post.sellerId?.name || null,
         sellerProfilePic: post.sellerId?.profilePic || null,
         address: post.address,

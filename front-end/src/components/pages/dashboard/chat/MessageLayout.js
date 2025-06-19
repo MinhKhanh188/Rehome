@@ -1,0 +1,144 @@
+// front-end/src/components/pages/dashboard/chat/MessageLayout.js
+import React, { useEffect, useRef, useState } from "react";
+import { Card, Form, Button, InputGroup, Image } from "react-bootstrap";
+import axios from "axios";
+import socket from "../../../../socket";
+import { API_ENDPOINTS, NAME_CONFIG } from "../../../../config";
+import { useParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import fontawesome from "@fortawesome/fontawesome-svg-core";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export default function MessageLayout({ currentUser, currentConversation }) {
+    const { conversationId } = useParams();
+    const [messages, setMessages] = useState([]);
+    const [text, setText] = useState("");
+    const messagesEndRef = useRef(null);
+    const user = jwtDecode(localStorage.getItem(NAME_CONFIG.TOKEN));
+
+    useEffect(() => {
+        if (!conversationId) return;
+
+        const fetchMessages = async () => {
+            try {
+                const res = await axios.get(`${API_ENDPOINTS.GET_MESSAGES}/${conversationId}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(NAME_CONFIG.TOKEN)}`,
+                    }
+                });
+                setMessages(res.data);
+            } catch (err) {
+                console.error("Failed to fetch messages:", err);
+            }
+        };
+
+        fetchMessages();
+        socket.emit("join_conversation", conversationId);
+
+        return () => {
+            socket.emit("leave_conversation", conversationId);
+        };
+    }, [conversationId]);
+
+    useEffect(() => {
+        socket.on("receive_message", (msg) => {
+            setMessages(prev => [...prev, msg]);
+        });
+        return () => socket.off("receive_message");
+    }, []);
+
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
+
+
+    const handleSend = async (e) => {
+        e.preventDefault();
+        if (!text.trim()) return;
+
+        const newMessage = {
+            conversationId,
+            text,
+        };
+
+        try {
+            const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+            const res = await axios.post(API_ENDPOINTS.SEND_MESSAGE, newMessage, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            // Emit to socket and update local state
+            socket.emit("send_message", res.data); // Optional: only if server broadcasts it
+            setMessages(prev => [...prev, res.data]); // Optimistically update messages
+            setText("");
+        } catch (error) {
+            console.error("Failed to send message:", error);
+        }
+    };
+
+
+    return (
+        <Card className="flex-grow-1 d-flex flex-column">
+            <Card.Header className="d-flex align-items-center">
+                <Image src="https://ui-avatars.com/api/?name=Chat" roundedCircle width={40} height={40} className="me-2" />
+                <div className="fw-bold">
+                    {currentConversation?.participants?.find(p => p._id !== user.id)?.name || "Unknown"}
+                </div>
+            </Card.Header>
+            <Card.Body className="flex-grow-1 overflow-auto" style={{ background: "#e5ddd5", maxHeight: "700px" }}>
+                {messages.map((msg) => {
+                    const time = new Date(msg.sentAt || msg.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    });
+                    return (
+                        <div
+                            key={msg._id}
+                            className={`d-flex mb-2 ${msg.senderId === user.id ? "justify-content-end" : "justify-content-start"}`}
+                        >
+                            <div
+                                style={{
+                                    background: msg.senderId === user.id ? "#0084ff" : "#fff",
+                                    color: msg.senderId === user.id ? "#fff" : "#000",
+                                    borderRadius: 18,
+                                    padding: "8px 16px",
+                                    maxWidth: "75%",
+                                    wordBreak: "break-word"
+                                }}
+                            >
+                                {msg.text}
+                                <div style={{ fontSize: 10, color: "#ccc", marginTop: 4, textAlign: "right" }}>
+                                    {time}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+
+                <div ref={messagesEndRef} />
+            </Card.Body>
+            <Card.Footer>
+                <Form onSubmit={handleSend}>
+                    <InputGroup>
+                        <Form.Control
+                            type="text"
+                            placeholder="Nhập tin nhắn..."
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                        />
+                        <Button type="submit" variant="primary" style={{ marginLeft: 8 }}>
+                            <FontAwesomeIcon icon={faPaperPlane} />
+                        </Button>
+                    </InputGroup>
+                </Form>
+            </Card.Footer>
+        </Card>
+    );
+}

@@ -2,11 +2,12 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import { Package, ShoppingCart, Settings, BarChart } from 'lucide-react';
+import { Package, ShoppingCart, Settings, BarChart, MessageCircle  } from 'lucide-react';
 import '../../css/DashboardLayout.css';
 
 const sidebarItems = [
   { icon: Package, label: 'Kho hàng', path: '/dashboard' },
+  { icon: MessageCircle, label: 'Tin nhắn', path: '/dashboard/chat' },
   { icon: ShoppingCart, label: 'Lịch sử mua', path: '/dashboard/purchases' },
   { icon: BarChart, label: 'Thống kê', path: '/dashboard/analytics' },
   { icon: Settings, label: 'Cài đặt', path: '/dashboard/settings' },
