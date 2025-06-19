@@ -4,11 +4,13 @@ import { ListGroup, Image } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_ENDPOINTS, NAME_CONFIG } from "../../../../config";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
-export default function ConversationList({ currentUser, onSelect }) {
+export default function ConversationList({ onSelect }) {
     const navigate = useNavigate();
     const { conversationId } = useParams();
     const [conversations, setConversations] = useState([]);
+    const user = jwtDecode(localStorage.getItem(NAME_CONFIG.TOKEN));
 
     useEffect(() => {
         const fetchConversations = async () => {
@@ -34,7 +36,11 @@ export default function ConversationList({ currentUser, onSelect }) {
             ) : (
                 <ListGroup variant="flush">
                     {conversations.map(c => {
-                        const otherUser = c.participants.find(p => p._id !== currentUser._id);
+                        // Skip self-conversations
+                        const allSameUser = c.participants.every(p => p._id === user.id);
+                        if (allSameUser) return null;
+                        // Get other user
+                        const otherUser = c.participants.find(p => p._id !== user.id);
                         return (
                             <ListGroup.Item
                                 key={c._id}

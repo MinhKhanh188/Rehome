@@ -178,22 +178,22 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
     else if (formData.name.length < 3) newErrors.name = 'Tên sản phẩm phải có ít nhất 3 ký tự.';
 
     if (!formData.price || formData.price <= 5000 || formData.price > 1000000000)
-      newErrors.price = 'Price must be between 1 and 1,000,000,000';
+      newErrors.price = 'Giá phải từ 5.000 đến 1.000.000.000';
 
     if (formData.originalPrice && (formData.originalPrice <= 5000 || formData.originalPrice > 1000000000))
-      newErrors.originalPrice = 'Original price must be between 5000 and 1,000,000,000';
+      newErrors.originalPrice = 'Giá gốc phải từ 5.000 and 1,000,000,000';
 
 
-    if (!formData.categoryId) newErrors.categoryId = 'Category is required';
+    if (!formData.categoryId) newErrors.categoryId = 'Hãy chọn phân loại sản phẩm';
 
-    if (!formData.productStatus) newErrors.productStatus = 'Product status is required';
+    if (!formData.productStatus) newErrors.productStatus = 'Hãy chọn tình trạng sản phẩm';
 
     if (!formData.description?.trim()) newErrors.description = 'Phải có mô tả';
     else if (formData.description.length < 2)
       newErrors.description = 'Mô tả phải có ít nhất 2 ký tự';
     else if (formData.description.length > 600)
       newErrors.description = 'Mô tả phải có ít hơn 600 ký tự';
-    if (!formData.province?.trim()) newErrors.province = 'Province is required';
+    if (!formData.province?.trim()) newErrors.province = 'Hãy chọn khu vực của bạn';
 
     setErrors(newErrors);
     setShowAllErrors(Object.keys(newErrors).length > 0);
@@ -237,7 +237,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
             <div className="d-flex align-items-start">
               <AlertCircle className="me-2" size={20} />
               <div>
-                <h3 className="error-title">Please fix the following errors:</h3>
+                <h3 className="error-title">Xin hãy chú ý:</h3>
                 <ul className="error-list">
                   {Object.values(errors).map((error, index) => (
                     <li key={index}>{error}</li>
@@ -271,36 +271,44 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
                 <Form.Group>
                   <Form.Label>Giá Mong Muốn (vnd) *</Form.Label>
                   <Form.Control
-                    type="number"
+                    type="text"
                     name="price"
-                    step="0.01"
-                    min="0"
-                    value={formData.price === undefined ? '' : formData.price}
-                    onChange={handleInputChange}
+                    value={formData.price !== undefined ? formData.price.toLocaleString('vi-VN') : ''}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/\./g, '');
+                      const num = parseInt(raw);
+                      if (!isNaN(num) || raw === '') {
+                        handleInputChange({ target: { name: 'price', value: raw, type: 'number' } });
+                      }
+                    }}
                     placeholder="vd: 99.000"
                     isInvalid={!!errors.price}
-                    max={100000000}
                   />
                   <Form.Control.Feedback type="invalid">{errors.price}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
+
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Giá Gốc Sản Phẩm (không bắt buộc)  *</Form.Label>
+                  <Form.Label>Giá Gốc Sản Phẩm (không bắt buộc) *</Form.Label>
                   <Form.Control
-                    type="number"
-                    name="originalPrice" // ✅ Corrected name
-                    step="0.01"
-                    min="0"
-                    value={formData.originalPrice === undefined ? '' : formData.originalPrice}
-                    onChange={handleInputChange}
+                    type="text"
+                    name="originalPrice"
+                    value={formData.originalPrice !== undefined ? formData.originalPrice.toLocaleString('vi-VN') : ''}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/\./g, '');
+                      const num = parseInt(raw);
+                      if (!isNaN(num) || raw === '') {
+                        handleInputChange({ target: { name: 'originalPrice', value: raw, type: 'number' } });
+                      }
+                    }}
                     placeholder="vd: 199.000"
                     isInvalid={!!errors.originalPrice}
-                    maxLength={600}
                   />
                   <Form.Control.Feedback type="invalid">{errors.originalPrice}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
+
               <Col xs={12} md={6}>
                 <Form.Group>
                   <Form.Label>Danh Mục *</Form.Label>
@@ -475,7 +483,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
                     type="text"
                     value={spec.key}
                     onChange={(e) => handleSpecKeyChange(index, e.target.value)}
-                    placeholder="e.g. Storage, Color, etc."
+                    placeholder="vd: Màu, chất liệu, dung lượng, ..."
                   />
                 </Col>
                 <Col xs={5}>
@@ -483,7 +491,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
                     type="text"
                     value={spec.value}
                     onChange={(e) => handleSpecValueChange(index, e.target.value)}
-                    placeholder="e.g. 256GB, Blue, etc."
+                    placeholder="Đỏ, nhựa nhám, 64G, ..."
                   />
                 </Col>
                 <Col xs={2} className="d-flex align-items-center">
@@ -506,7 +514,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
             Hủy
           </Button>
           <Button variant="primary" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Đang tải...' : 'Thêm Sản Phẩm'}
+            {isSubmitting ? 'Vui lòng đợi...' : 'Thêm Sản Phẩm'}
           </Button>
 
         </div>
