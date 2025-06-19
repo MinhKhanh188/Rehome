@@ -64,7 +64,7 @@ export default function Home() {
         <section className="banner-section">
           <Banner />
         </section>
-
+{/* 
         <section className="categories-section">
           <div className="section-header">
             <h2>Khám phá Danh mục</h2>
@@ -82,9 +82,9 @@ export default function Home() {
               />
             ))}
           </div>
-        </section>
+        </section> */}
 
-        <section className="products-section">
+        {/* <section className="products-section">
           <div className="section-header">
             <div className="title-container">
               <h2>Sản phẩm Nổi bật</h2>
@@ -110,7 +110,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         <section className="products-section">
           <div className="section-header">

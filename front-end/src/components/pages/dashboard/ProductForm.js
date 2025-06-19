@@ -174,19 +174,25 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name?.trim()) newErrors.name = 'Product name is required';
-    else if (formData.name.length < 1) newErrors.name = 'Product name must be at least 1 character';
+    if (!formData.name?.trim()) newErrors.name = 'Phải có tên sản phẩm';
+    else if (formData.name.length < 3) newErrors.name = 'Tên sản phẩm phải có ít nhất 3 ký tự.';
 
-    if (!formData.price || formData.price <= 0) newErrors.price = 'Price must be greater than zero';
+    if (!formData.price || formData.price <= 5000 || formData.price > 1000000000)
+      newErrors.price = 'Price must be between 1 and 1,000,000,000';
+
+    if (formData.originalPrice && (formData.originalPrice <= 5000 || formData.originalPrice > 1000000000))
+      newErrors.originalPrice = 'Original price must be between 5000 and 1,000,000,000';
+
 
     if (!formData.categoryId) newErrors.categoryId = 'Category is required';
 
     if (!formData.productStatus) newErrors.productStatus = 'Product status is required';
 
-    if (!formData.description?.trim()) newErrors.description = 'Description is required';
+    if (!formData.description?.trim()) newErrors.description = 'Phải có mô tả';
     else if (formData.description.length < 2)
-      newErrors.description = 'Description must be at least 20 characters';
-
+      newErrors.description = 'Mô tả phải có ít nhất 2 ký tự';
+    else if (formData.description.length > 600)
+      newErrors.description = 'Mô tả phải có ít hơn 600 ký tự';
     if (!formData.province?.trim()) newErrors.province = 'Province is required';
 
     setErrors(newErrors);
@@ -273,6 +279,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
                     onChange={handleInputChange}
                     placeholder="vd: 99.000"
                     isInvalid={!!errors.price}
+                    max={100000000}
                   />
                   <Form.Control.Feedback type="invalid">{errors.price}</Form.Control.Feedback>
                 </Form.Group>
@@ -289,6 +296,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
                     onChange={handleInputChange}
                     placeholder="vd: 199.000"
                     isInvalid={!!errors.originalPrice}
+                    maxLength={600}
                   />
                   <Form.Control.Feedback type="invalid">{errors.originalPrice}</Form.Control.Feedback>
                 </Form.Group>

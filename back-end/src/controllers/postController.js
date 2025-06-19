@@ -140,7 +140,7 @@ class postController {
   // GET personal posts
   async getPersonalPosts(req, res, next) {
     try {
-      const userId = req.user.id;
+      const userId = req.user._id;
 
       const posts = await PostModel.find({ sellerId: userId })
         .populate('categoryId', 'name')
@@ -179,7 +179,7 @@ class postController {
   // DELETE a post by owner
   async deletePost(req, res) {
     try {
-      const userId = req.user.id;
+      const userId = req.user._id;
       const postId = req.params.id;
 
       const post = await PostModel.findById(postId);
@@ -208,7 +208,7 @@ class postController {
     try {
       const { name, categoryId, province, description, specifications, productStatus, price, originalPrice, address, mapUrl } = req.body;
 
-      const sellerId = req.user.id;
+      const sellerId = req.user._id;
 
       // Basic validation
       if (!name || !categoryId || !province || !productStatus || !price || !sellerId) {
