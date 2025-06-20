@@ -1,9 +1,11 @@
 // front-end/src/config.js
 
 // API Configuration
-const baseUrl = import.meta.env.DEV
-  ? import.meta.env.VITE_BACKEND_LOCAL_URL
-  : import.meta.env.VITE_BACKEND_PRODUCTION_URL_DEV;
+const baseUrl = process.env.NODE_ENV === 'development'
+  ? process.env.REACT_APP_BACKEND_LOCAL_URL
+  : process.env.REACT_APP_BACKEND_PRODUCTION_URL_DEV;
+
+
 
 export const API_ENDPOINTS = {
   // Auth endpoints
