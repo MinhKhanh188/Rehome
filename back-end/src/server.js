@@ -18,7 +18,7 @@ const databaseConnect = require('./config/db/databaseConnect');
 databaseConnect.connect();
 
 // Switch between local and production URLs
-const isDev = process.env.MODE === 'development';
+const isDev = process.env.NODE_ENV === 'development';
 const frontendURL = isDev
     ? process.env.FRONTEND_LOCAL_URL
     : process.env.FRONTEND_PRODUCTION_URL_DEV;
