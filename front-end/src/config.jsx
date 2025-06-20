@@ -1,8 +1,10 @@
 // front-end/src/config.js
 
 // API Configuration
-const baseUrl = 'https://rehome-backend.onrender.com';
-//const baseUrl = 'http://localhost:9999'; // Use this for local development
+const baseUrl =
+  import.meta.env.MODE === 'development'
+    ? import.meta.env.VITE_BACKEND_LOCAL_URL
+    : import.meta.env.VITE_BACKEND_PRODUCTION_URL_DEV;
 
 export const API_ENDPOINTS = {
   // Auth endpoints

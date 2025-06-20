@@ -19,7 +19,8 @@ databaseConnect.connect();
 
 // CORS setup
 app.use(cors({
-    origin: process.env.FRONTEND_PRODUCTION_URL_DEV,
+   // origin: process.env.FRONTEND_PRODUCTION_URL_DEV,
+    origin: process.env.FRONTEND_LOCAL_URL,
     credentials: true
 }));
 
