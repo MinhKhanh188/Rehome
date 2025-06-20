@@ -1,8 +1,8 @@
 // front-end/src/config.js
 
 // API Configuration
-//const baseUrl = 'https://rehome-backend.onrender.com';
-const baseUrl = 'http://localhost:9999'; // Use this for local development
+const baseUrl = 'https://rehome-backend.onrender.com';
+//const baseUrl = 'http://localhost:9999'; // Use this for local development
 
 export const API_ENDPOINTS = {
   // Auth endpoints
