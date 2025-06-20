@@ -1,13 +1,13 @@
 // front-end/src/socket.js
 import { io } from 'socket.io-client';
 
-const socket = io(
-  //import.meta.env.VITE_BACKEND_LOCAL_URL
-  import.meta.env.VITE_BACKEND_PRODUCTION_URL_DEV
-  , {
+const socketUrl = import.meta.env.DEV
+  ? import.meta.env.VITE_BACKEND_LOCAL_URL
+  : import.meta.env.VITE_BACKEND_PRODUCTION_URL_DEV;
+
+const socket = io(socketUrl, {
   withCredentials: true,
   transports: ['websocket'],
 });
 
 export default socket;
-
