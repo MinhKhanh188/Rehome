@@ -4,7 +4,7 @@ const errorHandler = (err, req, res, next) => {
     const message = err.message || 'Something went wrong 😢';
 
     // Log in dev mode only
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.MODE === 'development') {
         console.error(`💥 [${req.method}] ${req.originalUrl} -`, err);
     }
 

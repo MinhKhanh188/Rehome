@@ -17,12 +17,18 @@ const app = express();
 const databaseConnect = require('./config/db/databaseConnect');
 databaseConnect.connect();
 
+// Switch between local and production URLs
+const isDev = process.env.MODE === 'development';
+const frontendURL = isDev
+    ? process.env.FRONTEND_LOCAL_URL
+    : process.env.FRONTEND_PRODUCTION_URL_DEV;
+
 // CORS setup
 app.use(cors({
-   // origin: process.env.FRONTEND_PRODUCTION_URL_DEV,
-    origin: process.env.FRONTEND_LOCAL_URL,
+    origin: frontendURL,
     credentials: true
 }));
+
 
 
 app.use(morgan('dev'));
@@ -40,10 +46,11 @@ app.use(errorHandler);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.FRONTEND_PRODUCTION_URL_DEV,
+        origin: frontendURL,
         methods: ['GET', 'POST']
     }
 });
+
 
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
