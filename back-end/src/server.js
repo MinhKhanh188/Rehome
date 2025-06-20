@@ -39,7 +39,7 @@ app.use(errorHandler);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.FRONTEND_LOCAL_URL || 'http://localhost:3000',
+        origin: process.env.FRONTEND_PRODUCTION_URL_DEV || 'http://localhost:3000',
         methods: ['GET', 'POST']
     }
 });
