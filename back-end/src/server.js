@@ -18,10 +18,10 @@ const databaseConnect = require('./config/db/databaseConnect');
 databaseConnect.connect();
 
 // Switch between local and production URLs
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV === 'production';
 const frontendURL = isDev
-    ? process.env.FRONTEND_LOCAL_URL
-    : process.env.FRONTEND_PRODUCTION_URL_DEV;
+    ? process.env.FRONTEND_PRODUCTION_URL_DEV
+    : process.env.FRONTEND_LOCAL_URL;
 
 // CORS setup
 app.use(cors({
@@ -42,6 +42,8 @@ app.use('/api/', indexRoute);
 
 app.use(errorHandler);
 
+
+
 // 🔧 HTTP and Socket.IO setup
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -52,27 +54,9 @@ const io = new Server(server, {
 });
 
 
-io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
-
-    socket.on('join_conversation', (conversationId) => {
-        socket.join(conversationId);
-    });
-
-    socket.on('send_message', async (data) => {
-        const { conversationId, senderId, text } = data;
-
-        // Save to DB
-        const message = await MessageModel.create({ conversationId, senderId, text });
-
-        // Emit to all clients in the room
-        io.to(conversationId).emit('receive_message', message);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('User disconnected:', socket.id);
-    });
-});
+// Modular socket logic
+const setupSocketIO = require('./socket');
+setupSocketIO(io);
 
 
 // ✅ Start server

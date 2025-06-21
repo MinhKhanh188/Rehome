@@ -1,9 +1,9 @@
 // front-end/src/config.js
 
 // API Configuration
-const baseUrl = process.env.NODE_ENV === 'development'
-  ? process.env.REACT_APP_BACKEND_LOCAL_URL
-  : process.env.REACT_APP_BACKEND_PRODUCTION_URL_DEV;
+const baseUrl = process.env.NODE_ENV === 'production'
+  ? process.env.REACT_APP_BACKEND_PRODUCTION_URL_DEV
+  : process.env.REACT_APP_BACKEND_LOCAL_URL;
 
 
 
