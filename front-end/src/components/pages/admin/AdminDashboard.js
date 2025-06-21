@@ -5,6 +5,8 @@ import AdminDashboardLayout from './AminDashboardLayout';
 import UnverifiedProducts from './UnverifiedProducts';
 import VerifiedProducts from './VerifiedProducts';
 import UserManagement from './UserManagement';
+import AdminInsertCoins from './AdminInsertCoins';
+import AllCoinTransactionHistory from './AllCoinTransactionHistory';
 
 export default function AdminDashboard() {
   return (
@@ -21,6 +23,8 @@ export default function AdminDashboard() {
           <Route index element={<UnverifiedProducts />} />
           <Route path="verified-products" element={<VerifiedProducts />} />
           <Route path="users" element={<UserManagement />} />
+          <Route path="insertCoin" element={<AdminInsertCoins />} />
+          <Route path="allCoinTransactionHistory" element={<AllCoinTransactionHistory />} />
         </Routes>
       </AdminDashboardLayout>
     </div>

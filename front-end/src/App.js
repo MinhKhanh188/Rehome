@@ -14,7 +14,7 @@ import ProtectedLayout from './components/utils/ProtectedLayout';
 import PleaseLoginFirst from './components/pages/general/PleaseLoginFirst';
 import ResetPassword from './components/pages/Auth/ResetPassword';
 import Payment from './components/pages/Payment';
-import PaymentConfirmation from './components/pages/PaymentConfirmation'; 
+import PaymentConfirmation from './components/pages/PaymentConfirmation';
 
 function App() {
   return (
@@ -28,7 +28,8 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-confirmation" element={<PaymentConfirmation />} />
-        
+        <Route path="/products/product-details/" element={<ProductDetails />} />
+
         {/* 🛠️ Single entry for all admin routes */}
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/please-login-first" element={<PleaseLoginFirst />} />
@@ -36,20 +37,19 @@ function App() {
 
         {/* Protected Routes */}
         <Route element={<ProtectedLayout />}>
-          <Route path="/products/product-details/" element={<ProductDetails />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
-      
+
         </Route>
 
         {/* ✅ Verified User Routes */}
         <Route element={<ProtectedLayout verifiedOnly={true} />}>
-          
+
         </Route>
 
         {/* ✅ Admin Routes */}
         <Route element={<ProtectedLayout adminOnly={true} />}>
           <Route path="/admin/*" element={<AdminDashboard />} />
-         
+
         </Route>
       </Routes>
     </BrowserRouter>

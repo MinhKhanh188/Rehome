@@ -2,8 +2,10 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const UserModel = require('../models/User');
+const CoinTransactionModel = require('../models/CoinTransaction');
 const ApiError = require('../utils/ApiError');
 const sendResetCodeEmail = require('../services/emailService');
+const generateUniqueId = require('../utils/uniqueIdGenerator');
 
 class userController {
 
@@ -27,6 +29,7 @@ class userController {
                 name,
                 email,
                 passwordHash,
+                uniqueId: generateUniqueId(),
             });
 
             const token = jwt.sign(
@@ -146,18 +149,104 @@ class userController {
         }
     }
 
+    // ===================================================================================
 
 
+    // Admin: increase user's coin balance
+    async increaseCoin(req, res, next) {
+        try {
+            const { id } = req.params;
+            const { amount } = req.body;
+
+            if (!amount || isNaN(amount) || amount <= 0) {
+                throw new ApiError(400, 'Số coin không hợp lệ.');
+            }
+
+            const user = await UserModel.findById(id);
+            if (!user) throw new ApiError(404, 'Không tìm thấy người dùng.');
+
+            user.coin += Number(amount);
+            await user.save();
+            await CoinTransactionModel.create({
+                userId: user._id,
+                type: 'topup',
+                amount,
+                description: 'Admin added coins'
+            });
+
+            res.status(200).json({ message: `Đã cộng ${amount} coin cho người dùng.`, coin: user.coin });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async getAllCoinHistory(req, res, next) {
+        try {
+            const history = await CoinTransactionModel.find()
+                .populate('userId', 'name uniqueId') // ⬅️ only get name + uniqueId
+                .sort({ createdAt: -1 });
+
+            // Optional: Clean the response to only include relevant fields
+            const filtered = history.map(tx => ({
+                _id: tx._id,
+                amount: tx.amount,
+                createdAt: tx.createdAt,
+                user: {
+                    name: tx.userId?.name,
+                    uniqueId: tx.userId?.uniqueId
+                }
+            }));
+
+            res.status(200).json({ history: filtered });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+
+    // Get user's coin transaction history
+    async getCoinHistory(req, res, next) {
+        try {
+            const { id } = req.params;
+            const history = await CoinTransactionModel.find({ userId: id }).sort({ createdAt: -1 });
+
+            res.status(200).json({ history });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+
+
+    // Admin: find user by uniqueId
+    async findUserByUniqueId(req, res, next) {
+        try {
+            const { uniqueId } = req.params;
+            const user = await UserModel.findOne({ uniqueId }).select('-passwordHash');
+
+            if (!user) throw new ApiError(404, 'Không tìm thấy người dùng với uniqueId này.');
+
+            res.status(200).json({ user });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+
+
+
+    // =================================================================================
 
     // GET /me
     async getUserProfile(req, res, next) {
         try {
-            const user = await UserModel.findById(req.user.id).select('-passwordHash');
+            const user = await UserModel.findById(req.user._id).select('-passwordHash');
             res.status(200).json({
                 status: 200,
                 user
             });
         } catch (err) {
+            console.log(err);
             next(err);
         }
     }
@@ -175,6 +264,21 @@ class userController {
             next(err);
         }
     }
+
+    // Admin: delete user
+    async deleteUser(req, res, next) {
+        try {
+            const { id } = req.params;
+
+            const user = await UserModel.findByIdAndDelete(id);
+            if (!user) throw new ApiError(404, 'Không tìm thấy người dùng.');
+
+            res.status(200).json({ message: 'Xóa người dùng thành công.' });
+        } catch (err) {
+            next(err);
+        }
+    }
+
 
 }
 

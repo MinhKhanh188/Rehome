@@ -15,7 +15,7 @@ router.get('/province', postPublicController.getPostsByProvince);
 router.get('/allVipPosts', postController.getAllVipPosts);
 
 // user routes
-router.get('/productDetail/:productId', authMiddleware(false), postController.getProductDetail);
+router.get('/productDetail/:productId', postController.getProductDetail);
 
 
 

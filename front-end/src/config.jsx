@@ -14,16 +14,25 @@ export const API_ENDPOINTS = {
   FORGOT_PASSWORD: `${baseUrl}/api/users/forgotPassword`,
   RESET_PASSWORD: `${baseUrl}/api/users/resetPassword`,
 
+  // Normal endpoints
+  GET_COIN_HISTORY: `${baseUrl}/api/users/getCoinHistory`,
+
 
   // User endpoints
   GET_USER_PROFILE: `${baseUrl}/api/users/profile`,
   GET_USER_POSTS: `${baseUrl}/api/posts/getPersonalPosts`,
   GET_ALL_USERS: `${baseUrl}/api/users/getAllUsers`,
+
+
   // Admin endpoints
   GET_UNVERIFIED_POSTS: `${baseUrl}/api/posts/unverifiedPosts`,
   GET_VERIFIED_POSTS: `${baseUrl}/api/posts/verifiedPosts`,
   VERIFY_POST: `${baseUrl}/api/posts/verify`,
   ADMIN_GET_POST_DETAIL: `${baseUrl}/api/posts/viewDetailPost`,
+  INCREASE_COIN: `${baseUrl}/api/users/increaseCoin`,
+  FIND_USER_BY_UNIQUEID: `${baseUrl}/api/users/findUserByUniqueId`,
+  DELETE_USER: `${baseUrl}/api/users/deleteUser`,
+  GET_ALL_COINS_HISTORY: `${baseUrl}/api/users/getAllCoinHistory`,
 
   // Post endpoints
   CREATE_POST: `${baseUrl}/api/posts/createPost`,
@@ -40,6 +49,9 @@ export const API_ENDPOINTS = {
   SEND_MESSAGE: `${baseUrl}/api/messages/sendMessage`,
   JOIN_CONVERSATION: `${baseUrl}/api/messages/createOrGetConversation`,
   GET_USER_CONVERSATIONS: `${baseUrl}/api/messages/getUserConversations`,
+
+
+
 };
 
 export const NAME_CONFIG = {

@@ -8,6 +8,14 @@ const fs = require('fs');
 const axios = require('axios');
 const { log } = require('console');
 
+// Utility to calculate coin cost
+function calculateCoinCost(price) {
+  if (price < 500_000) return 5000;
+  if (price < 1_000_000) return 15000;
+  if (price <= 5_000_000) return 30000;
+  return 50000;
+}
+
 class postController {
 
   // GET all unverified posts with pagination + search
@@ -207,64 +215,63 @@ class postController {
   async createPost(req, res) {
     try {
       const { name, categoryId, province, description, specifications, productStatus, price, originalPrice, address, mapUrl } = req.body;
-
       const sellerId = req.user._id;
 
-      // Basic validation
       if (!name || !categoryId || !province || !productStatus || !price || !sellerId) {
-        console.error('Missing required fields: ' + JSON.stringify(req.body));
         return res.status(400).json({ error: 'Missing required fields 💔' });
       }
 
-      // Check if files exist
       if (!req.files || req.files.length === 0) {
         return res.status(400).json({ error: 'No images uploaded 💔' });
       }
 
-      // 💡 Content filter check via Python API (safe try-catch)
+      // Content filter
       const textsToCheck = [name, description, address];
       try {
         const filterResponse = await axios.post('http://127.0.0.1:5000/filter_content_for_rehome', {
           texts: textsToCheck,
         });
 
-        console.log('Text sent to filter:', textsToCheck);
-        console.log('Filter API response:', filterResponse.data);
-
         const predictions = filterResponse.data.predictions || [];
-
         if (predictions.includes('unapproved')) {
           return res.status(400).json({ error: 'Your post contains inappropriate content 💔' });
         }
       } catch (filterError) {
-        console.warn('⚠️ Content filter API failed. Skipping filter check:', filterError.message);
-        // Optional: block post if filter fails
-        // return res.status(503).json({ error: 'Content filter service unavailable 💔' });
+        console.warn('⚠️ Content filter API failed:', filterError.message);
       }
 
+      // Calculate coin cost
+      const coinCost = calculateCoinCost(price);
 
-      // Upload images to Cloudinary
+      // Check user coin
+      const user = await UserModel.findById(sellerId);
+      if (!user || user.coin < coinCost) {
+        return res.status(400).json({ error: 'Not enough coins to create this post 💸' });
+      }
+
+      // Deduct coins
+      user.coin -= coinCost;
+      await user.save();
+
+      // Upload images
       const imageUrls = [];
-
       for (const file of req.files) {
         try {
           const result = await cloudinary.uploader.upload(file.path, {
             folder: 'rehome-posts',
             transformation: [{ quality: 'auto', fetch_format: 'auto' }]
           });
-
           imageUrls.push(result.secure_url);
         } catch (uploadErr) {
           console.error('Cloudinary upload failed:', uploadErr);
         } finally {
-          // This always runs, even if upload fails
           fs.unlink(file.path, (err) => {
             if (err) console.error('Failed to delete temp file:', err);
           });
         }
       }
 
-      // ✅ Parse specifications if it's a JSON string
+      // Parse specs if needed
       let parsedSpecifications = specifications;
       if (typeof specifications === 'string') {
         try {
@@ -274,8 +281,6 @@ class postController {
         }
       }
 
-
-      // Create post document
       const newPost = new PostModel({
         name,
         categoryId,
@@ -288,17 +293,18 @@ class postController {
         address,
         mapUrl,
         sellerId,
-        images: imageUrls || 'hehehe', // Use the uploaded image URLs
+        images: imageUrls
       });
 
       await newPost.save();
+      res.status(201).json({ message: `Post created (−${coinCost} coins) 💫`, post: newPost });
 
-      res.status(201).json({ message: 'Post created successfully 💫', post: newPost });
     } catch (error) {
       console.error('Create post error:', error);
       res.status(500).json({ error: 'Failed to create post 💔', details: error.message });
     }
   }
+
 
   // GET all VIP posts (không phân trang)
   async getAllVipPosts(req, res) {

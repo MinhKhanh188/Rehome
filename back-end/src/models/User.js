@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
+  coin: { type: Number, default: 0 },
+  uniqueId: { type: String, required: true, unique: true },
   profilePic: { type: String },
   phoneNumber: { type: String },
   facebookUrl: { type: String },

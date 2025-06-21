@@ -2,13 +2,15 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import {Clock, CheckCircle, Users} from 'lucide-react';
+import {Clock, CheckCircle, Users, Coins, Banknote} from 'lucide-react';
 import '../../css/DashboardLayout.css';
 
 const sidebarItems = [
   { icon: Clock, label: 'Sản Phẩm Chờ Duyệt', path: '/admin' },
+  { icon: Coins, label: 'Nạp tiền cho khách', path: '/admin/insertCoin' },
   { icon: CheckCircle, label: 'Sản Phẩm Đã Duyệt', path: '/admin/verified-products' },
   { icon: Users, label: 'Người dùng', path: '/admin/users' },
+  { icon: Banknote, label: 'Lịch sử nạp xu', path: '/admin/allCoinTransactionHistory' },
 ];
 
 

@@ -65,7 +65,7 @@ export default function MyListings() {
           onClick={() => navigate('/dashboard/new-listing')}
         >
           <Plus className="me-2" size={20} />
-          Thêm Đồ
+          Đăng bán sản phẩm
         </Button>
       </div>
 

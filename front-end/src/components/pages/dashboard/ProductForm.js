@@ -8,12 +8,42 @@ import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import '../../css/ProductForm.css';
 
 const conditions = ['Mới', 'Like-new', 'Cũ'];
+
+const getPostCostByPrice = (price) => {
+  if (price < 500000) return 5000;
+  if (price <= 1000000) return 15000;
+  if (price <= 5000000) return 30000;
+  return 50000;
+};
+
+
 export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }, product = {} }) {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+
+  const [coins, setCoin] = useState('');
+
+  useEffect(() => {
+
+    const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+    if (!token) return;
+
+    axios.get(`${API_ENDPOINTS.GET_USER_PROFILE}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => {
+        setCoin(res.data.user.coin);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch unique ID:', err);
+      })
+
+  }, [coins]);
 
 
   const [formData, setFormData] = useState({
@@ -204,6 +234,12 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      const costedCoins = getPostCostByPrice(formData.price);
+      if (coins < costedCoins) {
+        alert(`Bạn không đủ xu để đăng bài. Cần ${costedCoins.toLocaleString('vi-VN')} xu.`);
+        return;
+      }
+
       setIsSubmitting(true);
       try {
         const result = await createProduct();
@@ -218,6 +254,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
       }
     }
   };
+
 
 
   const handleRemoveImage = (index) => {
@@ -269,7 +306,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
               </Col>
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Giá Mong Muốn (vnd) *</Form.Label>
+                  <Form.Label>Giá Mong Muốn (vnd) * Số xu hiện tại: {coins}</Form.Label>
                   <Form.Control
                     type="text"
                     name="price"
@@ -285,6 +322,20 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
                     isInvalid={!!errors.price}
                   />
                   <Form.Control.Feedback type="invalid">{errors.price}</Form.Control.Feedback>
+                  {/* Coin cost display based on price range */}
+                  {formData.price && (
+                    <div className="mt-2 text-info small">
+                      Phí đăng bài dự kiến:{" "}
+                      <strong>
+                        {
+                          formData.price < 500000 ? "5.000 xu" :
+                            formData.price <= 1000000 ? "15.000 xu" :
+                              formData.price <= 5000000 ? "30.000 xu" :
+                                "50.000 xu"
+                        }
+                      </strong>
+                    </div>
+                  )}
                 </Form.Group>
               </Col>
 
@@ -510,6 +561,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
 
         {/* Form Actions */}
         <div className="d-flex justify-content-end gap-3">
+
           <Button variant="outline-secondary" onClick={onCancel}>
             Hủy
           </Button>
