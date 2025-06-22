@@ -15,7 +15,7 @@ export function ConditionExplainer({ condition, className = '' }) {
       "Hoạt động hoàn hảo, không có lỗi"
     ]
   },
-  "Gần như mới": {
+  "Like-new": {
     description: "Dấu hiệu sử dụng rất nhẹ, tổng thể còn rất tốt",
     points: [
       "Dấu hiệu sử dụng rất nhẹ",
@@ -45,7 +45,7 @@ export function ConditionExplainer({ condition, className = '' }) {
     switch (condition) {
       case 'Mới':
         return 'condition-like-new';
-      case 'Like New':
+      case 'Like-new':
         return 'condition-new';
       case 'Cũ':
         return 'condition-fair';
@@ -56,7 +56,7 @@ export function ConditionExplainer({ condition, className = '' }) {
 
   // Render condition rating visually
   const renderConditionRating = () => {
-    const ratings = ['Cũ', 'Like New', 'Mới'];
+    const ratings = ['Cũ', 'Like-new', 'Mới'];
     const currentIndex = ratings.indexOf(condition);
 
     return (
@@ -84,7 +84,7 @@ export function ConditionExplainer({ condition, className = '' }) {
     switch (rating) {
       case 'Mới':
         return 'bg-green';
-      case 'Like New':
+      case 'Like-new':
         return 'bg-emerald';
       case 'Cũ':
         return 'bg-orange';

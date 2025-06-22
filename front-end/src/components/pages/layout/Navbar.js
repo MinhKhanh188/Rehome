@@ -175,7 +175,7 @@ export const NavbarComponent = () => {
                       className="dropdown-item"
                       type="button"
                       style={{ borderRadius: "8px" }}
-                      onClick={() => handleProvinceSelect(prov)}
+                      onMouseDown={() => handleProvinceSelect(prov)}
                     >
                       {prov}
                     </button>
@@ -189,28 +189,44 @@ export const NavbarComponent = () => {
             {isLoading ? (
               <div className="spinner"></div>
             ) : isLoggedIn ? (
-              <div className="dropdown">
-                <button
-                  className="btn profile-btn dropdown-toggle"
-                  type="button"
-                  id="userDropdown"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <span className="avatar">
-                    {user?.name ? user.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase()}
-                  </span>
-                </button>
-                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                  <li>
-                    <button className="dropdown-item" onClick={() => navigate('/dashboard')}>
-                      Trang Cá Nhân
-                    </button>
-                    <button className="dropdown-item" onClick={handleSignOut}>
-                      Đăng Xuất
-                    </button>
-                  </li>
-                </ul>
+              // Sửa đoạn này: dùng flexbox để avatar và dropdown icon nằm ngang hàng
+              <div className="d-flex align-items-center gap-2">
+                <span className="avatar" style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  background: '#ffe0b2',
+                  color: '#b45309',
+                  fontWeight: 700,
+                  fontSize: 20,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {user?.name ? user.name.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase()}
+                </span>
+                <div className="dropdown">
+                  <button
+                    className="btn profile-btn dropdown-toggle"
+                    type="button"
+                    id="userDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style={{ boxShadow: 'none', border: 'none', background: 'transparent', padding: 0 }}
+                  >
+                    <i className="bi bi-chevron-down" style={{ fontSize: 20, color: '#b45309' }}></i>
+                  </button>
+                  <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li>
+                      <button className="dropdown-item" onClick={() => navigate('/dashboard')}>
+                        Trang Cá Nhân
+                      </button>
+                      <button className="dropdown-item" onClick={handleSignOut}>
+                        Đăng Xuất
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
             ) : (
               <>
