@@ -1,0 +1,45 @@
+/* front-end/src/components/css/Contact.css */
+
+.contact-card {
+  margin-top: 3rem;
+  border: 1px solid #f97316;
+  border-radius: 10px;
+  padding: 1.5rem;
+  background-color: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.contact-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #f97316;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.contact-text {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.contact-info {
+  font-size: 1.05rem;
+  color: #444;
+}
+
+.contact-info a {
+  color: #f97316;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}

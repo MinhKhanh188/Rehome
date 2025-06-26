@@ -15,6 +15,8 @@ import PleaseLoginFirst from './components/pages/general/PleaseLoginFirst';
 import ResetPassword from './components/pages/Auth/ResetPassword';
 import Payment from './components/pages/Payment';
 import PaymentConfirmation from './components/pages/PaymentConfirmation';
+import AboutUs from './components/pages/general/AboutUs';
+import Contact from './components/pages/general/Contact';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-confirmation" element={<PaymentConfirmation />} />
         <Route path="/products/product-details/" element={<ProductDetails />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* 🛠️ Single entry for all admin routes */}
         <Route path="/admin-login" element={<AdminLogin />} />
