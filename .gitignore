@@ -7,6 +7,11 @@ front-end/node_modules/
 #front-end/
 
 
+front-end/build
+
+
+
+
 # General ignore rules for misc files and logs
 **/.DS_Store
 **/.pnp
