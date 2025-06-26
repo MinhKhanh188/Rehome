@@ -1,63 +1,65 @@
 /* front-end/src/components/css/AboutUs.css */
 
-h1, h2 {
-  color: #f97316;
+.about-us-page h1,
+.about-us-page h2 {
+  color: #5C4033;
   font-weight: 700;
 }
 
-p {
+.about-us-page p {
   font-size: 1.1rem;
   line-height: 1.7;
   color: #333;
 }
 
-ul {
+.about-us-page ul {
   padding-left: 1.2rem;
   font-size: 1.05rem;
   color: #444;
 }
 
-ul li::marker {
+.about-us-page ul li::marker {
   color: #f97316;
 }
 
-.card {
+.about-us-page .about-card {
   border: 1px solid #f97316;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
+.about-us-page .about-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.card-title {
+.about-us-page .about-title {
   color: #f97316;
   font-weight: 600;
   font-size: 1.25rem;
 }
 
-.card-text {
+.about-us-page .about-text {
   font-size: 1rem;
   color: #333;
 }
 
-.container {
+.about-us-page .about-container {
   background-color: #fff;
   padding: 2rem;
   border-radius: 10px;
 }
 
 @media (max-width: 768px) {
-  .container {
+  .about-us-page .about-container {
     padding: 1rem;
   }
 
-  h1, h2 {
+  .about-us-page h1,
+  .about-us-page h2 {
     font-size: 1.5rem;
   }
 
-  .card-title {
+  .about-us-page .about-title {
     font-size: 1.1rem;
   }
 }
