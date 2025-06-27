@@ -52,9 +52,8 @@ export default function BuyCoin() {
 
                     <h1 className="page-title">
                         Thanh toán
-                        <span className="ms-3 fs-5 text-info">Số xu hiện tại: <b>{coin.toLocaleString('vi-VN')}</b></span>
                     </h1>
-
+                    <div className="ms-3 fs-5 text-info">Số xu hiện tại: <b>{coin.toLocaleString('vi-VN')}</b></div>
                     <Row className="checkout-section">
                         <Col lg={8}>
                             <Card className="payment-card mb-4">
