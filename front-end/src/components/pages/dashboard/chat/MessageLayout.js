@@ -43,10 +43,24 @@ export default function MessageLayout({ currentUser, currentConversation }) {
     }, [conversationId]);
 
     useEffect(() => {
-        socket.on("receive_message", (msg) => {
-            setMessages(prev => [...prev, msg]);
-        });
-        return () => socket.off("receive_message");
+        const handler = (msg) => {
+            setMessages(prev => {
+                if (prev.some(m => m._id === msg._id)) return prev;
+                const optimisticIdx = prev.findIndex(m =>
+                    m.isOptimistic &&
+                    m.text === msg.text &&
+                    m.senderId === msg.senderId
+                );
+                if (optimisticIdx !== -1) {
+                    const newArr = [...prev];
+                    newArr[optimisticIdx] = msg;
+                    return newArr;
+                }
+                return [...prev, msg];
+            });
+        };
+        socket.on("receive_message", handler);
+        return () => socket.off("receive_message", handler);
     }, []);
 
     useEffect(() => {
@@ -60,34 +74,62 @@ export default function MessageLayout({ currentUser, currentConversation }) {
         e.preventDefault();
         if (!text.trim()) return;
 
-        const newMessage = {
-            conversationId,
+        const tempId = Date.now() + Math.random(); // id tạm thời
+        const optimisticMsg = {
+            _id: tempId,
+            senderId: user.id,
             text,
+            sentAt: new Date().toISOString(),
+            isOptimistic: true,
         };
+
+        setMessages(prev => [...prev, optimisticMsg]);
+        setText("");
 
         try {
             const token = localStorage.getItem(NAME_CONFIG.TOKEN);
-            const res = await axios.post(API_ENDPOINTS.SEND_MESSAGE, newMessage, {
+            const res = await axios.post(API_ENDPOINTS.SEND_MESSAGE, {
+                conversationId,
+                text,
+            }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
             });
 
-            // Emit to socket and update local state
-            socket.emit("send_message", res.data); // Optional: only if server broadcasts it
-            setMessages(prev => [...prev, res.data]); // Optimistically update messages
-            setText("");
+            // Emit lên socket
+            socket.emit("send_message", res.data);
+
+            // Cập nhật lại message vừa gửi (thay thế optimistic bằng real)
+            setMessages(prev =>
+                prev.map(msg =>
+                    msg._id === tempId ? res.data : msg
+                )
+            );
         } catch (error) {
+            // Nếu lỗi, có thể xóa optimisticMsg hoặc báo lỗi
+            setMessages(prev => prev.filter(msg => msg._id !== tempId));
             console.error("Failed to send message:", error);
         }
     };
 
+    // Đặt trước return:
+    const otherUser = currentConversation?.participants?.find(p => p._id !== user.id);
 
     return (
         <Card className="flex-grow-1 d-flex flex-column">
             <Card.Header className="d-flex align-items-center">
-                <Image src="https://ui-avatars.com/api/?name=Chat" roundedCircle width={40} height={40} className="me-2" />
+                <Image
+                    src={otherUser?.avatarUrl
+                        ? otherUser.avatarUrl
+                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(otherUser?.name || "User")}`
+                    }
+                    roundedCircle
+                    width={40}
+                    height={40}
+                    className="me-2"
+                />
                 <div className="fw-bold">
                     {currentConversation?.participants?.find(p => p._id !== user.id)?.name || "Unknown"}
                 </div>

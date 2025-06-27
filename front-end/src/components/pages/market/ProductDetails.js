@@ -167,7 +167,7 @@ export default function ProductDetails() {
                   <span className="d-flex align-items-center text-warning">
                     <Star size={16} fill="#facc15" className="me-1" />
                     {product.sellerRating}
-                    <span className="text-muted ms-1">(Đánh Giá Người Bán)</span>
+                    <span className="text-muted ms-1">(Đánh Giá Người Bán{product.sellerName ? ` - ${product.sellerName}` : ''})</span>
                   </span>
                   <div className='w-100'></div>
                   <span className="d-flex align-items-center text-muted">

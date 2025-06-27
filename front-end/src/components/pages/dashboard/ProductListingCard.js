@@ -20,7 +20,7 @@ const ProductListingCard = ({
     status,
     is_vip,
     price,
-    categoryId,
+    category,
     productStatus,
     createdAt
   } = propProduct;
@@ -97,7 +97,7 @@ const ProductListingCard = ({
         </div>
 
         <Card.Text className="listing-category">
-          {categoryId?.name || 'Không rõ danh mục'}
+          {category || 'Không rõ danh mục'}
         </Card.Text>
 
         <div className="d-flex justify-content-between align-items-center mb-4">

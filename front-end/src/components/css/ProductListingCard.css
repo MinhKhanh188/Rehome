@@ -50,6 +50,11 @@
     border: 1px solid #d9c2b2;
   }
   
+  .status-badge.pending {
+    background-color: #facc15 !important; /* vàng nhạt */
+    color: #7c5700;
+  }
+  
   .listing-title {
     font-size: 1.125rem;
     font-weight: 600;

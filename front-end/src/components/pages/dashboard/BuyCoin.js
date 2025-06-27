@@ -14,9 +14,9 @@ export default function BuyCoin() {
     const [error, setError] = useState(null);
 
     const [uniqueId, setUniqueId] = useState('');
+    const [coin, setCoin] = useState(0);
 
     useEffect(() => {
-
         const token = localStorage.getItem(NAME_CONFIG.TOKEN);
         if (!token) return;
 
@@ -27,13 +27,13 @@ export default function BuyCoin() {
         })
             .then((res) => {
                 setUniqueId(res.data.user.uniqueId);
+                setCoin(res.data.user.coin); // Lấy số coin
             })
             .catch((err) => {
                 console.error('Failed to fetch unique ID:', err);
             })
 
-    }, [uniqueId]);
-
+    }, []);
 
 
 
@@ -50,7 +50,10 @@ export default function BuyCoin() {
                         Quay lại
                     </Button>
 
-                    <h1 className="page-title">Thanh toán</h1>
+                    <h1 className="page-title">
+                        Thanh toán
+                        <span className="ms-3 fs-5 text-info">Số xu hiện tại: <b>{coin.toLocaleString('vi-VN')}</b></span>
+                    </h1>
 
                     <Row className="checkout-section">
                         <Col lg={8}>
