@@ -39,6 +39,7 @@ export default function UserManagement() {
               <tr>
                 <th>Email</th>
                 <th>Tên</th>
+                <th>Unique Id</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
               </tr>
@@ -48,6 +49,7 @@ export default function UserManagement() {
                 <tr key={u._id}>
                   <td>{u.email}</td>
                   <td>{u.name}</td>
+                  <td>{u.uniqueId}</td>
                   <td>
                     {u.isVerified ? <Badge bg="danger">Banned</Badge> : <Badge bg="success">Đã kích hoạt</Badge>}
                   </td>

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import '../../css/ProductForm.css';
+import Swal from 'sweetalert2';
 
 const conditions = ['Mới', 'Like-new', 'Cũ'];
 
@@ -244,9 +245,14 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
       try {
         const result = await createProduct();
         setSuccessMessage(result.message || 'Đăng sản phẩm thành công ✨');
-        setTimeout(() => {
-          navigate(-1); // go back
-        }, 2000);
+        await Swal.fire({
+          icon: 'success',
+          title: 'Thành công!',
+          text: result.message || 'Đăng sản phẩm thành công ✨',
+          timer: 1800,
+          showConfirmButton: false,
+        });
+        navigate(-1); // go back
       } catch (error) {
         console.error('Failed to submit product:', error);
       } finally {

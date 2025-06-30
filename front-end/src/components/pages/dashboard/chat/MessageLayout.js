@@ -42,20 +42,12 @@ export default function MessageLayout({ currentUser, currentConversation }) {
         };
     }, [conversationId]);
 
+    // Lắng nghe tin nhắn mới từ socket, chỉ cập nhật khi nhận từ socket
     useEffect(() => {
         const handler = (msg) => {
             setMessages(prev => {
+                // Nếu đã có message với _id này thì không thêm nữa
                 if (prev.some(m => m._id === msg._id)) return prev;
-                const optimisticIdx = prev.findIndex(m =>
-                    m.isOptimistic &&
-                    m.text === msg.text &&
-                    m.senderId === msg.senderId
-                );
-                if (optimisticIdx !== -1) {
-                    const newArr = [...prev];
-                    newArr[optimisticIdx] = msg;
-                    return newArr;
-                }
                 return [...prev, msg];
             });
         };
@@ -69,22 +61,10 @@ export default function MessageLayout({ currentUser, currentConversation }) {
         }
     }, [messages]);
 
-
+    // Gửi tin nhắn: KHÔNG setMessages ở đây, chỉ emit lên socket
     const handleSend = async (e) => {
         e.preventDefault();
         if (!text.trim()) return;
-
-        const tempId = Date.now() + Math.random(); // id tạm thời
-        const optimisticMsg = {
-            _id: tempId,
-            senderId: user.id,
-            text,
-            sentAt: new Date().toISOString(),
-            isOptimistic: true,
-        };
-
-        setMessages(prev => [...prev, optimisticMsg]);
-        setText("");
 
         try {
             const token = localStorage.getItem(NAME_CONFIG.TOKEN);
@@ -98,23 +78,15 @@ export default function MessageLayout({ currentUser, currentConversation }) {
                 },
             });
 
-            // Emit lên socket
+            // Emit lên socket, không setMessages ở đây!
             socket.emit("send_message", res.data);
-
-            // Cập nhật lại message vừa gửi (thay thế optimistic bằng real)
-            setMessages(prev =>
-                prev.map(msg =>
-                    msg._id === tempId ? res.data : msg
-                )
-            );
+            setText("");
         } catch (error) {
-            // Nếu lỗi, có thể xóa optimisticMsg hoặc báo lỗi
-            setMessages(prev => prev.filter(msg => msg._id !== tempId));
             console.error("Failed to send message:", error);
         }
     };
 
-    // Đặt trước return:
+    // Xác định user đối phương
     const otherUser = currentConversation?.participants?.find(p => p._id !== user.id);
 
     return (
@@ -131,7 +103,7 @@ export default function MessageLayout({ currentUser, currentConversation }) {
                     className="me-2"
                 />
                 <div className="fw-bold">
-                    {currentConversation?.participants?.find(p => p._id !== user.id)?.name || "Unknown"}
+                    {otherUser?.name || "Unknown"}
                 </div>
             </Card.Header>
             <Card.Body className="flex-grow-1 overflow-auto" style={{ background: "#e5ddd5", maxHeight: "700px" }}>
