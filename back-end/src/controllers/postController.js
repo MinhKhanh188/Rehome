@@ -379,6 +379,49 @@ class postController {
     }
   }
 
+  // PUT /posts/:id/status
+  async ChangePostStatus(req, res) {
+    try {
+      const userId = req.user._id;
+      const postId = req.params.id;
+      const { status } = req.body;
+
+      // Validate status value
+      const allowedStatuses = ['available', 'sold', 'hidden'];
+      if (!allowedStatuses.includes(status)) {
+        return res.status(400).json({ error: 'Invalid status value 💔' });
+      }
+
+      // Find the post
+      const post = await PostModel.findById(postId);
+
+      if (!post) {
+        return res.status(404).json({ error: 'Post not found 💔' });
+      }
+
+      // Check ownership
+      if (post.sellerId.toString() !== userId) {
+        return res.status(403).json({ error: 'You are not authorized to change this post 🚫' });
+      }
+
+      // Only allow if the post is approved
+      if (!post.isChecked) {
+        return res.status(400).json({ error: 'Post is not approved yet 💔' });
+      }
+
+      // Update status
+      post.status = status;
+      post.updatedAt = Date.now();
+      await post.save();
+
+      res.status(200).json({ message: `Post status updated to '${status}' ✅`, post });
+    } catch (error) {
+      console.error('Change post status error:', error);
+      res.status(500).json({ error: 'Failed to change post status 💔' });
+    }
+  }
+
+
 
 
 }
