@@ -22,18 +22,15 @@ export default function MessageLayout({ currentUser, currentConversation }) {
         if (!conversationId) return;
 
         const fetchMessages = async () => {
-            try {
+            if (messages.length === 0) { // ✅ Only fetch if messages are empty
                 const res = await axios.get(`${API_ENDPOINTS.GET_MESSAGES}/${conversationId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(NAME_CONFIG.TOKEN)}`,
                     }
                 });
                 setMessages(res.data);
-            } catch (err) {
-                console.error("Failed to fetch messages:", err);
             }
         };
-
         fetchMessages();
         socket.emit("join_conversation", conversationId);
 
@@ -41,6 +38,7 @@ export default function MessageLayout({ currentUser, currentConversation }) {
             socket.emit("leave_conversation", conversationId);
         };
     }, [conversationId]);
+
 
     // Lắng nghe tin nhắn mới từ socket, chỉ cập nhật khi nhận từ socket
     useEffect(() => {

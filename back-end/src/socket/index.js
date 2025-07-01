@@ -1,7 +1,6 @@
 // back-end/src/socket/index.js
 const MessageModel = require('../models/Message');
 
-
 function setupSocketIO(io) {
   io.on('connection', (socket) => {
     console.log('📡 User connected:', socket.id);
@@ -10,15 +9,9 @@ function setupSocketIO(io) {
       socket.join(conversationId);
     });
 
-    socket.on('send_message', async (data) => {
-      const { conversationId, senderId, text } = data;
-
-      try {
-        const message = await MessageModel.create({ conversationId, senderId, text });
-        io.to(conversationId).emit('receive_message', message);
-      } catch (err) {
-        console.error('❌ Error saving message:', err.message);
-      }
+    socket.on('send_message', (message) => {
+      // Simply broadcast the message that was already created by the REST API
+      io.to(message.conversationId).emit('receive_message', message);
     });
 
     socket.on('disconnect', () => {

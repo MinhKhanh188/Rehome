@@ -1,14 +1,13 @@
 // back-end/src/server.js
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const express = require('express');
 const morgan = require('morgan');
 const methodOverride = require('method-override');
 const cors = require('cors');
 const { engine } = require('express-handlebars');
-const path = require('path');
-const fs = require('fs');
-const https = require('https');
+const http = require('http'); // ADD THIS
 const errorHandler = require('./middleware/errorHandler');
-require('dotenv').config();
 const { Server } = require('socket.io');
 
 const port = process.env.PORT;
@@ -40,14 +39,10 @@ app.use('/api/', indexRoute);
 
 app.use(errorHandler);
 
-// 🔐 HTTPS setup
-const options = {
-  key: fs.readFileSync(path.join(__dirname, '../ssl/key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, '../ssl/cert.pem')),
-};
+// ✅ CREATE HTTP SERVER
+const server = http.createServer(app);
 
-const server = https.createServer(options, app);
-
+// ✅ ATTACH SOCKET.IO
 const io = new Server(server, {
   cors: {
     origin: frontendURL,
@@ -60,7 +55,7 @@ const io = new Server(server, {
 const setupSocketIO = require('./socket');
 setupSocketIO(io);
 
-// ✅ Start server
-server.listen(port, () => {
-  console.log('🚀 HTTPS server running on port', port);
+// ✅ START HTTP SERVER
+server.listen(port, "0.0.0.0", () => {
+  console.log('🚀 HTTP server running on port', port);
 });

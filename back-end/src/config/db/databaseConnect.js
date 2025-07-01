@@ -6,14 +6,14 @@ const dbURI = process.env.DB_URI;
 
 async function connect() {
     try {
-        await mongoose.connect(dbURI+'RehomeDB', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(dbURI, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+    });
         console.log('Connected to MongoDB');
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
     }
 }
 
-module.exports = { connect };  
+module.exports = { connect };
