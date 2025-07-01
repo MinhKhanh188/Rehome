@@ -23,6 +23,7 @@ router.get('/productDetail/:productId', postController.getProductDetail);
 router.get('/getPersonalPosts', authMiddleware(false), postController.getPersonalPosts);
 router.post('/createPost', authMiddleware(false), upload.array('images'), postController.createPost);
 router.delete('/deletePost/:id', authMiddleware(false), postController.deletePost);
+router.put('/status/:id', authMiddleware(false), postController.ChangePostStatus);
 
 // admin routes
 router.get('/unverifiedPosts', authMiddleware(true), postController.getAllUnverifiedPosts);

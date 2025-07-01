@@ -347,7 +347,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
 
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Giá Gốc Sản Phẩm (không bắt buộc) *</Form.Label>
+                  <Form.Label>Giá Gốc Sản Phẩm (không bắt buộc)</Form.Label>
                   <Form.Control
                     type="text"
                     name="originalPrice"
@@ -514,7 +514,7 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                placeholder="Provide a detailed description of your product including its features, condition, and any defects or issues."
+                placeholder="Xin hãy cung cấp mô tả cho sản phẩm, như là nó từng dùng hoạt động nào, hay khoảng thời gian từ lúc bạn mua nó."
                 isInvalid={!!errors.description}
               />
               <Form.Control.Feedback type="invalid">{errors.description}</Form.Control.Feedback>

@@ -8,6 +8,7 @@ const ProductListingCard = ({
   product: propProduct,
   stats: propStats = {},
   onEdit,
+  onChangeStatus,
   onArchive,
   onDelete
 }) => {
@@ -71,13 +72,21 @@ const ProductListingCard = ({
               <MoreVertical size={20} className="text-gray-500" />
             </Dropdown.Toggle>
             <Dropdown.Menu align="end" className="listing-menu">
-              <Dropdown.Item
+              {/* <Dropdown.Item
                 onClick={() => onEdit(_id)}
                 className="d-flex align-items-center"
               >
                 <Edit size={16} className="me-2" />
                 Chỉnh sửa
+              </Dropdown.Item> */}
+              <Dropdown.Item
+                onClick={() => onChangeStatus(_id)}
+                className="d-flex align-items-center"
+              >
+                <Edit size={16} className="me-2" />
+                Đổi trạng thái
               </Dropdown.Item>
+
               <Dropdown.Item
                 onClick={() => onArchive(_id)}
                 className="d-flex align-items-center"

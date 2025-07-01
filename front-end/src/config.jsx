@@ -22,6 +22,8 @@ export const API_ENDPOINTS = {
   GET_USER_PROFILE: `${baseUrl}/api/users/profile`,
   GET_USER_POSTS: `${baseUrl}/api/posts/getPersonalPosts`,
   GET_ALL_USERS: `${baseUrl}/api/users/getAllUsers`,
+  DELETE_MY_POST: (postId) => `${baseUrl}/api/posts/deletePost/${postId}`,
+  CHANGE_POST_STATUS: (postId) => `${baseUrl}/api/posts/status/${postId}`,
 
 
   // Admin endpoints
