@@ -165,9 +165,10 @@ export default function ProductDetails() {
                 <div className="d-flex flex-wrap align-items-center gap-2 mb-3">
                   <Badge bg="warning" text="dark">{product.productStatus}</Badge>
                   <span className="d-flex align-items-center text-warning">
-                    <Star size={16} fill="#facc15" className="me-1" />
-                    {product.sellerRating}
-                    <span className="text-muted ms-1">(Đánh Giá Người Bán{product.sellerName ? ` - ${product.sellerName}` : ''})</span>
+                    {/* <Star size={16} fill="#facc15" className="me-1" /> */}
+                    {/* {product.sellerRating} */}
+                    {/* <span className="text-muted ms-1">(Đánh Giá Người Bán{product.sellerName ? ` - ${product.sellerName}` : ''})</span> */}
+                    <span className="text-muted ms-1">(Người Bán{product.sellerName ? ` - ${product.sellerName}` : ''})</span>
                   </span>
                   <div className='w-100'></div>
                   <span className="d-flex align-items-center text-muted">
@@ -194,7 +195,7 @@ export default function ProductDetails() {
                   )}
                 </div>
                 <div className="d-grid gap-2 mb-3">
-                  <Button
+                  {/* <Button
                     variant="warning"
                     size="lg"
                     className="text-white"
@@ -202,13 +203,13 @@ export default function ProductDetails() {
                     onClick={() => alert('Chức năng này hiện tại chưa được triển khai.')}
                   >
                     Mua Ngay
-                  </Button>
+                  </Button> */}
                   <Button
                     variant="outline-secondary"
                     size="lg"
                     onClick={handleChatStart}
                   >
-                    Đưa Ra Đề Nghị
+                    Nhắn tin với người bán
                   </Button>
 
                   <div className="d-flex align-items-start text-success mt-2 small">

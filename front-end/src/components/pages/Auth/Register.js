@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons'; // Import the Facebook icon
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import axios from 'axios';
+import GoogleLoginButton from './GoogleLoginButton';
 
 export default function Register() {
   const [fullName, setFullName] = useState('');
@@ -21,7 +22,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState(null);
   const [passwordFocus, setPasswordFocus] = useState(false);
-  
+
   const navigate = useNavigate();
 
   // Password validation
@@ -32,47 +33,47 @@ export default function Register() {
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   const passwordsMatch = password === confirmPassword && password !== '';
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLocalError(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLocalError(null);
 
-  if (!hasMinLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
-    setLocalError('Xin vui lòng đảm bảo mật khẩu của bạn đáp ứng tất cả các yêu cầu.');
-    return;
-  }
-
-  if (!passwordsMatch) {
-    setLocalError('Mật khẩu không khớp.');
-    return;
-  }
-  
-  try {
-    setLoading(true);
-    const payload = {
-      name: fullName,
-      email,
-      password,
-    };
-
-    const response = await axios.post(API_ENDPOINTS.REGISTER, payload);
-
-    const { user, token } = response.data;
-
-    localStorage.setItem(NAME_CONFIG.USER, JSON.stringify(user)); 
-    localStorage.setItem(NAME_CONFIG.TOKEN, token);
-
-    if (user && token) {
-      navigate('/');
-    } else {
-      setLocalError('Đăng ký không thành công. Vui lòng thử lại.');
+    if (!hasMinLength || !hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
+      setLocalError('Xin vui lòng đảm bảo mật khẩu của bạn đáp ứng tất cả các yêu cầu.');
+      return;
     }
-  } catch (err) {
-    const msg = err.response?.data?.message || 'Lỗi đăng ký. Vui lòng kiểm tra thông tin của bạn.';
-    setLocalError(msg);
-  } finally {
-    setLoading(false);
-  }
-};
+
+    if (!passwordsMatch) {
+      setLocalError('Mật khẩu không khớp.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const payload = {
+        name: fullName,
+        email,
+        password,
+      };
+
+      const response = await axios.post(API_ENDPOINTS.REGISTER, payload);
+
+      const { user, token } = response.data;
+
+      localStorage.setItem(NAME_CONFIG.USER, JSON.stringify(user));
+      localStorage.setItem(NAME_CONFIG.TOKEN, token);
+
+      if (user && token) {
+        navigate('/');
+      } else {
+        setLocalError('Đăng ký không thành công. Vui lòng thử lại.');
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message || 'Lỗi đăng ký. Vui lòng kiểm tra thông tin của bạn.';
+      setLocalError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleGoogleSignIn = () => {
     setLocalError(null);
@@ -97,8 +98,8 @@ const handleSubmit = async (e) => {
   return (
     <div className="register-page">
       {/* Add your Navbar component here */}
-      <NavbarComponent/>
-      
+      <NavbarComponent />
+
       <Container className="py-5">
         <Row className="justify-content-center">
           <Col md={6} lg={5}>
@@ -251,24 +252,11 @@ const handleSubmit = async (e) => {
                 </div>
 
                 <div className="social-buttons mt-4">
-                  <Button
-                    variant="outline-secondary"
-                    className="w-100 mb-3 google-btn"
-                    onClick={handleGoogleSignIn}
-                    disabled={loading}
-                  >
-                    <svg className="google-icon" viewBox="0 0 24 24" width="20" height="20">
-                      <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-                        <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z" />
-                        <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z" />
-                        <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z" />
-                        <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z" />
-                      </g>
-                    </svg>
-                    Google
-                  </Button>
 
-                  <Button
+                  <GoogleLoginButton variant="outline-secondary"
+                    className="google-btn" setLoading={setLoading} setError={setLocalError} />
+
+                  {/* <Button
                     variant="primary"
                     className="w-100 facebook-btn"
                     onClick={handleFacebookSignIn}
@@ -276,7 +264,7 @@ const handleSubmit = async (e) => {
                   >
                     <FontAwesomeIcon icon={faFacebookF} style={{ color: "white", marginRight: '7px', height: '20px', width: '20px' }} />
                     Facebook
-                  </Button>
+                  </Button> */}
                 </div>
 
                 <div className="text-center mt-4">
@@ -297,7 +285,7 @@ const handleSubmit = async (e) => {
       </Container>
 
       {/* Add your Footer component here */}
-      <Footer/>
+      <Footer />
     </div>
   );
 }

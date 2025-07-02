@@ -37,14 +37,16 @@ const ProductListingCard = ({
         />
         <Badge
           className={`status-badge ${status === 'sold'
-            ? 'sold'
-            : status === 'archived'
-              ? 'archived'
-              : status === 'pending'
-                ? 'pending'
-                : is_vip
-                  ? 'vip'
-                  : 'active'
+              ? 'sold'
+              : status === 'archived'
+                ? 'archived'
+                : status === 'pending'
+                  ? 'pending'
+                  : status === 'hidden'
+                    ? 'hidden'
+                    : is_vip
+                      ? 'vip'
+                      : 'active'
             }`}
         >
           {status === 'sold'
@@ -53,10 +55,13 @@ const ProductListingCard = ({
               ? 'Đã lưu trữ'
               : status === 'pending'
                 ? 'Đang chờ duyệt'
-                : is_vip
-                  ? 'VIP'
-                  : 'Đang bày bán'}
+                : status === 'hidden'
+                  ? 'Đang ẩn'
+                  : is_vip
+                    ? 'VIP'
+                    : 'Đang bày bán'}
         </Badge>
+
 
       </div>
 

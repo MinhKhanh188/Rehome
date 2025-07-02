@@ -22,22 +22,20 @@ export default function MessageLayout({ currentUser, currentConversation }) {
         if (!conversationId) return;
 
         const fetchMessages = async () => {
-            if (messages.length === 0) { // ✅ Only fetch if messages are empty
-                const res = await axios.get(`${API_ENDPOINTS.GET_MESSAGES}/${conversationId}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(NAME_CONFIG.TOKEN)}`,
-                    }
-                });
-                setMessages(res.data);
-            }
+            setMessages([]); // ✅ Clear when switching chats
+            const res = await axios.get(`${API_ENDPOINTS.GET_MESSAGES}/${conversationId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(NAME_CONFIG.TOKEN)}`,
+                },
+            });
+            setMessages(res.data);
         };
         fetchMessages();
-        socket.emit("join_conversation", conversationId);
 
-        return () => {
-            socket.emit("leave_conversation", conversationId);
-        };
+        socket.emit("join_conversation", conversationId);
+        return () => socket.emit("leave_conversation", conversationId);
     }, [conversationId]);
+
 
 
     // Lắng nghe tin nhắn mới từ socket, chỉ cập nhật khi nhận từ socket

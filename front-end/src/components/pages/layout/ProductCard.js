@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaHeart } from 'react-icons/fa';
 import '../../css/ProductCard.css';
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 
 export const ProductCard = ({ id, title, price, condition, imageUrl, isVip = false, onFavorite }) => {
   const navigate = useNavigate();

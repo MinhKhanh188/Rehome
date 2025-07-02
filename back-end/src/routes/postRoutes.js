@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const postController = require('../controllers/postController');
 const postPublicController = require('../controllers/postPublicController');
+const savedItemController = require('../controllers/savedItemController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 const multer = require('multer');
@@ -24,6 +25,10 @@ router.get('/getPersonalPosts', authMiddleware(false), postController.getPersona
 router.post('/createPost', authMiddleware(false), upload.array('images'), postController.createPost);
 router.delete('/deletePost/:id', authMiddleware(false), postController.deletePost);
 router.put('/status/:id', authMiddleware(false), postController.ChangePostStatus);
+
+router.get('/getSavedItems', authMiddleware(false), savedItemController.getSavedPosts);
+router.post('/saveItem/:postId', authMiddleware(false), savedItemController.savePost);
+router.delete('/removeSavedItem/:id', authMiddleware(false), savedItemController.removeSavedItem);
 
 // admin routes
 router.get('/unverifiedPosts', authMiddleware(true), postController.getAllUnverifiedPosts);

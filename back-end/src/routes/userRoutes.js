@@ -8,7 +8,9 @@ const authMiddleware = require('../middleware/authMiddleware');
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.post('/forgotPassword', userController.forgotPassword);
+router.post('/verify-reset-code', userController.verifyResetCode);
 router.post('/resetPassword', userController.resetPassword);
+router.post('/login/google', userController.loginWithGoogle);
 
 // user routes
 router.get('/profile', authMiddleware(false), userController.getUserProfile);

@@ -8,6 +8,7 @@ import { NavbarComponent } from '../layout/Navbar';
 import { API_ENDPOINTS } from '../../../config';
 import { AppContext } from '../../context/AppContext';
 
+
 const Products = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -254,6 +255,30 @@ const Products = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
+  const handleSavePost = async (postId) => {
+    try {
+      const token = localStorage.getItem('Rehometoken');
+      const response = await fetch(`${API_ENDPOINTS.SAVED_A_POST(postId)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to save post');
+      }
+
+      alert('Đã lưu tin thành công! ❤️');
+    } catch (error) {
+      console.error('Save post error:', error);
+      alert(`Lưu tin thất bại: ${error.message}`);
+    }
+  };
+
+
   return (
     <div>
       <NavbarComponent />
@@ -413,11 +438,13 @@ const Products = () => {
                       onClick={() => handleProductClick(product._id)}
                     >
                       <ProductCard
+                        id={product._id} // IMPORTANT to pass the ID
                         title={product.name}
                         price={product.price}
                         condition={product.productStatus}
                         imageUrl={product.images ? product.images[0] : ''}
                         isVip={product.isVip}
+                        onFavorite={handleSavePost} // ✅ Pass the save handler here
                       />
                     </div>
                   </Col>

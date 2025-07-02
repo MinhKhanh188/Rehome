@@ -44,7 +44,6 @@ export default function MyListings() {
       }
     })
       .then((res) => {
-        console.log('Fetched personal posts:', res.data);
         setMyListings(res.data); // assumes data is the array
       })
       .catch((err) => {
@@ -117,7 +116,7 @@ export default function MyListings() {
               <option value="all">Tất Cả</option>
               <option value="active">Đang Bày Bán</option>
               <option value="sold">Đã Bán</option>
-              <option value="archived">Lưu Trữ</option>
+              {/* <option value="archived">Lưu Trữ</option> */}
             </Form.Select>
           </Form.Group>
         </div>
