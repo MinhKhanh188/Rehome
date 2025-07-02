@@ -10,7 +10,8 @@ class postPublicController {
         try {
             let { province } = req.query;
 
-            const baseQuery = { isChecked: true };
+            const baseQuery = { isChecked: true, status: 'available' };
+
 
             if (province) {
                 province = province.normalize('NFC');

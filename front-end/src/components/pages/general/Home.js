@@ -1,4 +1,4 @@
-// App.jsx
+// front-end/src/components/pages/general/Home.js
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { Leaf, Recycle, ShieldCheck, CheckCircle } from 'lucide-react';
@@ -8,53 +8,82 @@ import { Banner } from "../layout/Banner";
 import { CategoryCard } from "../layout/CategoryCard";
 import { ProductCard } from "../layout/ProductCard";
 import { Footer } from "../layout/Footer";
-import { API_ENDPOINTS } from '../../../config';
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import '../../css/Home.css';
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
+
+
 
 export default function Home() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
-  const categories = [
-    { id: 'Thiết Bị Điện Tử', name: 'Thiết Bị Điện Tử', icon: '💻', path: '/thiet-bi-dien-tu', description: 'Các sản phẩm điện tử như laptop, máy tính bảng, tivi...' },
-    { id: 'Thời Trang Nam', name: 'Thời Trang Nam', icon: '👔', path: '/thoi-trang-nam', description: 'Quần áo, giày dép, phụ kiện thời trang dành cho nam giới.' },
-    { id: 'Thời Trang Nữ', name: 'Thời Trang Nữ', icon: '👗', path: '/thoi-trang-nu', description: 'Trang phục, giày dép, phụ kiện thời trang dành cho nữ giới.' },
-    { id: 'Phụ Kiện Nam', name: 'Phụ Kiện Nam', icon: '🕶️', path: '/phu-kien-nam', description: 'Phụ kiện dành cho nam như mắt kính, đồng hồ, ví da...' },
-    { id: 'Phụ Kiện Nữ', name: 'Phụ Kiện Nữ', icon: '👝', path: '/phu-kien-nu', description: 'Túi xách, trang sức, phụ kiện thời trang cho nữ.' },
-    { id: 'Điện Thoại & Phụ Kiện', name: 'Điện Thoại & Phụ Kiện', icon: '📱', path: '/dien-thoai-va-phu-kien', description: 'Điện thoại di động, ốp lưng, sạc, tai nghe và phụ kiện đi kèm.' },
-    { id: 'Thiết Bị Điện Gia Dụng', name: 'Thiết Bị Điện Gia Dụng', icon: '🔌', path: '/thiet-bi-dien-gia-dung', description: 'Thiết bị điện cho gia đình như nồi cơm điện, lò vi sóng...' },
-    { id: 'Đồ Gia Dụng', name: 'Đồ Gia Dụng', icon: '🧺', path: '/do-gia-dung', description: 'Vật dụng gia đình như chổi, xô, thùng rác, dụng cụ dọn dẹp...' },
-    { id: 'Đồ Dùng Cá Nhân', name: 'Đồ Dùng Cá Nhân', icon: '🧴', path: '/do-dung-ca-nhan', description: 'Sản phẩm chăm sóc cá nhân như bàn chải, dao cạo, dầu gội...' },
-    { id: 'Mỹ Phẩm', name: 'Mỹ Phẩm', icon: '💄', path: '/my-pham', description: 'Các sản phẩm trang điểm, chăm sóc da, dưỡng da...' },
-    { id: 'Nội Thất', name: 'Nội Thất', icon: '🛋️', path: '/noi-that', description: 'Đồ nội thất như bàn ghế, giường, tủ, kệ sách...' },
-    { id: 'Dụng Cụ Thể Thao', name: 'Dụng Cụ Thể Thao', icon: '🏀', path: '/dung-cu-the-thao', description: 'Dụng cụ luyện tập, thể thao như bóng, vợt, thảm tập...' },
-    { id: 'Giáo Dục', name: 'Giáo Dục', icon: '📚', path: '/giao-duc', description: 'Sách vở, tài liệu học tập, đồ dùng học sinh - sinh viên.' }
 
-  ];
+  // const categories = [
+  //   { id: 'Thiết Bị Điện Tử', name: 'Thiết Bị Điện Tử', icon: '💻', path: '/thiet-bi-dien-tu', description: 'Các sản phẩm điện tử như laptop, máy tính bảng, tivi...' },
+  //   { id: 'Thời Trang Nam', name: 'Thời Trang Nam', icon: '👔', path: '/thoi-trang-nam', description: 'Quần áo, giày dép, phụ kiện thời trang dành cho nam giới.' },
+  //   { id: 'Thời Trang Nữ', name: 'Thời Trang Nữ', icon: '👗', path: '/thoi-trang-nu', description: 'Trang phục, giày dép, phụ kiện thời trang dành cho nữ giới.' },
+  //   { id: 'Phụ Kiện Nam', name: 'Phụ Kiện Nam', icon: '🕶️', path: '/phu-kien-nam', description: 'Phụ kiện dành cho nam như mắt kính, đồng hồ, ví da...' },
+  //   { id: 'Phụ Kiện Nữ', name: 'Phụ Kiện Nữ', icon: '👝', path: '/phu-kien-nu', description: 'Túi xách, trang sức, phụ kiện thời trang cho nữ.' },
+  //   { id: 'Điện Thoại & Phụ Kiện', name: 'Điện Thoại & Phụ Kiện', icon: '📱', path: '/dien-thoai-va-phu-kien', description: 'Điện thoại di động, ốp lưng, sạc, tai nghe và phụ kiện đi kèm.' },
+  //   { id: 'Thiết Bị Điện Gia Dụng', name: 'Thiết Bị Điện Gia Dụng', icon: '🔌', path: '/thiet-bi-dien-gia-dung', description: 'Thiết bị điện cho gia đình như nồi cơm điện, lò vi sóng...' },
+  //   { id: 'Đồ Gia Dụng', name: 'Đồ Gia Dụng', icon: '🧺', path: '/do-gia-dung', description: 'Vật dụng gia đình như chổi, xô, thùng rác, dụng cụ dọn dẹp...' },
+  //   { id: 'Đồ Dùng Cá Nhân', name: 'Đồ Dùng Cá Nhân', icon: '🧴', path: '/do-dung-ca-nhan', description: 'Sản phẩm chăm sóc cá nhân như bàn chải, dao cạo, dầu gội...' },
+  //   { id: 'Mỹ Phẩm', name: 'Mỹ Phẩm', icon: '💄', path: '/my-pham', description: 'Các sản phẩm trang điểm, chăm sóc da, dưỡng da...' },
+  //   { id: 'Nội Thất', name: 'Nội Thất', icon: '🛋️', path: '/noi-that', description: 'Đồ nội thất như bàn ghế, giường, tủ, kệ sách...' },
+  //   { id: 'Dụng Cụ Thể Thao', name: 'Dụng Cụ Thể Thao', icon: '🏀', path: '/dung-cu-the-thao', description: 'Dụng cụ luyện tập, thể thao như bóng, vợt, thảm tập...' },
+  //   { id: 'Giáo Dục', name: 'Giáo Dục', icon: '📚', path: '/giao-duc', description: 'Sách vở, tài liệu học tập, đồ dùng học sinh - sinh viên.' }
+
+  // ];
 
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [recentProducts, setRecentProducts] = useState([]);
+  const { clientProvince } = useContext(AppContext);
+
 
   useEffect(() => {
-    // Gọi API lấy danh sách sản phẩm VIP
-    const fetchVipProducts = async () => {
+    if (!clientProvince) return;
+
+    const fetchProductsByProvince = async () => {
       try {
-        const res = await fetch(`${API_ENDPOINTS.GET_ALL_VIP_POSTS}`);
-        const data = await res.json();
-        // data.posts là danh sách sản phẩm VIP đã duyệt
-        setFeaturedProducts(data.posts || []);
-        // Lấy 4 sản phẩm VIP mới nhất cho Recently Added
-        setRecentProducts(
-          (data.posts || [])
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .slice(0, 4)
-        );
-      } catch (err) {
-        setFeaturedProducts([]);
-        setRecentProducts([]);
+        const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(clientProvince)}`);
+        const data = await response.json();
+        setRecentProducts(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
       }
     };
-    fetchVipProducts();
-  }, []);
+
+    fetchProductsByProvince();
+  }, [clientProvince]);
+
+    const handleSavePost = async (postId) => {
+      try {
+        if (!localStorage.getItem(NAME_CONFIG.TOKEN)) {
+          alert('Vui lọc đăng nhập để lưu tin.');
+          navigate('/login');
+        }
+        const token = localStorage.getItem('Rehometoken');
+        const response = await fetch(`${API_ENDPOINTS.SAVED_A_POST(postId)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+  
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to save post');
+        }
+  
+        alert('Đã lưu tin thành công! ❤️');
+      } catch (error) {
+        console.error('Save post error:', error);
+      }
+    };
 
   return (
     <div className="app-container">
@@ -64,7 +93,7 @@ export default function Home() {
         <section className="banner-section">
           <Banner />
         </section>
-{/* 
+        {/* 
         <section className="categories-section">
           <div className="section-header">
             <h2>Khám phá Danh mục</h2>
@@ -119,10 +148,10 @@ export default function Home() {
           </div>
 
           <div className="products-grid">
-            {recentProducts.map((product) => (
+            {recentProducts.slice(0, 8).map((product) => (
               <div
                 key={product._id || product.id}
-                onClick={() => navigate(`/product?id=${product._id || product.id}`)}
+                onClick={() => navigate(`/products/product-details/?id=${product._id || product.id}`)}
                 className="product-card-wrapper"
               >
                 <ProductCard
@@ -132,10 +161,12 @@ export default function Home() {
                   condition={product.productStatus}
                   imageUrl={product.images?.[0]}
                   isVip={product.isVip}
+                  onFavorite={handleSavePost}
                 />
               </div>
             ))}
           </div>
+
         </section>
 
         {/* Environmental Benefits Section */}
@@ -302,8 +333,8 @@ export default function Home() {
         <section className="cta-section">
           <div className="cta-content">
             <h2>Sẵn sàng cho món đồ của bạn một cuộc sống thứ hai?</h2>
-            <div><span style={{fontSize: '18px'}}>Tham gia cùng hàng nghìn người dùng mua và bán các món đồ đã qua sử dụng chất lượng.</span>
-            <p>Vừa nhẹ ví tiền, vừa chất vì hành tinh – mua đồ cũ chưa bao giờ "xanh" mà vẫn "chất" đến thế!</p></div>
+            <div><span style={{ fontSize: '18px' }}>Tham gia cùng hàng nghìn người dùng mua và bán các món đồ đã qua sử dụng chất lượng.</span>
+              <p>Vừa nhẹ ví tiền, vừa chất vì hành tinh – mua đồ cũ chưa bao giờ "xanh" mà vẫn "chất" đến thế!</p></div>
             <div className="cta-buttons">
               <button className="primary-btn" onClick={() => navigate('/dashboard/new-listing')}>Bắt đầu bán hàng</button>
               <button

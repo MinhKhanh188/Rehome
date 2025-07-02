@@ -11,6 +11,7 @@ import ProductForm from './ProductForm';
 import { NavbarComponent } from '../layout/Navbar';
 import Chat from './chat/Chat';
 import BuyCoin from './BuyCoin';
+import ViewSavedPost from './ViewSavedPost';
 
 export default function Dashboard() {
   return (
@@ -27,6 +28,7 @@ export default function Dashboard() {
             <Route index element={<MyListings />} />
             <Route path="new-listing" element={<ProductForm />} />
             <Route path="chat/*" element={<Chat />} />
+            <Route path="saved-post" element={<ViewSavedPost />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="purchases" element={<PurchaseHistory />} />
             <Route path="purchasesCoins" element={<BuyCoin />} />

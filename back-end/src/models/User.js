@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
+  passwordHash: { type: String },
+  loginProvider: { type: String, enum: ['local', 'google'], default: 'local' },
   coin: { type: Number, default: 0 },
   uniqueId: { type: String, required: true, unique: true },
   profilePic: { type: String },

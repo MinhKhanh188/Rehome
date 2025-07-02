@@ -13,6 +13,8 @@ export const API_ENDPOINTS = {
   REGISTER: `${baseUrl}/api/users/register`,
   FORGOT_PASSWORD: `${baseUrl}/api/users/forgotPassword`,
   RESET_PASSWORD: `${baseUrl}/api/users/resetPassword`,
+  VERIFY_RESET_CODE: `${baseUrl}/api/users/verify-reset-code`,
+  LOGIN_WITH_GOOGLE: `${baseUrl}/api/users/login/google`,
 
   // Normal endpoints
   GET_COIN_HISTORY: `${baseUrl}/api/users/getCoinHistory`,
@@ -24,6 +26,10 @@ export const API_ENDPOINTS = {
   GET_ALL_USERS: `${baseUrl}/api/users/getAllUsers`,
   DELETE_MY_POST: (postId) => `${baseUrl}/api/posts/deletePost/${postId}`,
   CHANGE_POST_STATUS: (postId) => `${baseUrl}/api/posts/status/${postId}`,
+
+  GET_MY_SAVED_POSTS: `${baseUrl}/api/posts/getSavedItems`,
+  SAVED_A_POST: (postId) => `${baseUrl}/api/posts/saveItem/${postId}`,
+  REMOVE_MY_SAVED_POST: (postId) => `${baseUrl}/api/posts/removeSavedItem/${postId}`,
 
 
   // Admin endpoints

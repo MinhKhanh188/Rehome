@@ -6,8 +6,64 @@ const CoinTransactionModel = require('../models/CoinTransaction');
 const ApiError = require('../utils/ApiError');
 const sendResetCodeEmail = require('../services/emailService');
 const generateUniqueId = require('../utils/uniqueIdGenerator');
+const { OAuth2Client } = require('google-auth-library');
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 class userController {
+
+    async loginWithGoogle(req, res, next) {
+        try {
+            const { idToken } = req.body;
+            if (!idToken) throw new ApiError(400, 'Thiếu idToken.');
+
+            // Verify token with Google
+            const ticket = await googleClient.verifyIdToken({
+                idToken,
+                audience: process.env.GOOGLE_CLIENT_ID,
+            });
+            const payload = ticket.getPayload();
+
+            // Get user info
+            const { email, name, picture, sub } = payload;
+
+            // Find or create user
+            let user = await UserModel.findOne({ email });
+            if (!user) {
+                const dummyHash = await bcrypt.hash(Math.random().toString(36), 10);
+
+                user = await UserModel.create({
+                    name,
+                    email,
+                    passwordHash: dummyHash,
+                    loginProvider: 'google',
+                    uniqueId: generateUniqueId(),
+                    profilePic: picture,
+                    isVerified: true,
+                });
+
+            }
+
+            // Create JWT
+            const token = jwt.sign(
+                { id: user._id },
+                process.env.JWT_SECRET,
+                { expiresIn: process.env.JWT_EXPIRES_IN }
+            );
+
+            res.status(200).json({
+                user: {
+                    name: user.name,
+                    isVerified: user.isVerified,
+                    isAdmin: user.isAdmin,
+                    profilePic: user.profilePic,
+                },
+                token,
+            });
+
+        } catch (err) {
+            next(err);
+        }
+    }
 
     // POST /register
     async register(req, res, next) {
@@ -63,6 +119,10 @@ class userController {
                 throw new ApiError(400, 'Email không chính xác.');
             }
 
+            if (user.loginProvider === 'google') {
+                throw new ApiError(400, 'Tài khoản này đăng nhập bằng Google. Vui lòng sử dụng Google Login.');
+            }
+
             const isMatch = await bcrypt.compare(password, user.passwordHash);
             if (!isMatch) {
                 throw new ApiError(400, 'Email hoặc mật khẩu không chính xác.');
@@ -83,11 +143,11 @@ class userController {
                 token,
             });
 
-
         } catch (err) {
             next(err);
         }
     }
+
 
     // POST /forgot-password
     async forgotPassword(req, res, next) {

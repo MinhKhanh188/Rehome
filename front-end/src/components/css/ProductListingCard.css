@@ -50,9 +50,14 @@
     border: 1px solid #d9c2b2;
   }
   
+  .status-badge.hidden {
+    background-color: #5c1f0d !important; /*vang nhant */
+    color: #e4e4e4!important;
+  }
+
   .status-badge.pending {
-    background-color: #facc15 !important; /* vàng nhạt */
-    color: #7c5700;
+    background-color: #eb771e !important; /* vàng nhạt */
+    color: #ffffff!important;
   }
   
   .listing-title {
