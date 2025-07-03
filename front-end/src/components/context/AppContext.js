@@ -6,6 +6,9 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const storedProvince = localStorage.getItem(NAME_CONFIG.USER_PROVINCE);
+    const [productIsLoaded, setProductIsLoaded] = useState(false);
+    const [products, setProducts] = useState([]);
+
     const [clientProvince, setClientProvince] = useState(() => {
         const stored = localStorage.getItem(NAME_CONFIG.USER_PROVINCE);
         if (stored) return stored;
@@ -38,7 +41,11 @@ export const AppProvider = ({ children }) => {
     return (
         <AppContext.Provider value={{
             clientProvince,
-            updateProvince
+            updateProvince,
+            productIsLoaded,
+            setProductIsLoaded,
+            products,
+            setProducts
         }}>
             {children}
         </AppContext.Provider>

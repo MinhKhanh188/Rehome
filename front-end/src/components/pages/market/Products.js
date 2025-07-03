@@ -5,16 +5,17 @@ import { Container, Row, Col, Card, Form, Button, InputGroup, Pagination, Badge 
 import '../../css/Products.css';
 import { ProductCard } from '../layout/ProductCard';
 import { NavbarComponent } from '../layout/Navbar';
-import { API_ENDPOINTS } from '../../../config';
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import { AppContext } from '../../context/AppContext';
+import { Spinner } from 'react-bootstrap';
 
 
 const Products = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { clientProvince, updateProvince } = useContext(AppContext);
+  const { clientProvince, updateProvince, productIsLoaded, setProductIsLoaded, products, setProducts } = useContext(AppContext);
   // Thay đổi khởi tạo state products:
-  const [products, setProducts] = useState([]);
+  //const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   // Filter states
@@ -26,7 +27,7 @@ const Products = () => {
   // Thêm state cho search tỉnh thành
   const [province, setProvince] = useState('');
   const [provinceInput, setProvinceInput] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,21 +51,28 @@ const Products = () => {
     { id: 'Giáo Dục', name: 'Giáo Dục', icon: '📚' }
   ];
 
+  const provinceParam = searchParams.get('province');
   useEffect(() => {
-    const provinceParam = searchParams.get('province');
     if (!provinceParam) return;
+
     const fetchProductsByProvince = async () => {
       try {
+        setLoading(true);
         const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
         const data = await response.json();
         setProducts(data);
-        setLoading(false);
+        console.log('Fetch products at Products.js:');
+        setProductIsLoaded(true);
       } catch (error) {
         console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchProductsByProvince();
-  }, [searchParams.toString()]);
+}, [provinceParam, productIsLoaded]);
+
 
 
 
@@ -428,8 +436,17 @@ const Products = () => {
               </div>
             )}
 
-            {/* Products Grid */}
-            {paginatedProducts.length === 0 ? null : (
+
+            {/* Loading Spinner */}
+            {loading ? (
+              <div className="loading-spinner d-flex justify-content-center align-items-center" style={{ minHeight: 300 }}>
+                <Spinner animation="border" />
+              </div>
+            ) : paginatedProducts.length === 0 ? (
+              <div className="text-center text-muted py-5">
+                Không có sản phẩm nào phù hợp.
+              </div>
+            ) : (
               <Row className="g-4">
                 {paginatedProducts.map((product) => (
                   <Col md={6} lg={4} key={product._id}>
@@ -451,7 +468,6 @@ const Products = () => {
                 ))}
               </Row>
             )}
-
 
             {/* Pagination */}
             {pageCount > 1 && (

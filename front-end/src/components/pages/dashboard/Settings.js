@@ -3,21 +3,45 @@ import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import { Bell, Lock, User, CreditCard } from 'lucide-react';
 import axios from 'axios';
 import '../../css/Settings.css';
-import { API_ENDPOINTS, NAME_CONFIG } from '../../../config'; // Đảm bảo đúng đường dẫn
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
+import { useNavigate } from 'react-router-dom';
 
 export default function Settings() {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState({
     fullName: '',
     email: '',
     phone: '',
     location: '',
   });
-  const [notificationSettings, setNotificationSettings] = useState({
-    emailNotifications: true,
-    pushNotifications: false,
-    productUpdates: true,
-    marketingEmails: false,
-  });
+  // const [notificationSettings, setNotificationSettings] = useState({
+  //   emailNotifications: true,
+  //   pushNotifications: false,
+  //   productUpdates: true,
+  //   marketingEmails: false,
+  // });
+
+  const handleUpdateProfile = async () => {
+    try {
+      const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+      await axios.put(
+        API_ENDPOINTS.UPDATE_PROFILE,
+        {
+          name: profile.fullName,
+          phoneNumber: profile.phone,
+          location: profile.location
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert('Cập nhật hồ sơ thành công!');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Cập nhật hồ sơ thất bại.');
+    }
+  };
+
 
   // Lấy thông tin user khi vào trang
   useEffect(() => {
@@ -31,11 +55,11 @@ export default function Settings() {
         setProfile({
           fullName: data.user.name,
           email: data.user.email || '',
-          phone: data.user.phone || '',
+          phone: data.user.phoneNumber || '',
           location: data.user.location || '',
         });
       } catch (error) {
-        // Xử lý lỗi nếu cần
+        console.error('Error fetching user profile:', error);
       }
     };
     fetchProfile();
@@ -51,12 +75,12 @@ export default function Settings() {
           <Card.Body className="p-4">
             <div className="d-flex align-items-center mb-4">
               <User className="settings-icon me-3" size={20} />
-              <h2 className="settings-section-title">Profile Information</h2>
+              <h2 className="settings-section-title">Thông tin người dùng</h2>
             </div>
             <Row className="g-3">
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Full Name</Form.Label>
+                  <Form.Label>Tên</Form.Label>
                   <Form.Control
                     type="text"
                     value={profile.fullName}
@@ -82,7 +106,7 @@ export default function Settings() {
               </Col>
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Phone</Form.Label>
+                  <Form.Label>Số điện thoại</Form.Label>
                   <Form.Control
                     type="tel"
                     value={profile.phone}
@@ -95,7 +119,7 @@ export default function Settings() {
               </Col>
               <Col xs={12} md={6}>
                 <Form.Group>
-                  <Form.Label>Location</Form.Label>
+                  <Form.Label>Địa chỉ</Form.Label>
                   <Form.Control
                     type="text"
                     value={profile.location}
@@ -110,7 +134,7 @@ export default function Settings() {
           </Card.Body>
         </Card>
 
-        {/* Password Section */}
+        {/* Password Section
         <Card className="settings-card shadow-sm mb-4">
           <Card.Body className="p-4">
             <div className="d-flex align-items-center mb-4">
@@ -142,7 +166,7 @@ export default function Settings() {
         </Card>
 
         {/* Payment Methods */}
-        <Card className="settings-card shadow-sm mb-4">
+        {/* <Card className="settings-card shadow-sm mb-4">
           <Card.Body className="p-4">
             <div className="d-flex align-items-center mb-4">
               <CreditCard className="settings-icon me-3" size={20} />
@@ -173,10 +197,10 @@ export default function Settings() {
               + Add New Payment Method
             </Button>
           </Card.Body>
-        </Card>
+        </Card> */}
 
         {/* Notifications */}
-        <Card className="settings-card shadow-sm mb-4">
+        {/* <Card className="settings-card shadow-sm mb-4">
           <Card.Body className="p-4">
             <div className="d-flex align-items-center mb-4">
               <Bell className="settings-icon me-3" size={20} />
@@ -203,15 +227,21 @@ export default function Settings() {
               ))}
             </div>
           </Card.Body>
-        </Card>
+        </Card>  */}
 
         {/* Action Buttons */}
         <div className="d-flex gap-3">
-          <Button variant="primary" className="save-button">
-            Save Changes
+          <Button variant="primary" className="save-button"
+            onClick={handleUpdateProfile}
+          >
+            Lưu thay đổi
           </Button>
-          <Button variant="outline-secondary" className="cancel-button">
-            Cancel
+          <Button variant="outline-secondary" className="cancel-button"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            Hủy
           </Button>
         </div>
       </div>

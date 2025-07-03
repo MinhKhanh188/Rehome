@@ -22,7 +22,7 @@ const VIETNAM_PROVINCES = [
 ];
 
 export const NavbarComponent = () => {
-  const { clientProvince, updateProvince } = useContext(AppContext);
+  const { clientProvince, updateProvince, productIsLoaded, setProductIsLoaded } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -63,10 +63,13 @@ export const NavbarComponent = () => {
     const currentProvince = urlParams.get('province');
     const isOnProductPage = location.pathname === '/products';
 
-    if (isOnProductPage && !currentProvince) {
+    if (isOnProductPage && !currentProvince && !productIsLoaded) {
+      setProductIsLoaded(true)
       navigate(`/products?province=${encodeURIComponent(clientProvince)}`);
     }
-  }, []);
+  }, [clientProvince, productIsLoaded]);
+
+  
 
 
 

@@ -3,8 +3,8 @@ back-end/node_modules/
 front-end/node_modules/
 
 # Ignore environment files in both frontend and backend
-#back-end/
-#front-end/
+back-end/.env
+#front-end/.env
 
 
 front-end/build

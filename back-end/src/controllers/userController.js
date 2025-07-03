@@ -209,6 +209,34 @@ class userController {
         }
     }
 
+    // PUT /update-profile
+    async updateProfile(req, res, next) {
+        try {
+            const { name, phoneNumber, location } = req.body;
+
+            const user = await UserModel.findById(req.user._id);
+            if (!user) throw new ApiError(404, 'Không tìm thấy người dùng.');
+
+            // Update only provided fields
+            if (name) user.name = name;
+            if (phoneNumber) user.phoneNumber = phoneNumber;
+            if (location) user.location = location;
+
+            await user.save();
+
+            res.status(200).json({
+                message: 'Cập nhật hồ sơ thành công.',
+                user: {
+                    name: user.name,
+                    phoneNumber: user.phoneNumber,
+                    location: user.location
+                }
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     // ===================================================================================
 
 

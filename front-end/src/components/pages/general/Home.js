@@ -14,33 +14,13 @@ import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 
 
-
 export default function Home() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
-
-  // const categories = [
-  //   { id: 'Thiết Bị Điện Tử', name: 'Thiết Bị Điện Tử', icon: '💻', path: '/thiet-bi-dien-tu', description: 'Các sản phẩm điện tử như laptop, máy tính bảng, tivi...' },
-  //   { id: 'Thời Trang Nam', name: 'Thời Trang Nam', icon: '👔', path: '/thoi-trang-nam', description: 'Quần áo, giày dép, phụ kiện thời trang dành cho nam giới.' },
-  //   { id: 'Thời Trang Nữ', name: 'Thời Trang Nữ', icon: '👗', path: '/thoi-trang-nu', description: 'Trang phục, giày dép, phụ kiện thời trang dành cho nữ giới.' },
-  //   { id: 'Phụ Kiện Nam', name: 'Phụ Kiện Nam', icon: '🕶️', path: '/phu-kien-nam', description: 'Phụ kiện dành cho nam như mắt kính, đồng hồ, ví da...' },
-  //   { id: 'Phụ Kiện Nữ', name: 'Phụ Kiện Nữ', icon: '👝', path: '/phu-kien-nu', description: 'Túi xách, trang sức, phụ kiện thời trang cho nữ.' },
-  //   { id: 'Điện Thoại & Phụ Kiện', name: 'Điện Thoại & Phụ Kiện', icon: '📱', path: '/dien-thoai-va-phu-kien', description: 'Điện thoại di động, ốp lưng, sạc, tai nghe và phụ kiện đi kèm.' },
-  //   { id: 'Thiết Bị Điện Gia Dụng', name: 'Thiết Bị Điện Gia Dụng', icon: '🔌', path: '/thiet-bi-dien-gia-dung', description: 'Thiết bị điện cho gia đình như nồi cơm điện, lò vi sóng...' },
-  //   { id: 'Đồ Gia Dụng', name: 'Đồ Gia Dụng', icon: '🧺', path: '/do-gia-dung', description: 'Vật dụng gia đình như chổi, xô, thùng rác, dụng cụ dọn dẹp...' },
-  //   { id: 'Đồ Dùng Cá Nhân', name: 'Đồ Dùng Cá Nhân', icon: '🧴', path: '/do-dung-ca-nhan', description: 'Sản phẩm chăm sóc cá nhân như bàn chải, dao cạo, dầu gội...' },
-  //   { id: 'Mỹ Phẩm', name: 'Mỹ Phẩm', icon: '💄', path: '/my-pham', description: 'Các sản phẩm trang điểm, chăm sóc da, dưỡng da...' },
-  //   { id: 'Nội Thất', name: 'Nội Thất', icon: '🛋️', path: '/noi-that', description: 'Đồ nội thất như bàn ghế, giường, tủ, kệ sách...' },
-  //   { id: 'Dụng Cụ Thể Thao', name: 'Dụng Cụ Thể Thao', icon: '🏀', path: '/dung-cu-the-thao', description: 'Dụng cụ luyện tập, thể thao như bóng, vợt, thảm tập...' },
-  //   { id: 'Giáo Dục', name: 'Giáo Dục', icon: '📚', path: '/giao-duc', description: 'Sách vở, tài liệu học tập, đồ dùng học sinh - sinh viên.' }
-
-  // ];
-
+  const { clientProvince, updateProvince, productIsLoaded, setProductIsLoaded, products, setProducts } = useContext(AppContext);
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [recentProducts, setRecentProducts] = useState([]);
-  const { clientProvince } = useContext(AppContext);
-
+  const [recentProducts, setRecentProducts] = useState(products || []);
 
   useEffect(() => {
     if (!clientProvince) return;
@@ -51,39 +31,40 @@ export default function Home() {
         const data = await response.json();
         setRecentProducts(data);
         setLoading(false);
+        console.log('Fetch products at Home.js');
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
 
     fetchProductsByProvince();
-  }, [clientProvince]);
+  }, [clientProvince, productIsLoaded]);
 
-    const handleSavePost = async (postId) => {
-      try {
-        if (!localStorage.getItem(NAME_CONFIG.TOKEN)) {
-          alert('Vui lọc đăng nhập để lưu tin.');
-          navigate('/login');
-        }
-        const token = localStorage.getItem('Rehometoken');
-        const response = await fetch(`${API_ENDPOINTS.SAVED_A_POST(postId)}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-  
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to save post');
-        }
-  
-        alert('Đã lưu tin thành công! ❤️');
-      } catch (error) {
-        console.error('Save post error:', error);
+  const handleSavePost = async (postId) => {
+    try {
+      if (!localStorage.getItem(NAME_CONFIG.TOKEN)) {
+        alert('Vui lòng đăng nhập để lưu tin.');
+        navigate('/login');
       }
-    };
+      const token = localStorage.getItem('Rehometoken');
+      const response = await fetch(`${API_ENDPOINTS.SAVED_A_POST(postId)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to save post');
+      }
+
+      alert('Đã lưu tin thành công! ❤️');
+    } catch (error) {
+      console.error('Save post error:', error);
+    }
+  };
 
   return (
     <div className="app-container">
@@ -352,3 +333,21 @@ export default function Home() {
     </div>
   );
 }
+
+
+  // const categories = [
+  //   { id: 'Thiết Bị Điện Tử', name: 'Thiết Bị Điện Tử', icon: '💻', path: '/thiet-bi-dien-tu', description: 'Các sản phẩm điện tử như laptop, máy tính bảng, tivi...' },
+  //   { id: 'Thời Trang Nam', name: 'Thời Trang Nam', icon: '👔', path: '/thoi-trang-nam', description: 'Quần áo, giày dép, phụ kiện thời trang dành cho nam giới.' },
+  //   { id: 'Thời Trang Nữ', name: 'Thời Trang Nữ', icon: '👗', path: '/thoi-trang-nu', description: 'Trang phục, giày dép, phụ kiện thời trang dành cho nữ giới.' },
+  //   { id: 'Phụ Kiện Nam', name: 'Phụ Kiện Nam', icon: '🕶️', path: '/phu-kien-nam', description: 'Phụ kiện dành cho nam như mắt kính, đồng hồ, ví da...' },
+  //   { id: 'Phụ Kiện Nữ', name: 'Phụ Kiện Nữ', icon: '👝', path: '/phu-kien-nu', description: 'Túi xách, trang sức, phụ kiện thời trang cho nữ.' },
+  //   { id: 'Điện Thoại & Phụ Kiện', name: 'Điện Thoại & Phụ Kiện', icon: '📱', path: '/dien-thoai-va-phu-kien', description: 'Điện thoại di động, ốp lưng, sạc, tai nghe và phụ kiện đi kèm.' },
+  //   { id: 'Thiết Bị Điện Gia Dụng', name: 'Thiết Bị Điện Gia Dụng', icon: '🔌', path: '/thiet-bi-dien-gia-dung', description: 'Thiết bị điện cho gia đình như nồi cơm điện, lò vi sóng...' },
+  //   { id: 'Đồ Gia Dụng', name: 'Đồ Gia Dụng', icon: '🧺', path: '/do-gia-dung', description: 'Vật dụng gia đình như chổi, xô, thùng rác, dụng cụ dọn dẹp...' },
+  //   { id: 'Đồ Dùng Cá Nhân', name: 'Đồ Dùng Cá Nhân', icon: '🧴', path: '/do-dung-ca-nhan', description: 'Sản phẩm chăm sóc cá nhân như bàn chải, dao cạo, dầu gội...' },
+  //   { id: 'Mỹ Phẩm', name: 'Mỹ Phẩm', icon: '💄', path: '/my-pham', description: 'Các sản phẩm trang điểm, chăm sóc da, dưỡng da...' },
+  //   { id: 'Nội Thất', name: 'Nội Thất', icon: '🛋️', path: '/noi-that', description: 'Đồ nội thất như bàn ghế, giường, tủ, kệ sách...' },
+  //   { id: 'Dụng Cụ Thể Thao', name: 'Dụng Cụ Thể Thao', icon: '🏀', path: '/dung-cu-the-thao', description: 'Dụng cụ luyện tập, thể thao như bóng, vợt, thảm tập...' },
+  //   { id: 'Giáo Dục', name: 'Giáo Dục', icon: '📚', path: '/giao-duc', description: 'Sách vở, tài liệu học tập, đồ dùng học sinh - sinh viên.' }
+
+  // ];

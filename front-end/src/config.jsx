@@ -31,6 +31,8 @@ export const API_ENDPOINTS = {
   SAVED_A_POST: (postId) => `${baseUrl}/api/posts/saveItem/${postId}`,
   REMOVE_MY_SAVED_POST: (postId) => `${baseUrl}/api/posts/removeSavedItem/${postId}`,
 
+  UPDATE_PROFILE: `${baseUrl}/api/users/updateProfile`,
+
 
   // Admin endpoints
   GET_UNVERIFIED_POSTS: `${baseUrl}/api/posts/unverifiedPosts`,
