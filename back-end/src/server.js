@@ -22,6 +22,9 @@ const frontendURL = isDev
   ? process.env.FRONTEND_LOCAL_URL
   : process.env.FRONTEND_PRODUCTION_URL_DEV;
 
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Frontend URL:', frontendURL);
+
 // CORS setup
 app.use(cors({
   origin: frontendURL,

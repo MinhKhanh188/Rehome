@@ -16,6 +16,7 @@ router.post('/login/google', userController.loginWithGoogle);
 router.get('/profile', authMiddleware(false), userController.getUserProfile);
 router.get('/getAllUsers', authMiddleware(true), userController.getAllUsers);
 router.get('/getCoinHistory/:id', authMiddleware(false), userController.getCoinHistory);
+router.put('/updateProfile', authMiddleware(false), userController.updateProfile);
 
 //admin routes
 router.post('/increaseCoin/:id', authMiddleware(true), userController.increaseCoin);

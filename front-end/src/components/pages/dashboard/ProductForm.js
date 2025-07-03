@@ -225,6 +225,11 @@ export default function ProductForm({ onSubmit = () => { }, onCancel = () => { }
     else if (formData.description.length > 600)
       newErrors.description = 'Mô tả phải có ít hơn 600 ký tự';
     if (!formData.province?.trim()) newErrors.province = 'Hãy chọn khu vực của bạn';
+    if (!formData.address?.trim()) newErrors.address = 'Phải có địa chỉ cụ thể';
+    else if (formData.address.length < 5)
+      newErrors.address = 'Địa chỉ phải có ít nhất 5 ký tự';
+
+
 
     setErrors(newErrors);
     setShowAllErrors(Object.keys(newErrors).length > 0);
