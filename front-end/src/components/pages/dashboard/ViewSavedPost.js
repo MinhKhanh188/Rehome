@@ -1,7 +1,7 @@
 // front-end/src/components/pages/dashboard/ViewSavedPost.js
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Button, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { Alert, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import axios from 'axios';
 import SavedPostListingCard from './SavedPostListingCard';

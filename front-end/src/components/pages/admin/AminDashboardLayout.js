@@ -1,8 +1,7 @@
 // front-end/src/components/pages/admin/AdminDashboard.js
-import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import {Clock, CheckCircle, Users, Coins, Banknote} from 'lucide-react';
+import { Clock, CheckCircle, Users, Coins, Banknote } from 'lucide-react';
 import '../../css/DashboardLayout.css';
 
 const sidebarItems = [

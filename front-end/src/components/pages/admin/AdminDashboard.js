@@ -1,5 +1,4 @@
 // front-end/src/components/pages/admin/AdminDashboard.js
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AdminDashboardLayout from './AminDashboardLayout';
 import UnverifiedProducts from './UnverifiedProducts';

@@ -1,5 +1,5 @@
 // front-end/src/components/pages/dashboard/BuyCoin.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import { ArrowLeft } from 'lucide-react';

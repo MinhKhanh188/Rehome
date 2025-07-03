@@ -1,5 +1,5 @@
 // front-end/src/components/pages/dashboard/ImageUploader.js
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Button, Alert, Row, Col } from 'react-bootstrap';
 import { PlusCircle, XCircle, Upload, Image, AlertCircle } from 'lucide-react';
 import '../../css/ImageUploader.css'; // Import your CSS file

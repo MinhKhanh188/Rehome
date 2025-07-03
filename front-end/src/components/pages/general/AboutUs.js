@@ -1,10 +1,10 @@
 // front-end/src/components/pages/general/AboutUs.js
-import React from "react";
 import { Col, Row, Container, Card } from "react-bootstrap";
 import { NavbarComponent } from "../layout/Navbar";
 import '../../css/AboutUs.css';
 
 const AboutUs = () => {
+
     return (
         <>
             <NavbarComponent />

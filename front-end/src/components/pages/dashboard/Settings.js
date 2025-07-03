@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
-import { Bell, Lock, User, CreditCard } from 'lucide-react';
+import { User } from 'lucide-react';
 import axios from 'axios';
 import '../../css/Settings.css';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
@@ -51,7 +51,6 @@ export default function Settings() {
         const { data } = await axios.get(API_ENDPOINTS.GET_USER_PROFILE, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('User profile data:', data); // Debugging line
         setProfile({
           fullName: data.user.name,
           email: data.user.email || '',

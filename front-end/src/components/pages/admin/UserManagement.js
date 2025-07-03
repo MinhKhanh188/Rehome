@@ -1,5 +1,5 @@
 // front-end/src/components/pages/admin/UserManagement.js
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import { Badge, Button, Table } from 'react-bootstrap';

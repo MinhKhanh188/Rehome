@@ -1,15 +1,13 @@
 // front-end/src/components/pages/Auth/Login.js
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
-import '../../css/Login.css'; // We'll create this CSS file
-import { NavbarComponent } from '../layout/Navbar';
-import { Footer } from '../layout/Footer';
-import { Eye, EyeOff } from 'lucide-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF } from '@fortawesome/free-brands-svg-icons'; // Import the Facebook icon
 import axios from 'axios';
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
+import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
+import '../../css/Login.css'; // We'll create this CSS file
+import { Footer } from '../layout/Footer';
+import { NavbarComponent } from '../layout/Navbar';
 import GoogleLoginButton from './GoogleLoginButton';
 
 

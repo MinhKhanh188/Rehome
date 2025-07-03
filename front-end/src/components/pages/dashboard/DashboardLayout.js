@@ -1,8 +1,7 @@
 // front-end/src/components/pages/DashboardLayout.js
-import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import { Package, ShoppingCart, Settings, BarChart, MessageCircle, Coins, Heart  } from 'lucide-react';
+import { Package, Settings, MessageCircle, Coins, Heart } from 'lucide-react';
 import '../../css/DashboardLayout.css';
 
 const sidebarItems = [

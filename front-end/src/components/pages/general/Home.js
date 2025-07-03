@@ -31,7 +31,6 @@ export default function Home() {
         const data = await response.json();
         setRecentProducts(data);
         setLoading(false);
-        console.log('Fetch products at Home.js');
       } catch (error) {
         console.error('Error fetching products:', error);
       }

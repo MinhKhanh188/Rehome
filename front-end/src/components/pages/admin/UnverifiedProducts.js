@@ -1,5 +1,5 @@
 // front-end/src/components/pages/admin/UnverifiedProducts.js
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import { Table, Button, Badge } from 'react-bootstrap';

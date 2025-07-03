@@ -1,5 +1,5 @@
 // front-end/src/components/pages/dashboard/chat/ConversationList.js
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ListGroup, Image } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_ENDPOINTS, NAME_CONFIG } from "../../../../config";

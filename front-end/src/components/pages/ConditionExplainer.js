@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
 import { Info } from 'lucide-react';
 import '../css/ConditionExplainer.css';

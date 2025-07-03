@@ -25,7 +25,6 @@ export default function ChangeStatusModal({ show, onHide, postId, onStatusUpdate
           },
         }
       );
-      console.log('Status updated:', res.data);
       if (onStatusUpdated) onStatusUpdated(postId, status);
       onHide();
     } catch (error) {

@@ -1,12 +1,11 @@
 // front-end/src/components/pages/dashboard/chat/MessageLayout.js
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, Form, Button, InputGroup, Image } from "react-bootstrap";
 import axios from "axios";
 import socket from "../../../../socket";
 import { API_ENDPOINTS, NAME_CONFIG } from "../../../../config";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import fontawesome from "@fortawesome/fontawesome-svg-core";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

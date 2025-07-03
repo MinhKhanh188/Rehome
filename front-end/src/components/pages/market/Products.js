@@ -61,7 +61,6 @@ const Products = () => {
         const response = await fetch(`${API_ENDPOINTS.GET_POST_BY_PROVINCE}?province=${encodeURIComponent(provinceParam)}`);
         const data = await response.json();
         setProducts(data);
-        console.log('Fetch products at Products.js:');
         setProductIsLoaded(true);
       } catch (error) {
         console.error('Error fetching products:', error);
