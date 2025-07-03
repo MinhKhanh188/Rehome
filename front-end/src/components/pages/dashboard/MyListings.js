@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-import { Plus, Filter } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import ProductListingCard from './ProductListingCard';
 import '../../css/MyListings.css';
 import ChangeStatusModal from './modal/ChangeStatusModal';

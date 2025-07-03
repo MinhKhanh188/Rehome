@@ -1,5 +1,5 @@
 // front-end/src/components/pages/admin/modal/PostDetailModal.js  
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Button, Image, Row, Col, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../../config';

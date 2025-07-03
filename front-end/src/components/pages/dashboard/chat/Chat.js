@@ -1,5 +1,5 @@
 // front-end/src/components/pages/dashboard/chat/Chat.js
-import React, { useState } from "react";
+import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Routes, Route, useParams } from "react-router-dom";
 import ConversationList from "./ConversationList";

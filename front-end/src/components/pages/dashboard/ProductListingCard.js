@@ -1,7 +1,7 @@
 // front-end/src/components/pages/dashboard/ProductListingCard.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, Dropdown, Button, Badge } from 'react-bootstrap';
-import { MoreVertical, Eye, Heart, Edit, Archive, Trash } from 'lucide-react';
+import { MoreVertical, Edit, Archive, Trash } from 'lucide-react';
 import '../../css/ProductListingCard.css';
 
 const ProductListingCard = ({

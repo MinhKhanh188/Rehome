@@ -1,5 +1,5 @@
 // front-end/src/components/pages/Auth/ForgotPassword.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { API_ENDPOINTS } from '../../../config';
 import { useNavigate } from 'react-router-dom';

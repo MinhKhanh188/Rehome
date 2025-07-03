@@ -1,7 +1,7 @@
 // front-end/src/components/pages/dashboard/SavedPostListingCard.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, Dropdown, Button, Badge } from 'react-bootstrap';
-import { MoreVertical, Eye, Heart, Edit, Archive, Trash } from 'lucide-react';
+import { MoreVertical, Trash } from 'lucide-react';
 import '../../css/ProductListingCard.css';
 import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
@@ -43,8 +43,6 @@ const SavedPostListingCard = ({
             if (onDeleted) onDeleted(_id);
 
         } catch (error) {
-            console.log(API_ENDPOINTS.REMOVE_MY_SAVED_POST(_id));
-
             alert('Có lỗi xảy ra khi xóa bài đăng.');
         }
     };

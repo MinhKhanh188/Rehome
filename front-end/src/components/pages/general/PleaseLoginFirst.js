@@ -1,9 +1,6 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Container } from 'react-bootstrap';
 import { Lock } from 'lucide-react';
-import { NavbarComponent } from '../layout/Navbar';
-import { Footer } from '../layout/Footer';
 import '../../css/Login.css'; // Sử dụng lại CSS của login
 
 export default function PleaseLoginFirst() {

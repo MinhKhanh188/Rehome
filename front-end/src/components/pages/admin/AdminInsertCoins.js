@@ -1,8 +1,8 @@
 // front-end/src/components/pages/admin/AdminInsertCoins.js
-import React, { useState } from "react";
-import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
-import { Form, Button, Alert, Card, InputGroup, Row, Col, Spinner } from "react-bootstrap";
 import axios from "axios";
+import { useState } from "react";
+import { Alert, Button, Card, Col, Form, InputGroup, Row, Spinner } from "react-bootstrap";
+import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 
 const AdminInsertCoins = () => {
     const [uniqueId, setUniqueId] = useState("");

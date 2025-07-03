@@ -1,5 +1,5 @@
 // front-end/src/components/pages/admin/AllCoinTransactionHistory.js
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import { Table, Card, Spinner, Alert } from "react-bootstrap";
 import axios from "axios";

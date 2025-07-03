@@ -1,11 +1,11 @@
 // front-end/src/components/pages/Auth/ResetPassword.js
-import React, { useState } from 'react';
 import axios from 'axios';
-import { API_ENDPOINTS } from '../../../config';
+import { useState } from 'react';
+import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
-import { NavbarComponent } from '../layout/Navbar';
+import { API_ENDPOINTS } from '../../../config';
 import { Footer } from '../layout/Footer';
+import { NavbarComponent } from '../layout/Navbar';
 
 export default function ResetPassword() {
   const [code, setCode] = useState('');
@@ -29,7 +29,6 @@ export default function ResetPassword() {
         newPassword
       });
 
-      console.log(res.data);
       setSuccess(true);
     } catch (err) {
       console.error(err);

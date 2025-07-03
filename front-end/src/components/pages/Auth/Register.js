@@ -1,13 +1,11 @@
 // front-end/src/components/pages/Auth/Register.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
-import { Eye, EyeOff, Check, X, Facebook } from 'lucide-react';
+import { Eye, EyeOff, Check, X } from 'lucide-react';
 import '../../css/Register.css';
 import { NavbarComponent } from '../layout/Navbar';
 import { Footer } from '../layout/Footer';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF } from '@fortawesome/free-brands-svg-icons'; // Import the Facebook icon
 import { API_ENDPOINTS, NAME_CONFIG } from '../../../config';
 import axios from 'axios';
 import GoogleLoginButton from './GoogleLoginButton';

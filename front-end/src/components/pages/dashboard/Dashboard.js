@@ -1,5 +1,4 @@
 // front-end/src/components/pages/dashboard/Dashboard.js
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import DashboardLayout from './DashboardLayout';
 import MyListings from './MyListings';
