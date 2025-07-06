@@ -1,3 +1,25 @@
+// back-end/src/models/User.js
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  passwordHash: { type: String },
+  loginProvider: { type: String, enum: ['local', 'google'], default: 'local' },
+  coin: { type: Number, default: 0 },
+  uniqueId: { type: String, required: true, unique: true },
+  profilePic: { type: String },
+  phoneNumber: { type: String },
+  facebookUrl: { type: String },
+  location: { type: String },
+  isVerified: { type: Boolean, default: false },
+  isAdmin: { type: Boolean, default: false },
+  resetCode: { type: String },
+  resetCodeExpires: { type: Date },
+}, { timestamps: true });
+
+module.exports = mongoose.model('users', userSchema);
+
 // back-end/src/models/SavedItem.js
 const mongoose = require('mongoose');
 
@@ -9,18 +31,6 @@ const savedItemSchema = new mongoose.Schema({
   
   module.exports = mongoose.model('savedItems', savedItemSchema);
   
-// back-end/src/models/ReportedPost.js
-const mongoose = require('mongoose');
-
-const reportedPostSchema = new mongoose.Schema({
-    postId: { type: mongoose.Schema.Types.ObjectId, ref: 'posts', required: true },
-    reporterId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
-    reason: { type: String, required: true },
-    reportedAt: { type: Date, default: Date.now }
-  });
-  
-  module.exports = mongoose.model('reportedPosts', reportedPostSchema);
-  
   // back-end/src/models/Province.js
 const mongoose = require('mongoose');
 
@@ -29,15 +39,6 @@ const provinceSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('provinces', provinceSchema);
-
-// back-end/src/models/Category.js
-const mongoose = require('mongoose');
-
-const categorySchema = new mongoose.Schema({
-    name: { type: String, required: true }
-  }, { timestamps: true });
-  
-  module.exports = mongoose.model('categories', categorySchema);
 
 // back-end/src/models/Post.js
 const mongoose = require('mongoose');
@@ -59,7 +60,7 @@ const postSchema = new mongoose.Schema({
   sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
   address: { type: String, required: true },
   mapUrl: { type: String },
-  status: { type: String, enum: ['available', 'sold', 'pending', 'hidden'], default: 'available' },
+  status: { type: String, enum: ['available', 'sold', 'pending', 'hidden'], default: 'pending' },
   isChecked: { type: Boolean, default: false },
   isVip: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
@@ -80,7 +81,6 @@ const messageSchema = new mongoose.Schema({
 
 module.exports = mongoose.model('messages', messageSchema);
 
-
 // back-end/src/models/Conversation.js
 const mongoose = require('mongoose');
 
@@ -88,10 +88,32 @@ const conversationSchema = new mongoose.Schema({
   participants: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }
   ],
-  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'posts', required: true },
   createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('conversations', conversationSchema);
 
 
+// back-end/src/models/CoinTransaction.js
+const mongoose = require('mongoose');
+
+const coinTransactionSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
+  type: { type: String, enum: ['topup', 'deduct', 'post'], required: true },
+  amount: { type: Number, required: true },
+  description: { type: String },
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('coinTransactions', coinTransactionSchema);
+
+
+// back-end/src/models/Category.js
+const mongoose = require('mongoose');
+
+const categorySchema = new mongoose.Schema({
+    name: { type: String, required: true }
+  }, { timestamps: true });
+  
+  module.exports = mongoose.model('categories', categorySchema);
+  
