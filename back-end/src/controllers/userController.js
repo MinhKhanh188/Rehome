@@ -7,7 +7,7 @@ const ApiError = require('../utils/ApiError');
 const sendResetCodeEmail = require('../services/emailService');
 const generateUniqueId = require('../utils/uniqueIdGenerator');
 const { OAuth2Client } = require('google-auth-library');
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const googleClient = new OAuth2Client(); // Initialize Google OAuth client
 
 class userController {
 
@@ -17,10 +17,24 @@ class userController {
             if (!idToken) throw new ApiError(400, 'Thiếu idToken.');
 
             // Verify token with Google
-            const ticket = await googleClient.verifyIdToken({
-                idToken,
-                audience: process.env.GOOGLE_CLIENT_ID,
-            });
+            const androidClientId = process.env.GOOGLE_ANDROID_CLIENT_ID;
+            const webClientId = process.env.GOOGLE_WEB_CLIENT_ID;
+
+            let ticket;
+            try {
+                // Try Android audience first
+                ticket = await googleClient.verifyIdToken({
+                    idToken,
+                    audience: androidClientId,
+                });
+            } catch {
+                // Fallback to Web audience
+                ticket = await googleClient.verifyIdToken({
+                    idToken,
+                    audience: webClientId,
+                });
+            }
+
             const payload = ticket.getPayload();
 
             // Get user info
