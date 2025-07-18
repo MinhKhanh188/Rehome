@@ -10,6 +10,7 @@ const sidebarItems = [
   { icon: CheckCircle, label: 'Sản Phẩm Đã Duyệt', path: '/admin/verified-products' },
   { icon: Users, label: 'Người dùng', path: '/admin/users' },
   { icon: Banknote, label: 'Lịch sử nạp xu', path: '/admin/allCoinTransactionHistory' },
+  { icon: Banknote, label: 'Báo cáo', path: '/admin/staticReport' },
 ];
 
 
