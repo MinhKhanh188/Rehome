@@ -107,22 +107,44 @@ export default function MessageLayout({ currentUser, currentConversation }) {
                         hour: "2-digit",
                         minute: "2-digit"
                     });
+
+                    const isOwnMessage = msg.senderId === user.id;
+                    const isSharedPost = msg.postId;
+
                     return (
                         <div
                             key={msg._id}
-                            className={`d-flex mb-2 ${msg.senderId === user.id ? "justify-content-end" : "justify-content-start"}`}
+                            className={`d-flex mb-2 ${isOwnMessage ? "justify-content-end" : "justify-content-start"}`}
                         >
                             <div
                                 style={{
-                                    background: msg.senderId === user.id ? "#0084ff" : "#fff",
-                                    color: msg.senderId === user.id ? "#fff" : "#000",
+                                    background: isSharedPost ? "#f0f0f0" : isOwnMessage ? "#0084ff" : "#fff",
+                                    color: isSharedPost ? "#000" : isOwnMessage ? "#fff" : "#000",
                                     borderRadius: 18,
                                     padding: "8px 16px",
                                     maxWidth: "75%",
                                     wordBreak: "break-word"
                                 }}
+
                             >
-                                {msg.text}
+                                {/* 👇 If it's a shared post, render preview */}
+                                {isSharedPost ? (
+                                    <div>
+                                        <div style={{ fontWeight: "bold", marginBottom: 4 }}>{msg.postId.name}</div>
+                                        <div style={{ fontSize: 13, marginBottom: 8 }}>{msg.postId.description}</div>
+                                        {msg.postId.images?.[0] && (
+                                            <Image
+                                                src={msg.postId.images[0]}
+                                                alt="shared"
+                                                thumbnail
+                                                style={{ maxWidth: "100%", borderRadius: 8 }}
+                                            />
+                                        )}
+                                    </div>
+                                ) : (
+                                    msg.text
+                                )}
+
                                 <div style={{ fontSize: 10, color: "#ccc", marginTop: 4, textAlign: "right" }}>
                                     {time}
                                 </div>
@@ -130,6 +152,7 @@ export default function MessageLayout({ currentUser, currentConversation }) {
                         </div>
                     );
                 })}
+
 
                 <div ref={messagesEndRef} />
             </Card.Body>

@@ -6,28 +6,46 @@ const UserModel = require('../models/User');
 class MessageController {
 
     async createOrGetConversation(req, res) {
-        const { participantId } = req.body;
+        const { participantId, postId } = req.body;
         const currentUserId = req.user._id;
 
         try {
             let convo = await ConversationModel.findOne({
-
-                participants: { $all: [currentUserId, participantId] },
+                participants: { $all: [currentUserId, participantId] }
             });
 
+            // If no conversation exists, create one and send the first message
             if (!convo) {
                 convo = await ConversationModel.create({
+                    participants: [currentUserId, participantId]
+                });
 
-                    participants: [currentUserId, participantId],
+                // 💬 Create initial message with postId
+                await MessageModel.create({
+                    conversationId: convo._id,
+                    senderId: currentUserId,
+                    text: "Món đồ này còn không shop ơi?",
+                    postId: postId || null
+                });
+            } else {
+                // Still send postId in a new message (no duplicate convo)
+                await MessageModel.create({
+                    conversationId: convo._id,
+                    senderId: currentUserId,
+                    text: ".", // Empty, just carries the post reference
+                    postId: postId || null
                 });
             }
 
+            // ✅ Return conversation object (without postId here)
             res.status(200).json(convo);
         } catch (err) {
-            console.error('💥 Conversation Error:', err); // log it
+            console.error('💥 Conversation Error:', err);
             res.status(500).json({ message: 'Failed to get or create conversation.' });
         }
     }
+
+
 
     async sendMessage(req, res) {
         const { conversationId, text } = req.body;
@@ -52,12 +70,20 @@ class MessageController {
         const { conversationId } = req.params;
 
         try {
-            const messages = await MessageModel.find({ conversationId }).sort({ sentAt: 1 });
+            const messages = await MessageModel.find({ conversationId })
+                .sort({ sentAt: 1 })
+                .populate({
+                    path: 'postId',
+                    select: 'name description images'
+                });
+
             res.status(200).json(messages);
         } catch (err) {
+            console.error("💥 Message Fetch Error:", err);
             res.status(500).json({ message: 'Failed to fetch messages.' });
         }
     }
+
 
     async getUserConversations(req, res) {
         const currentUserId = req.user._id;
@@ -72,11 +98,10 @@ class MessageController {
                 })
                 .lean();
 
-            // Optionally get last message for each conversation
             const convoWithLastMessage = await Promise.all(
                 conversations.map(async (convo) => {
                     const lastMsg = await MessageModel.findOne({ conversationId: convo._id })
-                        .sort({ createdAt: -1 })
+                        .sort({ sentAt: -1 })
                         .lean();
 
                     return {
@@ -92,6 +117,7 @@ class MessageController {
             res.status(500).json({ message: 'Failed to fetch conversations.' });
         }
     }
+
 
 
 }
