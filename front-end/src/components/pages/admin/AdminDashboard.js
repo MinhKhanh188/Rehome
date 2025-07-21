@@ -6,6 +6,7 @@ import VerifiedProducts from './VerifiedProducts';
 import UserManagement from './UserManagement';
 import AdminInsertCoins from './AdminInsertCoins';
 import AllCoinTransactionHistory from './AllCoinTransactionHistory';
+import AdminStaticReport from './AdminStaticReport';
 
 export default function AdminDashboard() {
   return (
@@ -24,6 +25,7 @@ export default function AdminDashboard() {
           <Route path="users" element={<UserManagement />} />
           <Route path="insertCoin" element={<AdminInsertCoins />} />
           <Route path="allCoinTransactionHistory" element={<AllCoinTransactionHistory />} />
+          <Route path="staticReport" element={<AdminStaticReport />} />
         </Routes>
       </AdminDashboardLayout>
     </div>
