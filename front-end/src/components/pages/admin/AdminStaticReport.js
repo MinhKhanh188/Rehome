@@ -1,50 +1,68 @@
 // front-end/src/components/pages/admin/AdminStaticReport.js
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie,
   XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell, Legend
 } from "recharts";
 import { Row, Col, Card } from "react-bootstrap";
-
-// Mock data
-const userData = [
-  { role: "Buyer", count: 230 },
-  { role: "Seller", count: 120 },
-  { role: "Admin", count: 3 },
-];
-
-const revenueByDay = [
-  { date: "2025-07-01", revenue: 300 },
-  { date: "2025-07-02", revenue: 600 },
-  { date: "2025-07-03", revenue: 150 },
-  { date: "2025-07-04", revenue: 500 },
-  { date: "2025-07-05", revenue: 900 },
-];
-
-const postStatus = [
-  { status: "Active", count: 80 },
-  { status: "Sold", count: 120 },
-];
-
-const bestSellingCategories = [
-  { category: "Electronics", sold: 40 },
-  { category: "Furniture", sold: 25 },
-  { category: "Books", sold: 18 },
-  { category: "Clothing", sold: 12 },
-];
+import { API_ENDPOINTS, NAME_CONFIG } from "../../../config";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#8dd1e1"];
 
 export default function AnalyticsDashboard() {
+  const [userStats, setUserStats] = React.useState([]);
+  const [revenueStats, setRevenueStats] = React.useState([]);
+  const [postStatusStats, setPostStatusStats] = React.useState([]);
+  const [bestSellingCategories, setBestSellingCategories] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const token = localStorage.getItem(NAME_CONFIG.TOKEN);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        };
+
+        const [userRes, revenueRes, postRes, categoryRes] = await Promise.all([
+          fetch(API_ENDPOINTS.GET_USER_STATS, { headers }),
+          fetch(API_ENDPOINTS.GET_REVENUE_BY_DAY, { headers }),
+          fetch(API_ENDPOINTS.GET_POST_STATUS, { headers }),
+          fetch(API_ENDPOINTS.GET_BEST_SELLING_CATEGORIES, { headers }),
+        ]);
+
+        const userData = await userRes.json();
+        const revenueData = await revenueRes.json();
+        const postData = await postRes.json();
+        const categoryData = await categoryRes.json();
+
+        setUserStats(userData);
+        setRevenueStats(revenueData); // must contain totalRevenue & dailyRevenue
+        setPostStatusStats(postData);
+        setBestSellingCategories(categoryData);
+      } catch (err) {
+        console.error("Error fetching static report data:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+  useEffect(() => {
+    if (userStats.length && revenueStats.length && postStatusStats.length && bestSellingCategories.length) {
+      setLoading(false);
+    }
+  }, [userStats, revenueStats, postStatusStats, bestSellingCategories]);
+
   return (
     <div className="p-4">
       <Row className="mb-4">
         <Col md={6}>
           <Card>
-            <Card.Header>👥 Current Users</Card.Header>
+            <Card.Header>👥 Người dùng hiện tại</Card.Header>
             <Card.Body>
               <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={userData}>
+                <BarChart data={userStats}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="role" />
                   <YAxis />
@@ -58,10 +76,13 @@ export default function AnalyticsDashboard() {
 
         <Col md={6}>
           <Card>
-            <Card.Header>💰 Revenue by Day</Card.Header>
+            <Card.Header>💰 Doanh thu</Card.Header>
             <Card.Body>
+              <h5 className="mb-3">
+                Tổng doanh thu: {revenueStats.totalRevenue?.toLocaleString("vi-VN")} đ
+              </h5>
               <ResponsiveContainer width="100%" height={250}>
-                <LineChart data={revenueByDay}>
+                <LineChart data={revenueStats.dailyRevenue}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="date" />
                   <YAxis />
@@ -72,17 +93,18 @@ export default function AnalyticsDashboard() {
             </Card.Body>
           </Card>
         </Col>
+
       </Row>
 
       <Row>
         <Col md={6}>
           <Card>
-            <Card.Header>📦 Posts Status</Card.Header>
+            <Card.Header>📦 Trạng thái bài đăng</Card.Header>
             <Card.Body>
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
                   <Pie
-                    data={postStatus}
+                    data={postStatusStats}
                     dataKey="count"
                     nameKey="status"
                     cx="50%"
@@ -90,7 +112,7 @@ export default function AnalyticsDashboard() {
                     outerRadius={80}
                     label
                   >
-                    {postStatus.map((entry, index) => (
+                    {postStatusStats.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
@@ -104,7 +126,7 @@ export default function AnalyticsDashboard() {
 
         <Col md={6}>
           <Card>
-            <Card.Header>🏆 Best-Selling Categories</Card.Header>
+            <Card.Header>🏆 Danh mục bán chạy nhất</Card.Header>
             <Card.Body>
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={bestSellingCategories} layout="vertical">

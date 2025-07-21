@@ -44,6 +44,12 @@ export const API_ENDPOINTS = {
   DELETE_USER: `${baseUrl}/api/users/deleteUser`,
   GET_ALL_COINS_HISTORY: `${baseUrl}/api/users/getAllCoinHistory`,
 
+  // Static report endpoints
+  GET_USER_STATS: `${baseUrl}/api/staticReport/user-stats`,
+  GET_REVENUE_BY_DAY: `${baseUrl}/api/staticReport/revenue`,
+  GET_POST_STATUS: `${baseUrl}/api/staticReport/post-status`,
+  GET_BEST_SELLING_CATEGORIES: `${baseUrl}/api/staticReport/best-selling-categories`,
+
   // Post endpoints
   CREATE_POST: `${baseUrl}/api/posts/createPost`,
   GET_POST_BY_PROVINCE: `${baseUrl}/api/posts/province`,

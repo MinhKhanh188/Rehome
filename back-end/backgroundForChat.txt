@@ -19,27 +19,48 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model('users', userSchema);
-
-// back-end/src/models/SavedItem.js
+// back-end/src/models/Category.js
 const mongoose = require('mongoose');
 
-const savedItemSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'posts', required: true },
-    savedAt: { type: Date, default: Date.now }
-  });
-  
-  module.exports = mongoose.model('savedItems', savedItemSchema);
-  
-  // back-end/src/models/Province.js
-const mongoose = require('mongoose');
-
-const provinceSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
     name: { type: String, required: true }
+  }, { timestamps: true });
+  
+  module.exports = mongoose.model('categories', categorySchema);
+  // back-end/src/models/CoinTransaction.js
+const mongoose = require('mongoose');
+
+const coinTransactionSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
+  type: { type: String, enum: ['topup', 'deduct', 'post'], required: true },
+  amount: { type: Number, required: true },
+  description: { type: String },
+  createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('provinces', provinceSchema);
+module.exports = mongoose.model('coinTransactions', coinTransactionSchema);
+// back-end/src/models/Conversation.js
+const mongoose = require('mongoose');
 
+const conversationSchema = new mongoose.Schema({
+  participants: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }
+  ],
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('conversations', conversationSchema);
+// back-end/src/models/Message.js
+const mongoose = require('mongoose');
+
+const messageSchema = new mongoose.Schema({
+  conversationId: { type: mongoose.Schema.Types.ObjectId, ref: 'conversations', required: true },
+  senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
+  text: { type: String, required: true },
+  sentAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('messages', messageSchema);
 // back-end/src/models/Post.js
 const mongoose = require('mongoose');
 
@@ -68,52 +89,22 @@ const postSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('posts', postSchema);
-
-// back-end/src/models/Message.js
+// back-end/src/models/Province.js
 const mongoose = require('mongoose');
 
-const messageSchema = new mongoose.Schema({
-  conversationId: { type: mongoose.Schema.Types.ObjectId, ref: 'conversations', required: true },
-  senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
-  text: { type: String, required: true },
-  sentAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('messages', messageSchema);
-
-// back-end/src/models/Conversation.js
-const mongoose = require('mongoose');
-
-const conversationSchema = new mongoose.Schema({
-  participants: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true }
-  ],
-  createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('conversations', conversationSchema);
-
-
-// back-end/src/models/CoinTransaction.js
-const mongoose = require('mongoose');
-
-const coinTransactionSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
-  type: { type: String, enum: ['topup', 'deduct', 'post'], required: true },
-  amount: { type: Number, required: true },
-  description: { type: String },
-  createdAt: { type: Date, default: Date.now }
-});
-
-module.exports = mongoose.model('coinTransactions', coinTransactionSchema);
-
-
-// back-end/src/models/Category.js
-const mongoose = require('mongoose');
-
-const categorySchema = new mongoose.Schema({
+const provinceSchema = new mongoose.Schema({
     name: { type: String, required: true }
-  }, { timestamps: true });
+});
+
+module.exports = mongoose.model('provinces', provinceSchema);
+// back-end/src/models/SavedItem.js
+const mongoose = require('mongoose');
+
+const savedItemSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'posts', required: true },
+    savedAt: { type: Date, default: Date.now }
+  });
   
-  module.exports = mongoose.model('categories', categorySchema);
+  module.exports = mongoose.model('savedItems', savedItemSchema);
   
