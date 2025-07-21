@@ -105,6 +105,7 @@ export default function ProductDetails() {
   try {
     const response = await axios.post(`${API_ENDPOINTS.JOIN_CONVERSATION}`, {
       participantId: product.sellerId, // You must ensure `product.ownerId` is passed from backend
+      postId: product._id
     }, {
       headers: {
         Authorization: `Bearer ${token}`

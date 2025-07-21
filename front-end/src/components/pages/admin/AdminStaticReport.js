@@ -9,6 +9,18 @@ import { API_ENDPOINTS, NAME_CONFIG } from "../../../config";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#8dd1e1"];
 
+const CustomYAxisTick = ({ x, y, payload }) => {
+  const text = payload.value;
+  const maxLength = 25;
+  const displayText = text.length > maxLength ? text.slice(0, maxLength) + "…" : text;
+
+  return (
+    <text x={x - 5} y={y + 5} textAnchor="end" fontSize={12}>
+      {displayText}
+    </text>
+  );
+};
+
 export default function AnalyticsDashboard() {
   const [userStats, setUserStats] = React.useState([]);
   const [revenueStats, setRevenueStats] = React.useState([]);
@@ -129,10 +141,14 @@ export default function AnalyticsDashboard() {
             <Card.Header>🏆 Danh mục bán chạy nhất</Card.Header>
             <Card.Body>
               <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={bestSellingCategories} layout="vertical">
+                <BarChart
+                  data={bestSellingCategories}
+                  layout="vertical"
+                  margin={{ left: 100, right: 30, top: 10, bottom: 10 }}
+                >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis type="number" />
-                  <YAxis dataKey="category" type="category" />
+                  <YAxis dataKey="category" type="category" tick={<CustomYAxisTick />} />
                   <Tooltip />
                   <Bar dataKey="sold" fill="#ffc658" />
                 </BarChart>
@@ -140,6 +156,7 @@ export default function AnalyticsDashboard() {
             </Card.Body>
           </Card>
         </Col>
+
       </Row>
     </div>
   );
