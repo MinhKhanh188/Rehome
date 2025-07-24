@@ -109,7 +109,7 @@ export default function MessageLayout({ currentUser, currentConversation }) {
                     });
 
                     const isOwnMessage = msg.senderId === user.id;
-                    const isSharedPost = msg.postId;
+                    const isSharedPost = msg.post;
 
                     return (
                         <div
@@ -130,11 +130,11 @@ export default function MessageLayout({ currentUser, currentConversation }) {
                                 {/* 👇 If it's a shared post, render preview */}
                                 {isSharedPost ? (
                                     <div>
-                                        <div style={{ fontWeight: "bold", marginBottom: 4 }}>{msg.postId.name}</div>
-                                        <div style={{ fontSize: 13, marginBottom: 8 }}>{msg.postId.description}</div>
-                                        {msg.postId.images?.[0] && (
+                                        <div style={{ fontWeight: "bold", marginBottom: 4 }}>{msg.post.name}</div>
+                                        <div style={{ fontSize: 13, marginBottom: 8 }}>{msg.post.description}</div>
+                                        {msg.post.images?.[0] && (
                                             <Image
-                                                src={msg.postId.images[0]}
+                                                src={msg.post.images[0]}
                                                 alt="shared"
                                                 thumbnail
                                                 style={{ maxWidth: "100%", borderRadius: 8 }}

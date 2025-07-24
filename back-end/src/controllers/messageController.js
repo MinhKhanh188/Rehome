@@ -70,14 +70,25 @@ class MessageController {
         const { conversationId } = req.params;
 
         try {
-            const messages = await MessageModel.find({ conversationId })
+            const rawMessages = await MessageModel.find({ conversationId })
                 .sort({ sentAt: 1 })
                 .populate({
                     path: 'postId',
                     select: 'name description images'
-                });
+                })
+                .lean();
+
+            // 👇 Reformat postId ➜ post
+            const messages = rawMessages.map(msg => {
+                const { postId, ...rest } = msg;
+                return {
+                    ...rest,
+                    post: postId || null, // if populated, becomes `post`
+                };
+            });
 
             res.status(200).json(messages);
+
         } catch (err) {
             console.error("💥 Message Fetch Error:", err);
             res.status(500).json({ message: 'Failed to fetch messages.' });
