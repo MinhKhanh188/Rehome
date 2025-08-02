@@ -1,4 +1,4 @@
-name: main
+name: mainExpected
 
 on:
   push:
@@ -10,5 +10,5 @@ jobs:
   run-check:
     runs-on: ubuntu-latest
     steps:
-      - name: ✅ Status check for "main"
+      - name: ✅ Status check for "mainExpected"
         run: echo "All good."
