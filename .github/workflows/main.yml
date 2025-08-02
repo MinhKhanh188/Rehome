@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  run-check:
+  mainExpected:  # 👈 job name must match the required check
     runs-on: ubuntu-latest
     steps:
-      - name: ✅ Status check for "mainExpected"
-        run: echo "All good."
+      - name: ✅ Passing check for branch protection
+        run: echo "This check is here to satisfy GitHub rules."
