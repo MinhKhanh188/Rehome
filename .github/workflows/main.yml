@@ -1,0 +1,14 @@
+name: main
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✅ Status check for "main"
+        run: echo "All good."
